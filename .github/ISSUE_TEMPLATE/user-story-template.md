@@ -1,5 +1,5 @@
 ---
-name: User Story template
+name: User Story 1
 about:
     User Stories are features supporting user requirements that can be completed
     in a single sprint
@@ -10,19 +10,26 @@ assignees: ''
 
 ## User Story Description
 
-As a [role]
-I want to [action to be performed]
-So I can [result to be achieved]
+As an Admin/employee,
+I need a login page,
+So I can sign in to my account
 
 ## Steps to Follow (optional)
 
--   [ ] Step #1
--   [ ] Step #2
--   [ ] Additional steps as necessary
+-   [ ] User enters email or username
+-   [ ] User enters password
+-   [ ] Clicks on a login button
 
 ## Acceptance criteria
 
--   [ ] This is something that can be verified to show that this user story is satisfied.
+Acceptance Criteria
+    Frontend
+-   [ ] A login page should be created.
+-   [ ] Admin should be able to sign in. 
+    Backend
+-   [ ] A login endpoint should be created -  POST /auth/signin
+-   [ ] The endpoint should accept email and password
+-   [ ] A database should be created - chore. 
 
 ## Additional Considerations
 
