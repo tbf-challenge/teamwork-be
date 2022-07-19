@@ -1,11 +1,11 @@
 ---
-name: User Story 1
+name: Teamwork
 about:
     User Stories are features supporting user requirements that can be completed
     in a single sprint
 title: ''
 labels: user_story
-assignees: '@jakazzy'
+assignees: ''
 ---
 
 ## User Story Description
@@ -23,10 +23,12 @@ So I can sign in to my account
 ## Acceptance criteria
 
 Acceptance Criteria
-    Frontend
+    
+-   Frontend
 -   [ ] A login page should be created.
 -   [ ] Admin should be able to sign in. 
-    Backend
+
+-   Backend
 -   [ ] A login endpoint should be created -  POST /auth/signin
 -   [ ] The endpoint should accept email and password
 -   [ ] A database should be created - chore. 
