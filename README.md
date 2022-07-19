@@ -1,6 +1,4 @@
-# Project Title
-
-Teamwork
+# Teamwork
 
 ## Description
 
