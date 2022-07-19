@@ -5,7 +5,7 @@ about:
     in a single sprint
 title: ''
 labels: user_story
-assignees: ''
+assignees: '@jakazzy'
 ---
 
 ## User Story Description
