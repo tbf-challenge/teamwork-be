@@ -1,17 +1,12 @@
-/* eslint-disable no-console */
-const pgtools = require('pgtools')
+const pg = require('pg')
 
-const config = {
-    user: '',
-    password: '',
-    port: '',
-    host: ''
-}
+require('dotenv').config()
 
-pgtools.createdb(config, 'test-db', (err, res)=> {
-    if(err){
-        console.log(err);
-        process.exit(-1)
-    }
-    console.log(res)
+const pool = new pg.Pool({
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT,
+    host: process.env.DB_HOST,
 })
+
+module.exports = pool
