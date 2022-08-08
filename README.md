@@ -23,9 +23,14 @@ An in-depth paragraph about your project and overview of use.
     ```sh
     npm install
     ```
-4. Enter your API in `config.js`
-    ```js
-    const API_KEY = 'ENTER YOUR API'
+4. Create a .env file `.env` and update with database details
+
+    ```
+    USER=
+    PASSWORD=
+    DATABASE_PORT=
+    HOST=
+    PORT=
     ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
