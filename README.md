@@ -23,9 +23,14 @@ An in-depth paragraph about your project and overview of use.
     ```sh
     npm install
     ```
-4. Enter your API in `config.js`
-    ```js
-    const API_KEY = 'ENTER YOUR API'
+4. Create a .env file `.env` and update with database details
+
+    ```
+    USER=
+    PASSWORD=
+    DATABASE_PORT=
+    HOST=
+    PORT=
     ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -64,7 +69,7 @@ ex. [@DomPizzie](https://twitter.com/dompizzie)
 -   0.1
     -   Initial Release
 
-### Built With these tools
+### Built With
 
 This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
 
