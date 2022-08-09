@@ -8,7 +8,8 @@
     "test": "jest",
     "prepare": "husky install",
     "lint": "eslint src",
-    "migrate": "node-pg-migrate"
+    "migrate": "node-pg-migrate",
+    "prestart": "migrate up"
   },
   "keywords": [],
   "author": "",

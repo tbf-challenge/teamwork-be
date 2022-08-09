@@ -89,4 +89,4 @@ exports.up = (pgm) => {
     pgm.createIndex('posts', 'userId')
   }
 
-  exports.down = false
+exports.down = false
