@@ -1,26 +1,21 @@
-'use strict'
+/* eslint-disable import/no-dynamic-require */
+/* eslint-disable global-require */
+
 let config
 
-if (!process.env.NODE_ENV) process.env.NODE_ENV = 'development'
+ require('dotenv').config() // dynmically loading of require
 
-// load the .env file for local development
-if (process.env.NODE_ENV === 'development') require('dotenv').config() // dynmically loading of require
-
-if (!process.env.PROCESS_TYPE) throw new Error('"PROCESS_TYPE" is required')
 
 try {
-  config = require(`./${process.env.PROCESS_TYPE}`)
+  config = require(`./${process.env}`)
 } catch (error) {
   console.error(error)
-  if (error.code === 'MODULE_NOT_FOUND') {
-    throw new Error(`No config for process type ${process.env.PROCESS_TYPE}`)
-  }
   throw error
 }
 
 module.exports = env => {
   if (config[env] === undefined) {
-    throw new Error(`No config for env variable ${env}`)
+    throw new Error(`No env variable ${env}. Update config`)
   }
   return config[env]
 }
