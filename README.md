@@ -23,15 +23,11 @@ An in-depth paragraph about your project and overview of use.
     ```sh
     npm install
     ```
-4.  Create a .env file `.env` and update with database details
+4.  Create a .env file `.env` and update with database details (check the .env.sample)
 
         ```
-        DB_USER=
-        DB_PASSWORD=
-        DB_PORT=
-        DB_HOST=
-        PORT=
-        DB=
+        DATABASE_URL= <DB_CONNECTION_STRING>
+        PORT= <PORT>
         ```
 
     <p align="right">(<a href="#top">back to top</a>)</p>
