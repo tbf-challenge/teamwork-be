@@ -15,25 +15,22 @@ An in-depth paragraph about your project and overview of use.
 
 ### Installing
 
-2. Clone the repo
+2.  Clone the repo
     ```sh
     git clone https://github.com/your_username_/Project-Name.git
     ```
-3. Install NPM packages
+3.  Install NPM packages
     ```sh
     npm install
     ```
-4. Create a .env file `.env` and update with database details
+4.  Create a .env file `.env` and update with database details (check the .env.sample)
 
-    ```
-    USER=
-    PASSWORD=
-    DATABASE_PORT=
-    HOST=
-    PORT=
-    ```
+        ```
+        DATABASE_URL= <DB_CONNECTION_STRING>
+        PORT= <PORT>
+        ```
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+    <p align="right">(<a href="#top">back to top</a>)</p>
 
 ### Executing program
 
@@ -45,6 +42,9 @@ You may also see any lint errors in the console.
 
 2. `npm test`
    Launches the test runner in the interactive watch mode.\
+
+3. `npm run seeddb`
+   seeds the database with users data.\
 
 ## Help
 
