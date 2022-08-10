@@ -1,21 +1,15 @@
 /* eslint-disable import/no-dynamic-require */
 /* eslint-disable global-require */
 
-let config
+if (!process.env.NODE_ENV) { process.env.NODE_ENV = 'development' }
 
- require('dotenv').config() // dynmically loading of require
+if (process.env.NODE_ENV === 'development') { require('dotenv').config() }
 
-
-try {
-  config = require(`./${process.env}`)
-} catch (error) {
-  console.error(error)
-  throw error
-}
-
-module.exports = env => {
-  if (config[env] === undefined) {
-    throw new Error(`No env variable ${env}. Update config`)
+module.exports = key => {
+  const value = process.env[key]
+  if (value === undefined) {
+      throw new Error(`No config for env variable ${key}`)
+  } else {
+      return value
   }
-  return config[env]
 }
