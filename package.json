@@ -9,7 +9,7 @@
     "prepare": "husky install",
     "lint": "eslint src",
     "migrate": "node-pg-migrate",
-    "prestart": "migrate up",
+    "prestart": "npm run migrate up",
     "seeddb": "node src/scripts/seeddb.js"
   },
   "keywords": [],

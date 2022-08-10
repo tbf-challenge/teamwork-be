@@ -1,18 +1,14 @@
-/* eslint-disable no-undef */
 /* eslint-disable camelcase */
+const { PgLiteral } = require('node-pg-migrate');
+// todo  add updated at shorthand
 
 exports.shorthands = { 
-    id: { type: 'uuid', primaryKey: true }, 
+    id: { type: 'integer', primaryKey: true }, 
     createdAt: {
     type: 'timestamp',
     notNull: true,
     default: new PgLiteral('current_timestamp') ,
-  }, 
-    updatedAt: {
-    type: 'timestamp',
-    notNull: true,
-    default: new PgLiteral('current_timestamp on updated current_timestamp') ,
-  }, 
+  } 
 };
 
 exports.up = (pgm) => {
@@ -26,13 +22,13 @@ exports.up = (pgm) => {
       jobRole: { type: 'varchar(100)' },
       department: { type: 'varchar(100)', notNull: true },
       address: { type: 'varchar(1000)', notNull: true },
-      createdAt: 'createdAt',
-      updatedAt: 'updatedAt',
+      createdAt: 'createdAt'
     })
+
     pgm.createTable('posts', {
       id: 'id',
       userId: {
-        type: 'uuid',
+        type: 'integer',
         notNull: true,
         references: '"users"',
         onDelete: 'cascade',
@@ -41,13 +37,13 @@ exports.up = (pgm) => {
       image: { type: 'text' },
       content: { type: 'text', notNull: true },
       published: { type: 'boolean' },
-      createdAt: 'createdAt',
-      updatedAt: 'updatedAt',
+      createdAt: 'createdAt'
     })
+
     pgm.createTable('comments', {
       id: 'id',
       userId: {
-        type: 'uuid',
+        type: 'integer',
         notNull: true,
         references: '"users"',
         onDelete: 'cascade',
@@ -60,14 +56,15 @@ exports.up = (pgm) => {
       },
       content: { type: 'text', notNull: true },
       published: { type: 'boolean' },
-      createdAt: 'createdAt',
-      updatedAt: 'updatedAt',
+      createdAt: 'createdAt'
     })
+
     pgm.createTable('tags', {
       id: 'id',
       content: { type: 'text', notNull: true },
       title: { type: 'text', notNull: true },
     })
+
     pgm.createTable('posts_tags', {
     postId: {
         type: 'integer',
