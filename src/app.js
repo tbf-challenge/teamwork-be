@@ -1,6 +1,8 @@
 const express = require('express')
 const morgan = require('morgan')
 
+// TO DO - add compression to the project 
+//  require('compression')
 const router = require('./routes')
 
 const app = express()
