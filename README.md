@@ -26,11 +26,12 @@ An in-depth paragraph about your project and overview of use.
 4.  Create a .env file `.env` and update with database details
 
         ```
-        USER=
-        PASSWORD=
-        DATABASE_PORT=
-        HOST=
+        DB_USER=
+        DB_PASSWORD=
+        DB_PORT=
+        DB_HOST=
         PORT=
+        DB=
         ```
 
     <p align="right">(<a href="#top">back to top</a>)</p>
@@ -45,6 +46,9 @@ You may also see any lint errors in the console.
 
 2. `npm test`
    Launches the test runner in the interactive watch mode.\
+
+3. `npm run seeddb`
+   seeds the database with users data.\
 
 ## Help
 
