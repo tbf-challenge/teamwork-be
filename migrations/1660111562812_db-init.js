@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 const { PgLiteral } = require('node-pg-migrate');
 // todo  add updated at shorthand
 
