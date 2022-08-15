@@ -4,17 +4,14 @@ const db = require('../db')
 
 const router = express.Router()
 
-// UPDATE AN ARTICLE
+// DELETE AN ARTICLE
 
-const updatePost = async (req, res) => {
-    const { id } = req.params // WHERE
-    const { title, image, content, published } = req.body // SET
+const deletePost = async (req, res) => {
+    const { id } = req.params
+
     try {
-        await db.query(
-            'UPDATE posts SET title = $1, image = $2 , content = $3 , published = $4 WHERE id = $5',
-            [title, image, content, published, id]
-        )
-        res.json('Article was successfully updated')
+        await db.query('DELETE FROM posts WHERE id = $1', [id])
+        res.json('Article was successfully deleted')
     } catch (err) {
         console.error(err.message)
     }
@@ -27,6 +24,6 @@ const checkId = (req, res, next, val) => {
 
 // Routes
 router.param('id', checkId)
-router.route('/:id').patch(updatePost)
+router.route('/:id').delete(deletePost)
 
 module.exports = router
