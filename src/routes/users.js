@@ -3,7 +3,9 @@ const db = require('../db')
 
 const router = express.Router()
 
-const fetchUsers = () => {}
+const fetchUsers = (req, res) => {
+    res.send('get users')
+}
 const createUsers = () => {}
 const getUser = async (req, res) => {
     const { id } = req.params
