@@ -4,23 +4,27 @@ const db = require('../db')
 
 const router = express.Router()
 
-// CREATE AN ARTICLE
+// GET AN ARTICLE BY ID
 
-const createPosts = async (req, res) => {
+const getPost = async (req, res) => {
+    const { id } = req.params
     try {
-        const { id, userId, title, image, content, published, createdAt } =
-            req.body
-        const newArticle = await db.query(
-            'INSERT INTO posts (id , "userId", title , image , content , published , "createdAt" ) VALUES ($1 , $2 , $3 , $4 , $5 ,$6 , $7) RETURNING *',
-            [id, userId, title, image, content, published, createdAt]
-        )
-        res.json(newArticle)
+        const article = await db.query('SELECT * FROM posts WHERE id = $1 ', [
+            id,
+        ])
+        res.json(article.rows[0])
     } catch (err) {
         console.error(err.message)
     }
 }
 
+const checkId = (req, res, next, val) => {
+    console.log(`user id is ${val}`)
+    next()
+}
+
 // Routes
-router.route('/').post(createPosts)
+router.param('id', checkId)
+router.route('/:id').get(getPost)
 
 module.exports = router
