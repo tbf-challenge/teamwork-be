@@ -1,5 +1,11 @@
-const users = require('./users')
+const express = require('express')
 
-module.exports = (app) => {
-    app.use('/users', users)
-}
+const users = require('./users')
+const posts = require('./posts')
+
+const app = express.Router()
+
+app.use('/users', users)
+app.use('/articles', posts)
+
+module.exports = app

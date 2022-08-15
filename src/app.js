@@ -69,6 +69,6 @@ app.post('/article', async (req, res) => {
     }
 })
 // Routes
-app.use('api/v1', router)
+app.use('/api/v1', router)
 
 module.exports = app
