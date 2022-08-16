@@ -4,23 +4,22 @@ const db = require('../db')
 
 const router = express.Router()
 
-// CREATE AN ARTICLE
+// CREATE A POST COMMENT
 
-const createPosts = async (req, res) => {
+const createComment = async (req, res) => {
     try {
-        const { id, userId, title, image, content, published, createdAt } =
-            req.body
-        const newArticle = await db.query(
-            'INSERT INTO posts (id , "userId", title , image , content , published , "createdAt" ) VALUES ($1 , $2 , $3 , $4 , $5 ,$6 , $7) RETURNING *',
-            [id, userId, title, image, content, published, createdAt]
+        const { id, userId, postId, content, published, createdAt } = req.body
+        const newComment = await db.query(
+            'INSERT INTO comments (id , "userId", "postId", content , published , "createdAt" ) VALUES ($1 , $2 , $3 , $4 , $5 ,$6 ) RETURNING *',
+            [id, userId, postId, content, published, createdAt]
         )
-        res.json(newArticle)
+        res.json(newComment)
     } catch (err) {
         console.error(err.message)
     }
 }
 
 // Routes
-router.route('/').post(createPosts)
+router.route('/').post(createComment)
 
 module.exports = router

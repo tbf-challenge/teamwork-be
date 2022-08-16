@@ -6,6 +6,6 @@ const posts = require('./posts')
 const app = express.Router()
 
 app.use('/users', users)
-app.use('/articles', posts)
+app.use('/articles/:id/comment', posts)
 
 module.exports = app
