@@ -1,5 +1,5 @@
 /* eslint-disable prefer-regex-literals */
-const Joi = require('joi');
+const Joi = require('joi')
 
 const authSchema = Joi.object({
     firstName: Joi.string()
@@ -63,4 +63,4 @@ const authSchema = Joi.object({
 
 module.exports = {
     '/auth/create-users': authSchema
-  };
+  }

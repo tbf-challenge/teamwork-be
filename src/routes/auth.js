@@ -1,10 +1,10 @@
 const express = require('express')
 const passport = require('passport')
-const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken')
 const userSevice = require('../services/users')
 const validateSchema = require('../middleware/validateSchema')
 
-const validateRequest = validateSchema(true);
+const validateRequest = validateSchema(true)
 
 const config = require('../config')
 

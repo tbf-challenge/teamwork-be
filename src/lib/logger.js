@@ -1,8 +1,8 @@
 const chalk= require('chalk')
 
-const error = chalk.bold.red;
-const warn = chalk.hex('#FFA500'); // Orange color
-const info = chalk.bold.blue;
+const error = chalk.bold.red
+const warn = chalk.hex('#FFA500') // Orange color
+const info = chalk.bold.blue
 
 /* eslint-disable no-console */
 const log = () => ({

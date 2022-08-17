@@ -1,6 +1,6 @@
 const express = require('express')
 const morgan = require('morgan')
-const cors = require('cors');
+const cors = require('cors')
 const passport = require('passport')
 
 const passportLocal = require('./lib/passport-local')
@@ -13,7 +13,7 @@ const app = express()
 app.use(passport.initialize())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(cors());
+app.use(cors())
 
 
 passportLocal(passport)

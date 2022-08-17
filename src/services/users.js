@@ -1,8 +1,9 @@
-const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken')
 const { 
   genPasswordHash, 
-  verifyPassword
-} = require('../lib/passwordlib')
+  verifyPassword,
+  generateId
+} = require('../lib')
 
 const config = require('../config')
 const db = require('../db')
@@ -10,7 +11,7 @@ const db = require('../db')
 const createNewUser = async(user) => {
   const [ password ] = user
   const passwordHash =  genPasswordHash(password)
-  const id =  Math.floor(Math.random() * 100000)
+  const id = generateId()
   // eslint-disable-next-line max-len
   const { rows, error } = await db.query('INSERT INTO users ("id", "firstName", "lastName", "email", "passwordHash", "gender", "jobRole", "department", "address") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *', 
     [id, ...user, passwordHash ])
@@ -33,7 +34,7 @@ const getUserByEmail = (email) => {
     user = { email: row.email, passwordHash: row.passwordHash, id: row.id } 
 
     return user
-  });
+  })
 }
 
 const signInUserByEmail = (email, password) => {

@@ -13,16 +13,16 @@ module.exports = ( passport ) => {
         
         db.findOne({id: jwt_payload.sub}, (err, user) =>{
             if (err) {
-                return done(err, false);
+                return done(err, false)
             }
             if (user) {
-                return done(null, user);
+                return done(null, user)
             } 
-                return done(null, false);
+                return done(null, false)
                 // or you could create a new account        
-        });
+        })
     }
     
-    passport.use(new Strategy(options, verifyCallBack));
+    passport.use(new Strategy(options, verifyCallBack))
 }
 
