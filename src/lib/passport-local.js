@@ -18,14 +18,6 @@ module.exports = ( passport ) => {
         });
       }
 
-    const signupVerifyCallBack = (email, password, done) => {
-        db.findOne({ email },  (err, user)=> {
-          if (err) { return done(err, false) }
-          if (!user) { return done(null, false); }
-          if (!user.verifyPassword(password)) { return done(null, false); }
-          return done(null, user);
-        });
-      }
-    passport.use('local-login', new LocalStrategy(options, loginVerifyCallBack))
-    passport.use('local-signup', new LocalStrategy(options, signupVerifyCallBack))
+    passport.use(
+      'local-login', new LocalStrategy(options, loginVerifyCallBack))
 }
