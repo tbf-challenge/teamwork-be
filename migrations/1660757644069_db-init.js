@@ -1,14 +1,13 @@
-const { PgLiteral } = require('node-pg-migrate');
+const { PgLiteral } = require('node-pg-migrate')
 // todo  add updated at shorthand
 
-exports.shorthands = { 
-    id: { type: 'integer', primaryKey: true }, 
+exports.shorthands = {  
     createdAt: {
     type: 'timestamp',
     notNull: true,
     default: new PgLiteral('current_timestamp') ,
   } 
-};
+}
 
 exports.up = (pgm) => {
     pgm.createTable('users', {
