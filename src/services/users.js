@@ -9,12 +9,31 @@ const config = require('../config')
 const db = require('../db')
 
 const createNewUser = async(user) => {
-  const [ password ] = user
+  const [
+    firstName, 
+    lastName, 
+    email, 
+    password, 
+    gender, 
+    jobRole, 
+    department, 
+    address 
+  ] = user
   const passwordHash =  genPasswordHash(password)
   const id = generateId()
   // eslint-disable-next-line max-len
   const { rows, error } = await db.query('INSERT INTO users ("id", "firstName", "lastName", "email", "passwordHash", "gender", "jobRole", "department", "address") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *', 
-    [id, ...user, passwordHash ])
+    [
+      id, 
+      firstName, 
+      lastName,
+      email,
+      passwordHash,
+      gender,
+      jobRole,
+      department,
+      address
+    ])
 
   if (error) {
     throw error
