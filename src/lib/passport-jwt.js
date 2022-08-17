@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-const { Strategy: JwtStrategy, ExtractJwt } = require('passport-jwt')
+const { Strategy, ExtractJwt } = require('passport-jwt')
 const db = require('../db')
 const config = require('../config')
 
@@ -23,6 +23,6 @@ module.exports = ( passport ) => {
         });
     }
     
-    // passport.use(new JwtStrategy(options, verifyCallBack));
+    passport.use(new Strategy(options, verifyCallBack));
 }
 
