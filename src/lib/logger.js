@@ -1,8 +1,8 @@
-const chalk= require('chalk')
+const chalk = require('chalk')
 
-const error = chalk.bold.red
+const error = chalk.red
 const warn = chalk.hex('#FFA500') // Orange color
-const info = chalk.bold.blue
+const info = chalk.blue
 
 /* eslint-disable no-console */
 const log = () => ({
@@ -19,4 +19,4 @@ const log = () => ({
     }
  })
 
-module.export = log
+module.exports = log
