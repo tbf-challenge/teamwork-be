@@ -9,6 +9,12 @@ const router = require('./routes')
 
 const app = express()
 
+// TO do
+// testing
+// email
+// error handling
+// http statuscodes
+
 // Middleware
 app.use(passport.initialize())
 app.use(express.json())
