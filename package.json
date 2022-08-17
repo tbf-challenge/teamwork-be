@@ -29,10 +29,13 @@
   },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
+    "chalk": "5.0.1",
     "cors": "2.8.5",
     "dotenv": "16.0.1",
     "express": "4.18.1",
+    "joi": "17.6.0",
     "jsonwebtoken": "8.5.1",
+    "lodash": "4.17.21",
     "morgan": "1.10.0",
     "node-pg-migrate": "6.2.2",
     "passport": "0.6.0",
