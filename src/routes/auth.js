@@ -1,13 +1,16 @@
 const express = require('express')
 const passport = require('passport')
 const jwt = require('jsonwebtoken');
-const db = require('../db')
+const userSevice = require('../services/users')
+const validateSchema = require('../middleware/validateSchema')
+
+const validateRequest = validateSchema(true);
 
 const config = require('../config')
 
 const router = express.Router()
 
-router.post('signin', passport.authenticate('local-login', { 
+router.post('/signin', passport.authenticate('local-login', { 
     session: false,
     failureRedirect: '/login', 
     successRedirect: '/dashboard'
@@ -25,11 +28,9 @@ router.post('signin', passport.authenticate('local-login', {
     })
 })
 
-router.post('create-user', passport.authenticate('local-signup', { 
-    session: false,
-    failureRedirect: '/login',
-    successRedirect: '/success'
-}), (req, res) => {
+router.post('/create-user',
+validateRequest, 
+async (req, res) => {
     const {
         firstName,
         lastName,
@@ -40,23 +41,30 @@ router.post('create-user', passport.authenticate('local-signup', {
         department,
         address
       } = req.body
-    db.query('INSERT INTO users (firstName, lastName, email, password, gender, jobRole, department, address) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *', 
-    [firstName, lastName, email, password, gender, jobRole,department, address], (error, results) => {
-      if (error) {
-        throw error
-      }
-      const body = { id: results.rows[0].id, email: results.rows[0].email }
-      const token = jwt.sign({ user: body }, config('SECRET'))
 
-      res.status(201).json({
-        status: "success",
-        data: {
-          message: "User account successfully created",
-          token,
-          userId: results.rows[0].id
-        }
-      })
-    })
+   
+   const { token, userId } = await userSevice.createNewUser([
+        firstName, 
+        lastName,
+        email, 
+        password, 
+        gender, 
+        jobRole, 
+        department,
+        address
+    ])
+
+
+
+        res.status(201).json({
+            status: "success",
+            data: {
+              message: "User account successfully created",
+              token,
+              userId
+            }
+          })
+
 })
 
 module.exports = router
