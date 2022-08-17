@@ -54,16 +54,14 @@ async (req, res) => {
         address
     ])
 
-
-
-        res.status(201).json({
-            status: "success",
-            data: {
-              message: "User account successfully created",
-              token,
-              userId
-            }
-          })
+    res.status(201).json({
+        status: "success",
+        data: {
+            message: "User account successfully created",
+            token,
+            userId
+        }
+        })
 
 })
 
