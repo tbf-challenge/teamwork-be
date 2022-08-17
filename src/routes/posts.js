@@ -4,8 +4,6 @@ const db = require('../db')
 
 const router = express.Router()
 
-const dateTime = new Date().toJSON()
-
 // CREATE AN ARTICLE
 
 const createPosts = async (req, res, next) => {
@@ -21,7 +19,7 @@ const createPosts = async (req, res, next) => {
             data: {
                 message: 'Article successfully posted',
                 id,
-                createdOn: dateTime,
+                createdAt,
                 title,
             },
         })
