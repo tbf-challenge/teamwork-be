@@ -55,12 +55,11 @@ const authSchema = Joi.object({
         .lowercase()
         .required(),
         address:  Joi.string()
-        .alphanum()
         .min(3)
         .max(100)
         .required()
 })
 
 module.exports = {
-    '/auth/create-users': authSchema
+    '/create-user': authSchema
   }
