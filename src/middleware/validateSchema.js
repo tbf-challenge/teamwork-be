@@ -30,7 +30,8 @@ module.exports = (shouldUseJoiError = false) => {
 
       if (schema) {
         // Validate req.body using the schema and validation options
-        return Joi.validate(req.body, schema, validationOptions, (err, data) => {
+        return Joi
+        .validate(req.body, schema, validationOptions, (err, data) => {
           if (err) {
             // Joi Error
             const JoiError = {
@@ -48,7 +49,8 @@ module.exports = (shouldUseJoiError = false) => {
             // Custom Error
             const CustomError = {
               status: 'failed',
-              error: 'Invalid request data. Please review request and try again.'
+              error: 
+              'Invalid request data. Please review request and try again.'
             };
 
             // Send back the JSON error response
