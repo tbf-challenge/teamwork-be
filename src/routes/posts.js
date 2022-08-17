@@ -8,19 +8,22 @@ const router = express.Router()
 
 const createPost = async (req, res, next) => {
     try {
-        const { id, userId, title, image, content, published, createdAt } =
-            req.body
-        await db.query(
-            'INSERT INTO posts (id , "userId", title , image , content , published , "createdAt" ) VALUES ($1 , $2 , $3 , $4 , $5 ,$6 , $7) RETURNING *',
-            [id, userId, title, image, content, published, createdAt]
+        const { id, userId, title, image, content, published } = req.body
+        const newArticle = await db.query(
+            'INSERT INTO posts ( id , "userId", title , image , content , published ) VALUES ($1 , $2 , $3 , $4 , $5 , $6) RETURNING *',
+            [id, userId, title, image, content, published]
         )
         res.status(201).json({
             status: 'success',
             data: {
                 message: 'Article successfully posted',
-                id,
-                createdAt,
+                id: newArticle.id,
+                userId,
                 title,
+                image,
+                content,
+                published,
+                createdAt: 'current_timestamp',
             },
         })
     } catch (err) {
