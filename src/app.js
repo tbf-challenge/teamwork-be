@@ -26,10 +26,10 @@ passportLocal(passport)
 passportJwt(passport)
 
 if(process.env.NODE_ENV === 'development'){
-    app.use(morgan('dev'))
+	app.use(morgan('dev'))
 }
 app.get('/api/v1/health', (req, res) => {
-    res.send('Health is ok!')
+	res.send('Health is ok!')
 })
 
 // Routes
