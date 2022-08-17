@@ -4,11 +4,9 @@ const db = require('../db')
 
 const router = express.Router()
 
-const date = new Date(Date.UTC(2012, 11, 12, 3, 0, 0))
-
 // CREATE A POST COMMENT
 
-const createComment = async (req, res) => {
+const createComment = async (req, res, near) => {
     try {
         const { id, userId, postId, content, published, createdAt } = req.body
         await db.query(
@@ -20,14 +18,15 @@ const createComment = async (req, res) => {
             status: 'success',
             data: {
                 message: 'Comment successfully created',
-                createdOn: date.toLocaleDateString(),
-                articleTitle: String,
-                article: String,
-                comment: String,
+                createdAt,
+                // postTitle
+                content,
+                // comment,
             },
         })
     } catch (err) {
         console.error(err.message)
+        near(err)
     }
 }
 
