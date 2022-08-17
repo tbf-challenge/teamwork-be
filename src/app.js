@@ -22,8 +22,8 @@ passportJwt(passport)
 if(process.env.NODE_ENV === 'development'){
     app.use(morgan('dev'))
 }
-app.get('/api/v1', (req, res) => {
-    res.send('Hello friend')
+app.get('/api/v1/health', (req, res) => {
+    res.send('Health is ok!')
 })
 
 // Routes
