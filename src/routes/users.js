@@ -14,12 +14,7 @@ const getUser = async (req, res) => {
 }
 const updateUser = () => {}
 const deleteUser = () => {}
-const checkId = (req, res, next , val ) => {
-    console.log(`user id is ${val}`)
-    next()
-}
 
-router.param('id', checkId)
 router.route('/')
 .get(fetchUsers)
 .post(createUsers)
