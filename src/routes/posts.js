@@ -6,27 +6,30 @@ const router = express.Router()
 
 // UPDATE AN ARTICLE
 
-const updatePost = async (req, res) => {
+const updatePost = async (req, res, next) => {
     const { id } = req.params // WHERE
-    const { title, image, content, published } = req.body // SET
+    const { title, content } = req.body // SET
     try {
         await db.query(
-            'UPDATE posts SET title = $1, image = $2 , content = $3 , published = $4 WHERE id = $5',
-            [title, image, content, published, id]
+            'UPDATE posts SET title = $1, content = $2  WHERE id = $3',
+            [title, content, id]
         )
-        res.json('Article was successfully updated')
+        res.status(201).json({
+            status: 'success',
+            data: {
+                message: 'Article successfully updated',
+                title,
+                content,
+            },
+        })
     } catch (err) {
         console.error(err.message)
+        next(err)
     }
 }
 
-const checkId = (req, res, next, val) => {
-    console.log(`user id is ${val}`)
-    next()
-}
-
 // Routes
-router.param('id', checkId)
+
 router.route('/:id').patch(updatePost)
 
 module.exports = router
