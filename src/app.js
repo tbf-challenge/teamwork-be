@@ -7,7 +7,7 @@ const app = express()
 
 // Middleware
 app.use(express.json())
-if(process.env.NODE_ENV === 'development'){
+if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'))
 }
 app.get('/', (req, res) => {
@@ -15,6 +15,6 @@ app.get('/', (req, res) => {
 })
 
 // Routes
-app.use('api/v1', router)
+app.use('/api/v1', router)
 
 module.exports = app
