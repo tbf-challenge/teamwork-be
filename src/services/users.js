@@ -11,6 +11,7 @@ const createNewUser = async(user) => {
   const [ password ] = user
   const passwordHash =  genPasswordHash(password)
   const id =  Math.floor(Math.random() * 100000)
+  // eslint-disable-next-line max-len
   const { rows, error } = await db.query('INSERT INTO users ("id", "firstName", "lastName", "email", "passwordHash", "gender", "jobRole", "department", "address") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *', 
     [id, ...user, passwordHash ])
 
@@ -40,7 +41,9 @@ const signInUserByEmail = (email, password) => {
    
     if (!user.email) { return { message: 'Incorrect username or password.'} }
      
-    if(!verifyPassword(password, user.password)){ return { message: 'Incorrect username or password.'} }
+    if(!verifyPassword(password, user.password)){ 
+      return { message: 'Incorrect username or password.'} 
+    }
     const body = { id: user.id, email: user.email }
     const token = jwt.sign({ user: body }, config('SECRET'))
 
