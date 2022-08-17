@@ -6,7 +6,7 @@ const router = express.Router()
 
 // CREATE AN ARTICLE
 
-const createPosts = async (req, res, next) => {
+const createPost = async (req, res, next) => {
     try {
         const { id, userId, title, image, content, published, createdAt } =
             req.body
@@ -30,6 +30,6 @@ const createPosts = async (req, res, next) => {
 }
 
 // Routes
-router.route('/').post(createPosts)
+router.route('/').post(createPost)
 
 module.exports = router
