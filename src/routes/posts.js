@@ -40,16 +40,16 @@ const fetchPosts = async (req, res, next) => {
         const feed = await db.query('SELECT * FROM posts')
         const allArticles = feed.rows
 
-        res.status(201).json({
+        res.status(200).json({
             status: 'success',
-            data: allArticles.map((articles) => ({
-                id: articles.id,
-                userId: articles.userId,
-                title: articles.title,
-                content: articles.content,
-                image: articles.image,
-                published: articles.published,
-                createdAt: articles.createdAt,
+            data: allArticles.map((article) => ({
+                id: article.id,
+                userId: article.userId,
+                title: article.title,
+                content: article.content,
+                image: article.image,
+                published: article.published,
+                createdAt: article.createdAt,
             })),
         })
     } catch (err) {
