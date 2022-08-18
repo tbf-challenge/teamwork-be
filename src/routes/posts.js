@@ -41,20 +41,19 @@ const fetchPosts = async (req, res, next) => {
 
         const articles = allArticles.rows
         console.log(articles)
-        const { id, userId, title, image, content, published, createdAt } =
-            articles
 
         res.status(201).json({
             status: 'success',
-            data: {
-                id,
-                userId,
-                title,
-                image,
-                content,
-                published,
-                createdAt,
-            },
+            // data: articles.map((article) => {
+            // id : article.id,
+            // userId : article.userId,
+            // createdAt : article.createdAt,
+            // title : article.title,
+            // content : article.content,
+            // image : article.image,
+            // published : article.published
+            // createdAt : article.createdAt
+            // }),
         })
     } catch (err) {
         console.error(err.message)
