@@ -5,7 +5,6 @@ const {
 } = require('./passwordlib')
 const passportjwt = require('./passport-jwt')
 const passportlocal = require('./passport-local')
-const generateId = require('./generate-id')
 const logger = require('./logger')
 
 module.exports = {
@@ -14,6 +13,5 @@ module.exports = {
 	verifyPassword,
 	passportjwt,
 	passportlocal,
-	generateId,
 	logger
 }
