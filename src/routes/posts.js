@@ -33,6 +33,31 @@ const createPost = async (req, res, next) => {
     }
 }
 
+// GET ALL ARTICLES (feed)
+
+const fetchPosts = async (req, res, next) => {
+    try {
+        const feed = await db.query('SELECT * FROM posts')
+        const allArticles = feed.rows
+
+        res.status(200).json({
+            status: 'success',
+            data: allArticles.map((article) => ({
+                id: article.id,
+                userId: article.userId,
+                title: article.title,
+                content: article.content,
+                image: article.image,
+                published: article.published,
+                createdAt: article.createdAt,
+            })),
+        })
+    } catch (err) {
+        console.error(err.message)
+        next(err)
+    }
+}
+
 // ASSIGN TAG TO AN ARTICLE
 
 const assignTagToPost = async (req, res) => {
@@ -56,7 +81,7 @@ const assignTagToPost = async (req, res) => {
 }
 
 // Routes
-router.route('/').post(createPost)
+router.route('/').post(createPost).get(fetchPosts)
 router.route('/:id/tags').post(assignTagToPost)
 
 module.exports = router

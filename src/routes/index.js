@@ -9,5 +9,6 @@ const app = express.Router()
 app.use('/users', users)
 app.use('/articles', posts)
 app.use('/tags', tags)
+app.use('/feed', posts)
 
 module.exports = app
