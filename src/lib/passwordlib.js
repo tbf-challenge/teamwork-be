@@ -1,12 +1,18 @@
-const bcrypt   = require('bcrypt-nodejs')
+const bcrypt   = require('bcrypt')
 
-const genPasswordHash = password => 
-bcrypt.hashSync(password, bcrypt.genSaltSync(8), null)
+const genPasswordHash = async password => {
+	const saltRounds = 10
+	const salt = await bcrypt.genSalt(saltRounds)
+	const passwordHash = await bcrypt.hash(password, salt)
+	return passwordHash
+}
 
-const verifyPassword = (password, hashPassword) => 
-bcrypt.compareSync(password, hashPassword)
+const verifyPassword = async (password, hashPassword) => {
+	const isSimilar = await bcrypt.compare(password, hashPassword)
+	return isSimilar
+}
 
 module.exports ={
-    genPasswordHash,
-    verifyPassword
+	genPasswordHash,
+	verifyPassword
 }
