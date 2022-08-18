@@ -60,6 +60,36 @@ const authSchema = Joi.object({
 		.required()
 })
 
+const signinSchema= Joi.object({
+	email: Joi.string()
+		.email({ 
+			minDomainSegments: 2, 
+			tlds: { 
+				allow: ['com', 'net'] 
+			} 
+		})
+		.required(),
+	password: Joi.string()
+		.pattern(new RegExp('^[a-zA-Z0-9]{3,30}$'))
+	
+})
+
+const postSchema = Joi.object({
+	userId: Joi.number()
+		.required(),
+	title: Joi.string()
+		.alphanum()
+		.min(3)
+		.max(30)
+		.required(),
+	image: Joi.string()
+		.alphanum(),
+	content: Joi.string(),
+	published: Joi.boolean()	
+})
+
 module.exports = {
-	'/create-user': authSchema
+	'/create-user': authSchema,
+	'/signin': signinSchema,
+	'/articles': postSchema
 }
