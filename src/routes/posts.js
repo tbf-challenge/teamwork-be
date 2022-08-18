@@ -80,8 +80,51 @@ const assignTagToPost = async (req, res) => {
     }
 }
 
+// GET ALL ARTICLES WITH SAME TAG
+
+const queryPosts = async (req, res) => {
+    try {
+        const { tag } = req.query
+
+        // get all posts' id having the same tag
+        const postsIds = await db.query(
+            'SELECT ("postId") FROM posts_tags WHERE "tagId" = $1',
+            [tag]
+        )
+
+        // remove any duplicate post's id
+        // this will not be neccessary if constraint is added to prevent assigning duplicate tag to a single post
+        const ids = Object.values(
+            postsIds.rows.reduce(
+                (acc, cur) => Object.assign(acc, { [cur.id]: cur }),
+                {}
+            )
+        )
+
+        // query for all feeds same tag
+        const feeds = await Promise.all(
+            ids.map(async ({ postId }) => {
+                const post = await db.query(
+                    'SELECT * FROM posts WHERE id = $1',
+                    [postId]
+                )
+                return post.rows[0]
+            })
+        )
+
+        res.status(200).json({
+            status: 'success',
+            data: feeds,
+        })
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({ message: 'Internal server error', error })
+    }
+}
+
 // Routes
 router.route('/').post(createPost).get(fetchPosts)
+router.route('/query').get(queryPosts)
 router.route('/:id/tags').post(assignTagToPost)
 
 module.exports = router
