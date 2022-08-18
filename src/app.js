@@ -14,6 +14,9 @@ const app = express()
 // email
 // error handling
 // http statuscodes
+// Database changes
+// email should be unique
+// some fields should not be required(eg on the post and user tables)
 
 // Middleware
 app.use(passport.initialize())
