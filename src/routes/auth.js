@@ -51,7 +51,6 @@ router.post('/create-user',
 			address
 		])
 
-		console.log('&&&&&&&&&&&&&&&&&&&&&&&&&7', token, userId)
 		
 		return res.status(201).json({
 			status: "success",
