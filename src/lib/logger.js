@@ -5,18 +5,18 @@ const warn = chalk.hex('#FFA500') // Orange color
 const info = chalk.blue
 
 /* eslint-disable no-console */
-const log = () => ({
-    error(message){
-        console.log(error(message))
-    },
+const logger = () => ({
+	error(message){
+		console.log(error(message))
+	},
 
-    warn(message){
-        console.log(warn(message))
-    },
+	warn(message){
+		console.log(warn(message))
+	},
 
-    info(message){
-        console.info(info(message))
-    }
- })
+	info(message){
+		console.info(info(message))
+	}
+})
 
-module.exports = log
+module.exports = logger
