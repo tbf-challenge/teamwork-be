@@ -57,10 +57,10 @@ module.exports = (shouldUseJoiError = false) => {
 						.json(useJoiError ? JoiError : CustomError)
 				} 
 				req.body = value
-				next()
+				return next()
         
 			}
 		}
-		next()
+	 return next()
 	}
 }
