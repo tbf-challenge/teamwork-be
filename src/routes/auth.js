@@ -10,7 +10,7 @@ router.post(
 	'/signin',
 	validateRequest, 
 	async (req, res) => {
-		const{ email, password } = req
+		const{ email, password } = req.body
 
 		const { token, userId } = await userSevice
 			.signInUserByEmail(email, password)
@@ -51,7 +51,9 @@ router.post('/create-user',
 			address
 		])
 
-		res.status(201).json({
+		console.log('&&&&&&&&&&&&&&&&&&&&&&&&&7', token, userId)
+		
+		return res.status(201).json({
 			status: "success",
 			data: {
 				message: "User account successfully created",
