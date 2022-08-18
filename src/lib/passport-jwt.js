@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 const { Strategy, ExtractJwt } = require('passport-jwt')
 const { getUserByEmail } = require('../services/users')
 
@@ -10,8 +9,8 @@ const options = {
 }
 
 module.exports = ( passport ) => {
-	const verifyCallBack =  async (jwt_payload, done) => {
-		const { email } = jwt_payload.user
+	const verifyCallBack =  async (jwtPayload, done) => {
+		const { email } = jwtPayload.user
 		const user = await getUserByEmail(email)
         
 		if (user) {
