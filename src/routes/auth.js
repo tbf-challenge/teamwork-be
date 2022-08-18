@@ -1,32 +1,29 @@
 const express = require('express')
-const passport = require('passport')
-const jwt = require('jsonwebtoken')
 const userSevice = require('../services/users')
 const validateSchema = require('../middleware/validateSchema')
 
 const validateRequest = validateSchema(true)
 
-const config = require('../config')
-
 const router = express.Router()
 
-router.post('/signin', passport.authenticate('local-login', { 
-	session: false,
-	failureRedirect: '/login', 
-	successRedirect: '/dashboard'
-}), (req, res)=> {
-	const{ user } = req
-	const body = { id: user.id, email: user.email }
-	const token = jwt.sign({ user: body }, config('SECRET'))
-	return res.json({
-		status: 'success',
-		data: {
-			token,
-			userId: user.id
-		}
+router.post(
+	'/signin',
+	validateRequest, 
+	async (req, res) => {
+		const{ email, password } = req
 
+		const { token, userId } = await userSevice
+			.signInUserByEmail(email, password)
+		
+		return res.json({
+			status: 'success',
+			data: {
+				token,
+				userId
+			}
+
+		})
 	})
-})
 
 router.post('/create-user',
 	validateRequest, 
