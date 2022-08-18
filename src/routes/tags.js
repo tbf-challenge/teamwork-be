@@ -13,6 +13,8 @@ const fetchTags = async (_req, res) => {
     }
 }
 
+// ASSIGN TAG TO POST
+
 tagRouter.route('/').get(fetchTags)
 
 module.exports = tagRouter

@@ -33,7 +33,30 @@ const createPost = async (req, res, next) => {
     }
 }
 
+// ASSIGN TAG TO AN ARTICLE
+
+const assignTagToPost = async (req, res) => {
+    try {
+        const { id } = req.params // post id;
+        const { tagId, content, title } = req.body
+
+        const postsTags = await db.query(
+            'INSERT INTO posts_tags ("postId","tagId",content,title) VALUES ($1,$2,$3,$4) RETURNING *',
+            [id, tagId, content, title]
+        )
+
+        res.status(202).json({
+            message: 'Tag has been successfully assigned to the post',
+            tag: postsTags.rows[0],
+        })
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({ message: 'Internal server error', error })
+    }
+}
+
 // Routes
 router.route('/').post(createPost)
+router.route('/:id/tags').post(assignTagToPost)
 
 module.exports = router
