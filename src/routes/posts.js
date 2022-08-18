@@ -33,23 +33,23 @@ const createPost = async (req, res, next) => {
     }
 }
 
-// GET ALL ARTICLES
+// GET ALL ARTICLES (feed)
 
 const fetchPosts = async (req, res, next) => {
     try {
-        const allArticles = await db.query('SELECT * FROM posts')
-        const articles = allArticles.rows
+        const feed = await db.query('SELECT * FROM posts')
+        const allArticles = feed.rows
 
         res.status(201).json({
             status: 'success',
-            data: articles.map((article) => ({
-                id: article.id,
-                userId: article.userId,
-                title: article.title,
-                content: article.content,
-                image: article.image,
-                published: article.published,
-                createdAt: article.createdAt,
+            data: allArticles.map((articles) => ({
+                id: articles.id,
+                userId: articles.userId,
+                title: articles.title,
+                content: articles.content,
+                image: articles.image,
+                published: articles.published,
+                createdAt: articles.createdAt,
             })),
         })
     } catch (err) {
@@ -59,7 +59,6 @@ const fetchPosts = async (req, res, next) => {
 }
 
 // Routes
-router.route('/').post(createPost)
-router.route('/').get(fetchPosts)
+router.route('/').post(createPost).get(fetchPosts)
 
 module.exports = router
