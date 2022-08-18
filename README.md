@@ -28,7 +28,7 @@ An in-depth paragraph about your project and overview of use.
         ```
         DATABASE_URL= <DB_CONNECTION_STRING>
         PORT= <PORT>
-        SECRET= <SECRET>
+        TOKEN_SECRET= <SECRET>
         ```
 
     <p align="right">(<a href="#top">back to top</a>)</p>

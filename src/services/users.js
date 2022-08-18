@@ -37,7 +37,7 @@ const createNewUser = async(user) => {
 	}
 	const userProfile = rows[0]
 	const body = { id: userProfile.id, email: userProfile.email }
-	const token = jwt.sign({ user: body }, config('SECRET'))
+	const token = jwt.sign({ user: body }, config('TOKEN_SECRET'))
 
 	return { token, userId: userProfile.id }
 }
@@ -64,7 +64,7 @@ const signInUserByEmail = async (email, password) => {
 	}
 
 	const body = { id: user.id, email: user.email }
-	const token = jwt.sign({ user: body }, config('SECRET'))
+	const token = jwt.sign({ user: body }, config('TOKEN_SECRET'))
 
 	return { token, userId: user.id }
 }
