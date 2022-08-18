@@ -38,22 +38,19 @@ const createPost = async (req, res, next) => {
 const fetchPosts = async (req, res, next) => {
     try {
         const allArticles = await db.query('SELECT * FROM posts')
-
         const articles = allArticles.rows
-        console.log(articles)
 
         res.status(201).json({
             status: 'success',
-            // data: articles.map((article) => {
-            // id : article.id,
-            // userId : article.userId,
-            // createdAt : article.createdAt,
-            // title : article.title,
-            // content : article.content,
-            // image : article.image,
-            // published : article.published
-            // createdAt : article.createdAt
-            // }),
+            data: articles.map((article) => ({
+                id: article.id,
+                userId: article.userId,
+                title: article.title,
+                content: article.content,
+                image: article.image,
+                published: article.published,
+                createdAt: article.createdAt,
+            })),
         })
     } catch (err) {
         console.error(err.message)
