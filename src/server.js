@@ -1,5 +1,5 @@
 const app = require('./app')
-const logger = require('./lib/logger')
+const logger = require('./lib')
 
 const  log = logger()
 
