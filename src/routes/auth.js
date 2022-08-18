@@ -64,4 +64,3 @@ router.post('/create-user',
 	})
 
 module.exports = router
-

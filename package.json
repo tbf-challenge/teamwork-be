@@ -8,6 +8,7 @@
     "test": "jest",
     "prepare": "husky install",
     "lint": "eslint src",
+    "fix:lint": "lint --fix",
     "migrate": "node-pg-migrate",
     "prestart": "npm run migrate up",
     "seeddb": "node src/scripts/seeddb.js"

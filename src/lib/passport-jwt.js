@@ -24,4 +24,3 @@ module.exports = ( passport ) => {
     
 	passport.use(new Strategy(options, verifyCallBack))
 }
-
