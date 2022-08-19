@@ -82,19 +82,22 @@ const deletePost = async (req, res, next) => {
 
 const updatePost = async (req, res, next) => {
     const { id } = req.params // WHERE
-    const { title, content, image } = req.body // SET
+    const { title, content, image, published } = req.body // SET
     try {
-        await db.query(
-            'UPDATE posts SET title = $1, content = $2 , image = $3  WHERE id = $4',
-            [title, content, image, id]
+        const updateArticle = await db.query(
+            'UPDATE posts SET title = $1, content = $2 , image = $3 , published = $4 WHERE id = $5 RETURNING *',
+            [title, content, image, published, id]
         )
-        res.status(201).json({
+        const updatedArticle = updateArticle.rows[0]
+
+        res.status(200).json({
             status: 'success',
             data: {
                 message: 'Article successfully updated',
-                title,
-                content,
-                image,
+                title: updatedArticle.title,
+                content: updatedArticle.content,
+                image: updatedArticle.image,
+                published: updatedArticle.published,
             },
         })
     } catch (err) {
