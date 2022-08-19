@@ -66,14 +66,20 @@ const assignTagToPost = async (req, res) => {
         const { tagId, content, title } = req.body
 
         const postsTags = await db.query(
-            'INSERT INTO posts_tags ("postId","tagId",content,title) VALUES ($1,$2,$3,$4) RETURNING *',
+            'INSERT INTO posts_tags ("postId","tagId",content,title) SELECT $1,$2,$3,$4 WHERE NOT EXISTS (SELECT * FROM posts_tags WHERE "postId" = $1 AND "tagId" = $2) RETURNING *',
             [pid, tagId, content, title]
         )
 
-        res.status(202).json({
-            message: 'Tag has been successfully assigned to the post',
-            tag: postsTags.rows[0],
-        })
+        if (!postsTags.rows[0]) {
+            res.status(400).json({
+                message: 'Tag is already assigned to the post',
+            })
+        } else {
+            res.status(202).json({
+                message: 'Tag has been successfully assigned to the post',
+                tag: postsTags.rows[0],
+            })
+        }
     } catch (error) {
         console.error(error)
         res.status(500).json({ message: 'Internal server error', error })
@@ -92,18 +98,9 @@ const queryPosts = async (req, res) => {
             [tag]
         )
 
-        // remove any duplicate post's id
-        // this will not be neccessary if constraint is added to prevent assigning duplicate tag to a single post
-        const ids = Object.values(
-            postsIds.rows.reduce(
-                (acc, cur) => Object.assign(acc, { [cur.postId]: cur }),
-                {}
-            )
-        )
-
         // query for all feeds same tag
         const feeds = await Promise.all(
-            ids.map(async ({ postId }) => {
+            postsIds.rows.map(async ({ postId }) => {
                 const post = await db.query(
                     'SELECT * FROM posts WHERE id = $1',
                     [postId]
