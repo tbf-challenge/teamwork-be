@@ -62,12 +62,12 @@ const fetchPosts = async (req, res, next) => {
 
 const assignTagToPost = async (req, res) => {
     try {
-        const { pid } = req.params // post id;
+        const { postId } = req.params // post id;
         const { tagId, content, title } = req.body
 
         const postsTags = await db.query(
             'INSERT INTO posts_tags ("postId","tagId",content,title) SELECT $1,$2,$3,$4 WHERE NOT EXISTS (SELECT * FROM posts_tags WHERE "postId" = $1 AND "tagId" = $2) RETURNING *',
-            [pid, tagId, content, title]
+            [postId, tagId, content, title]
         )
 
         if (!postsTags.rows[0]) {
@@ -123,11 +123,11 @@ const queryPosts = async (req, res) => {
 
 const deletePostTags = async (req, res) => {
     try {
-        const { pid, tid } = req.params
+        const { postId, tagId } = req.params
 
         await db.query(
             'DELETE FROM posts_tags WHERE "postId" = $1 AND "tagId" = $2',
-            [pid, tid]
+            [postId, tagId]
         )
 
         res.status(200).json({ message: 'Tag has been removed from post' })
@@ -140,7 +140,7 @@ const deletePostTags = async (req, res) => {
 // Routes
 router.route('/').post(createPost).get(fetchPosts)
 router.route('/query').get(queryPosts)
-router.route('/:pid/tags').post(assignTagToPost)
-router.route('/:pid/tags/:tid').delete(deletePostTags)
+router.route('/:postId/tags').post(assignTagToPost)
+router.route('/:postId/tags/:tagId').delete(deletePostTags)
 
 module.exports = router
