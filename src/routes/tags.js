@@ -38,6 +38,22 @@ const createTag = async (req, res) => {
     }
 }
 
+// DELETE TAG
+
+const deleteTag = async (req, res) => {
+    try {
+        const { tid } = req.params
+
+        await db.query('DELETE FROM tags WHERE id = $1', [tid])
+
+        res.status(200).json({ message: 'Tag has been successfully deleted' })
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({ message: 'Internal server error', error })
+    }
+}
+
 tagRouter.route('/').get(fetchTags).post(createTag)
+tagRouter.route('/:tid').delete(deleteTag)
 
 module.exports = tagRouter
