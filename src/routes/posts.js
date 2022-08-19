@@ -80,7 +80,7 @@ const deletePost = async (req, res, next) => {
 
 // UPDATE AN ARTICLE
 
-const updatePost = async (req, res, next) => {
+const updatePost = async (req, res) => {
     const { id } = req.params // WHERE
     const { title, content, image, published } = req.body // SET
 
@@ -108,13 +108,12 @@ const updatePost = async (req, res, next) => {
                 },
             })
         }
-    } catch (err) {
-        console.error(err.message)
-        next(err)
+    } catch (error) {
+        console.error(error)
 
         res.status(500).json({
             success: false,
-            message: `Something went wrong. ${err}`,
+            error,
         })
     }
 }
