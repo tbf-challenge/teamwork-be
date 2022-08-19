@@ -83,12 +83,13 @@ const deletePost = async (req, res, next) => {
 const updatePost = async (req, res, next) => {
     const { id } = req.params // WHERE
     const { title, content, image, published } = req.body // SET
+
     try {
-        const updateArticle = await db.query(
+        const result = await db.query(
             'UPDATE posts SET title = $1, content = $2 , image = $3 , published = $4 WHERE id = $5 RETURNING *',
             [title, content, image, published, id]
         )
-        const updatedArticle = updateArticle.rows[0]
+        const updatedArticle = result.rows[0]
 
         res.status(200).json({
             status: 'success',
@@ -103,6 +104,11 @@ const updatePost = async (req, res, next) => {
     } catch (err) {
         console.error(err.message)
         next(err)
+
+        res.status(500).json({
+            success: false,
+            message: `Something went wrong. ${err}`,
+        })
     }
 }
 
