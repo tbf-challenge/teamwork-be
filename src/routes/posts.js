@@ -91,16 +91,23 @@ const updatePost = async (req, res, next) => {
         )
         const updatedArticle = result.rows[0]
 
-        res.status(200).json({
-            status: 'success',
-            data: {
-                message: 'Article successfully updated',
-                title: updatedArticle.title,
-                content: updatedArticle.content,
-                image: updatedArticle.image,
-                published: updatedArticle.published,
-            },
-        })
+        if (!updatedArticle) {
+            res.status(404).json({
+                success: false,
+                message: 'Article does not exist',
+            })
+        } else {
+            res.status(200).json({
+                status: 'success',
+                data: {
+                    message: 'Article successfully updated',
+                    title: updatedArticle.title,
+                    content: updatedArticle.content,
+                    image: updatedArticle.image,
+                    published: updatedArticle.published,
+                },
+            })
+        }
     } catch (err) {
         console.error(err.message)
         next(err)
