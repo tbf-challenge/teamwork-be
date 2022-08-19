@@ -39,7 +39,6 @@ const fetchPosts = async (req, res, next) => {
     try {
         const feed = await db.query('SELECT * FROM posts')
         const allArticles = feed.rows
-        console.log(allArticles)
 
         res.status(200).json({
             status: 'success',
@@ -66,7 +65,8 @@ const deletePost = async (req, res, next) => {
 
     try {
         await db.query('DELETE FROM posts WHERE id = $1', [id])
-        res.status(204).json({
+
+        res.status(200).json({
             status: 'success',
             data: {
                 message: 'Article was successfully deleted',
