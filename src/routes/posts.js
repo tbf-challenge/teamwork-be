@@ -8,11 +8,13 @@ const router = express.Router()
 
 const createComment = async (req, res, next) => {
     try {
-        const { articleTitle, postId, content, comment } = req.body
+        const { title, content, id } = req.params
+        const { comment } = req.body
         const comments = await db.query(
-            'INSERT INTO comments (articleTitle, "postId", content , comment  ) VALUES ($1 , $2 , $3 , $4  ) RETURNING *',
-            [articleTitle, postId, content, comment]
+            'INSERT INTO comments (title, content , comment , id ) VALUES ($1 , $2 , $3 , $4 ) RETURNING *',
+            [title, content, comment, id]
         )
+        console.log(comments)
         res.status(201).json(comments)
     } catch (err) {
         console.error(err.message)
