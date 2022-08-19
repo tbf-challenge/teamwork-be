@@ -64,9 +64,9 @@ const updateTag = async (req, res) => {
 
 const deleteTag = async (req, res) => {
     try {
-        const { tid } = req.params
+        const { tagId } = req.params
 
-        await db.query('DELETE FROM tags WHERE id = $1', [tid])
+        await db.query('DELETE FROM tags WHERE id = $1', [tagId])
 
         res.status(200).json({ message: 'Tag has been successfully deleted' })
     } catch (error) {
@@ -76,6 +76,6 @@ const deleteTag = async (req, res) => {
 }
 
 tagRouter.route('/').get(fetchTags).post(createTag)
-tagRouter.route('/:tid').patch(updateTag).delete(deleteTag)
+tagRouter.route('/:tagId').patch(updateTag).delete(deleteTag)
 
 module.exports = tagRouter
