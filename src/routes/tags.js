@@ -25,7 +25,7 @@ const createTag = async (req, res) => {
         )
 
         if (!newTag.rows[0]) {
-            res.status(400).json({ message: 'Tag already exits' })
+            res.status(400).json({ message: 'Tag already exists' })
         } else {
             res.status(202).json({
                 message: 'Successfully created a new tag',
