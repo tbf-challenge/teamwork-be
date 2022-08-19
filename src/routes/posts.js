@@ -110,7 +110,15 @@ const queryPosts = async (req, res) => {
                     'SELECT * FROM posts WHERE id = $1',
                     [postId]
                 )
-                return post.rows[0]
+                return {
+                    id: post.rows[0].id,
+                    userId: post.rows[0].userId,
+                    title: post.rows[0].title,
+                    image: post.rows[0].image,
+                    content: post.rows[0].content,
+                    published: post.rows[0].published,
+                    createdAt: post.rows[0].createdAt,
+                }
             })
         )
 

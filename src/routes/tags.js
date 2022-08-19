@@ -29,7 +29,11 @@ const createTag = async (req, res) => {
         } else {
             res.status(202).json({
                 message: 'Successfully created a new tag',
-                data: newTag.rows[0],
+                data: {
+                    id: newTag.rows[0].id,
+                    title: newTag.rows[0].title,
+                    content: newTag.rows[0].content,
+                },
             })
         }
     } catch (error) {
