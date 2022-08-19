@@ -4,7 +4,7 @@ const db = require('../db')
 
 const router = express.Router()
 
-// CREATE AN ARTICLE
+// CREATE ARTICLE ENDPOINT
 
 const createPost = async (req, res, next) => {
     try {
@@ -137,7 +137,29 @@ const deletePostTags = async (req, res) => {
     }
 }
 
+// DELETE AN ARTICLE
+
+const deletePost = async (req, res, next) => {
+    const { id } = req.params
+
+    try {
+        await db.query('DELETE FROM posts WHERE id = $1', [id])
+
+        res.status(200).json({
+            status: 'success',
+            data: {
+                message: 'Article was successfully deleted',
+            },
+        })
+    } catch (err) {
+        console.error(err.message)
+        next(err)
+    }
+}
+
 // Routes
+
+router.route('/:id').delete(deletePost)
 router.route('/').post(createPost).get(fetchPosts)
 router.route('/query').get(queryPosts)
 router.route('/:postId/tags').post(assignTagToPost)
