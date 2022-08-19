@@ -108,12 +108,12 @@ const updatePost = async (req, res) => {
                 },
             })
         }
-    } catch (error) {
-        console.error(error)
+    } catch (err) {
+        console.error(err.message)
 
         res.status(500).json({
             success: false,
-            error,
+            message: err.message,
         })
     }
 }
