@@ -75,9 +75,14 @@ const assignTagToPost = async (req, res) => {
                 message: 'Tag is already assigned to the post',
             })
         } else {
-            res.status(202).json({
+            res.status(201).json({
                 message: 'Tag has been successfully assigned to the post',
-                tag: postsTags.rows[0],
+                data: {
+                    postId: postsTags.rows[0].postId,
+                    tagId: postsTags.rows[0].tagId,
+                    title: postsTags.rows[0].title,
+                    content: postsTags.rows[0].content,
+                },
             })
         }
     } catch (error) {
