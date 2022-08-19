@@ -62,12 +62,12 @@ const fetchPosts = async (req, res, next) => {
 
 const assignTagToPost = async (req, res) => {
     try {
-        const { id } = req.params // post id;
+        const { pid } = req.params // post id;
         const { tagId, content, title } = req.body
 
         const postsTags = await db.query(
             'INSERT INTO posts_tags ("postId","tagId",content,title) VALUES ($1,$2,$3,$4) RETURNING *',
-            [id, tagId, content, title]
+            [pid, tagId, content, title]
         )
 
         res.status(202).json({
@@ -96,7 +96,7 @@ const queryPosts = async (req, res) => {
         // this will not be neccessary if constraint is added to prevent assigning duplicate tag to a single post
         const ids = Object.values(
             postsIds.rows.reduce(
-                (acc, cur) => Object.assign(acc, { [cur.id]: cur }),
+                (acc, cur) => Object.assign(acc, { [cur.postId]: cur }),
                 {}
             )
         )
@@ -122,9 +122,28 @@ const queryPosts = async (req, res) => {
     }
 }
 
+// DELETE TAGS IN AN ARTICLE
+
+const deletePostTags = async (req, res) => {
+    try {
+        const { pid, tid } = req.params
+
+        await db.query(
+            'DELETE FROM posts_tags WHERE "postId" = $1 AND "tagId" = $2',
+            [pid, tid]
+        )
+
+        res.status(200).json({ message: 'Tag has been removed from post' })
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({ message: 'Internal server error', error })
+    }
+}
+
 // Routes
 router.route('/').post(createPost).get(fetchPosts)
 router.route('/query').get(queryPosts)
-router.route('/:id/tags').post(assignTagToPost)
+router.route('/:pid/tags').post(assignTagToPost)
+router.route('/:pid/tags/:tid').delete(deletePostTags)
 
 module.exports = router
