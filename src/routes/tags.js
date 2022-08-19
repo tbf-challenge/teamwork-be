@@ -38,6 +38,28 @@ const createTag = async (req, res) => {
     }
 }
 
+// UPDATE TAG
+
+const updateTag = async (req, res) => {
+    try {
+        const { tid } = req.params
+        const { content, title } = req.body
+
+        const updatedTag = await db.query(
+            'UPDATE tags SET content = $1, title = $2 WHERE id = $3 RETURNING *',
+            [content, title, tid]
+        )
+
+        res.status(200).json({
+            message: 'Tag has been successfully updated',
+            data: updatedTag.rows[0],
+        })
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({ message: 'Internal server error', error })
+    }
+}
+
 // DELETE TAG
 
 const deleteTag = async (req, res) => {
@@ -54,6 +76,6 @@ const deleteTag = async (req, res) => {
 }
 
 tagRouter.route('/').get(fetchTags).post(createTag)
-tagRouter.route('/:tid').delete(deleteTag)
+tagRouter.route('/:tid').patch(updateTag).delete(deleteTag)
 
 module.exports = tagRouter
