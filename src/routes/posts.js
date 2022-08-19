@@ -78,9 +78,49 @@ const deletePost = async (req, res, next) => {
     }
 }
 
+// UPDATE AN ARTICLE
+
+const updatePost = async (req, res) => {
+    const { id } = req.params // WHERE
+    const { title, content, image, published } = req.body // SET
+
+    try {
+        const result = await db.query(
+            'UPDATE posts SET title = $1, content = $2 , image = $3 , published = $4 WHERE id = $5 RETURNING *',
+            [title, content, image, published, id]
+        )
+        const updatedArticle = result.rows[0]
+
+        if (!updatedArticle) {
+            res.status(404).json({
+                success: false,
+                message: 'Article does not exist',
+            })
+        } else {
+            res.status(200).json({
+                status: 'success',
+                data: {
+                    message: 'Article successfully updated',
+                    title: updatedArticle.title,
+                    content: updatedArticle.content,
+                    image: updatedArticle.image,
+                    published: updatedArticle.published,
+                },
+            })
+        }
+    } catch (err) {
+        console.error(err.message)
+
+        res.status(500).json({
+            success: false,
+            message: err.message,
+        })
+    }
+}
+
 // Routes
 
-router.route('/:id').delete(deletePost)
+router.route('/:id').delete(deletePost).patch(updatePost)
 router.route('/').post(createPost).get(fetchPosts)
 
 module.exports = router
