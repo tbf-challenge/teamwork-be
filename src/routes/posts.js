@@ -47,23 +47,30 @@ const getPost = async (req, res, next) => {
         )
         const article = posts.rows[0]
 
-        res.status(200).json({
-            status: 'success',
-            data: {
-                id: article.id,
-                createdAt: article.createdAt,
-                title: article.title,
-                image: article.image,
-                published: article.published,
-                comments: article.comments
-                    .filter((comment) => comment)
-                    .map((comment) => ({
-                        id: comment.id,
-                        comment: comment.comment,
-                        userId: comment.userId,
-                    })),
-            },
-        })
+        if (!article) {
+            res.status(404).json({
+                success: false,
+                message: 'Article does not exist',
+            })
+        } else {
+            res.status(200).json({
+                status: 'success',
+                data: {
+                    id: article.id,
+                    createdAt: article.createdAt,
+                    title: article.title,
+                    image: article.image,
+                    published: article.published,
+                    comments: article.comments
+                        .filter((comment) => comment)
+                        .map((comment) => ({
+                            id: comment.id,
+                            comment: comment.comment,
+                            userId: comment.userId,
+                        })),
+                },
+            })
+        }
     } catch (err) {
         console.error(err.message)
         next(err)
