@@ -8,14 +8,18 @@ const router = express.Router()
 
 const createComment = async (req, res, next) => {
     try {
-        const { title, content, id } = req.params
-        const { comment } = req.body
-        const comments = await db.query(
-            'INSERT INTO comments (title, content , comment , id ) VALUES ($1 , $2 , $3 , $4 ) RETURNING *',
-            [title, content, comment, id]
+        const { id } = req.params
+        const { userId, comment } = req.body
+        const postComments = await db.query(
+            'INSERT INTO comments ("userId" , comment) VALUES ($1 , $2) RETURNING *',
+            [userId, comment, id]
         )
-        console.log(comments)
-        res.status(201).json(comments)
+        const post = await db.query(`SELECT * FROM posts WHERE id = ${id}`, [
+            id,
+        ])
+        console.log(post)
+        console.log(postComments)
+        // res.status(201).json(postComments)
     } catch (err) {
         console.error(err.message)
         next(err)
