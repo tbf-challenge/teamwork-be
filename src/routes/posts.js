@@ -6,29 +6,35 @@ const router = express.Router()
 
 // GET AN ARTICLE BY ID
 
-const getPost = async (req, res, near) => {
+const getPost = async (req, res, next) => {
     const { id } = req.params
     try {
-        const posts = await db.query('SELECT * FROM posts WHERE id = $1 ', [id])
-        const articles = posts.rows[0]
+        const posts = await db.query(
+            'SELECT p.*, jsonb_agg(c.* ORDER BY c."createdAt" DESC) as comments FROM posts p LEFT JOIN comments c ON p.id = c."postId" WHERE p.id=$1 GROUP BY p.id;',
+            [id]
+        )
+        const article = posts.rows[0]
+
         res.status(200).json({
             status: 'success',
             data: {
-                id: articles.id,
-                createdAt: articles.createdAt,
-                title: articles.title,
-                image: articles.image,
-                published: articles.published,
-                comments: articles.map((comment) => ({
-                    id: comment.id,
-                    comment: comment.comment,
-                    userId: comment.userId,
-                })),
+                id: article.id,
+                createdAt: article.createdAt,
+                title: article.title,
+                image: article.image,
+                published: article.published,
+                comments: article.comments
+                    .filter((comment) => comment)
+                    .map((comment) => ({
+                        id: comment.id,
+                        comment: comment.comment,
+                        userId: comment.userId,
+                    })),
             },
         })
     } catch (err) {
         console.error(err.message)
-        near(err)
+        next(err)
     }
 }
 
