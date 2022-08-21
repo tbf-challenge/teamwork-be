@@ -8,18 +8,29 @@ const router = express.Router()
 
 const createComment = async (req, res, next) => {
     try {
-        const { id } = req.params
+        const { postId } = req.params
         const { userId, comment } = req.body
-        const postComments = await db.query(
-            'INSERT INTO comments ("userId" , comment) VALUES ($1 , $2) RETURNING *',
-            [userId, comment, id]
-        )
-        const post = await db.query(`SELECT * FROM posts WHERE id = ${id}`, [
-            id,
+
+        const post = await db.query('SELECT * FROM posts WHERE id = $1', [
+            postId,
         ])
-        console.log(post)
-        console.log(postComments)
-        // res.status(201).json(postComments)
+        const result = post.rows[0]
+        const postComments = await db.query(
+            'INSERT INTO comments ("userId" , "postId", content) VALUES ($1 , $2 ,$3) RETURNING *',
+            [userId, postId, comment]
+        )
+
+        const postComment = postComments.rows[0]
+        res.status(201).json({
+            status: 'success',
+            data: {
+                message: 'Comment successfully created',
+                createdAt: postComment.createdAt,
+                postTitle: result.title,
+                postContent: result.content,
+                comment: postComment.content,
+            },
+        })
     } catch (err) {
         console.error(err.message)
         next(err)
@@ -82,5 +93,5 @@ const fetchPosts = async (req, res, next) => {
 // Routes
 
 router.route('/').post(createPost).get(fetchPosts).post(createComment)
-
+router.route('/:postId/comment').post(createComment)
 module.exports = router
