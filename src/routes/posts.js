@@ -36,7 +36,6 @@ const createComment = async (req, res, next) => {
         next(err)
     }
 }
-
 const createPost = async (req, res, next) => {
     try {
         const { userId, title, image, content, published } = req.body
