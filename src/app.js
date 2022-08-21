@@ -2,6 +2,7 @@ const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
 const passport = require('passport')
+const compression = require('express-compression')
 
 const passportLocal = require('./lib/passport-local')
 const passportJwt = require('./lib/passport-jwt')
@@ -19,6 +20,7 @@ const app = express()
 // some fields should not be required(eg on the post and user tables)
 
 // Middleware
+app.use(compression())
 app.use(passport.initialize())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
