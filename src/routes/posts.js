@@ -4,8 +4,9 @@ const db = require('../db')
 
 const router = express.Router()
 
-// CREATE ARTICLE ENDPOINT
+// POST REQUESTS
 
+// CREATE ARTICLE ENDPOINT
 const createPost = async (req, res, next) => {
     try {
         const { userId, title, image, content, published } = req.body
@@ -30,6 +31,52 @@ const createPost = async (req, res, next) => {
     } catch (err) {
         console.error(err.message)
         next(err)
+    }
+}
+
+// GET REQUESTS
+
+// GET POST BY ID
+
+const getPost = async (req, res, next) => {
+    const { id } = req.params
+    try {
+        const posts = await db.query(
+            `SELECT p.*, jsonb_agg(c.* ORDER BY c."createdAt" DESC) as comments
+            FROM posts p 
+            LEFT JOIN comments c ON p.id = c."postId"
+            WHERE p.id=$1 
+            GROUP BY p.id;`,
+            [id]
+        )
+        const article = posts.rows[0]
+
+        if (!article) {
+            return res.status(404).json({
+                success: false,
+                message: 'Article does not exist',
+            })
+        }
+        return res.status(200).json({
+            status: 'success',
+            data: {
+                id: article.id,
+                createdAt: article.createdAt,
+                title: article.title,
+                image: article.image,
+                published: article.published,
+                comments: article.comments
+                    .filter((comment) => comment)
+                    .map((comment) => ({
+                        id: comment.id,
+                        comment: comment.comment,
+                        userId: comment.userId,
+                    })),
+            },
+        })
+    } catch (err) {
+        console.error(err.message)
+        return next(err)
     }
 }
 
@@ -58,6 +105,8 @@ const fetchPosts = async (req, res, next) => {
     }
 }
 
+// DELETE REQUESTS
+
 // DELETE AN ARTICLE
 
 const deletePost = async (req, res, next) => {
@@ -77,6 +126,8 @@ const deletePost = async (req, res, next) => {
         next(err)
     }
 }
+
+// PATCH REQUESTS
 
 // UPDATE AN ARTICLE
 
@@ -120,7 +171,8 @@ const updatePost = async (req, res) => {
 
 // Routes
 
-router.route('/:id').delete(deletePost).patch(updatePost)
+router.route('/:id').delete(deletePost).patch(updatePost).get(getPost)
+
 router.route('/').post(createPost).get(fetchPosts)
 
 module.exports = router
