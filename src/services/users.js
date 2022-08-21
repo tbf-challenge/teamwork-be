@@ -18,7 +18,7 @@ const createNewUser = async(user) => {
 		department, 
 		address 
 	] = user
-	const passwordHash =  genPasswordHash(password)
+	const passwordHash =  await genPasswordHash(password)
 	// eslint-disable-next-line max-len
 	const { rows, error } = await db.query('INSERT INTO users ("firstName", "lastName", "email", "passwordHash", "gender", "jobRole", "department", "address") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *', 
 		[
