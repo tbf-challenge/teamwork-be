@@ -8,7 +8,6 @@ const  log = logger()
 const router = express.Router()
 
 // POST REQUESTS
-
 const createPost = async (req, res, next) => {
 	try {
 		const userId = req.user.id
@@ -38,10 +37,7 @@ const createPost = async (req, res, next) => {
 	}
 }
 
-// GET REQUESTS
-
 // GET POST BY ID
-
 const getPost = async (req, res, next) => {
 	const { id } = req.params
 	try {
@@ -107,10 +103,7 @@ const fetchPosts = async (req, res, next) => {
 	}
 }
 
-// DELETE REQUESTS
-
 // DELETE AN ARTICLE
-
 const deletePost = async (req, res, next) => {
 	const { id } = req.params
 
@@ -129,10 +122,7 @@ const deletePost = async (req, res, next) => {
 	}
 }
 
-// PATCH REQUESTS
-
 // UPDATE AN ARTICLE
-
 const updatePost = async (req, res) => {
 	const { id } = req.params // WHERE
 	const { title, content, image, published } = req.body // SET
@@ -181,7 +171,4 @@ router.route('/')
 	.post(passport.authenticate('jwt', { session: false }), createPost)
 	.get(fetchPosts)
 	
-
-
-
 module.exports = router
