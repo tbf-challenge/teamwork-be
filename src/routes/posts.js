@@ -20,13 +20,13 @@ const createPost = async (req, res, next) => {
             status: 'success',
             data: {
                 message: 'Article successfully posted',
-                id: articleBody.id,
+                articleId: articleBody.id,
                 userId: articleBody.userId,
                 title: articleBody.title,
                 image: articleBody.image,
-                content: articleBody.content,
+                article: articleBody.content,
                 published: articleBody.published,
-                createdAt: articleBody.createdAt,
+                createdOn: articleBody.createdAt,
             },
         })
     } catch (err) {
