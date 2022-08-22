@@ -40,12 +40,10 @@ const createPost = async (req, res, next) => {
 
 const createComment = async (req, res, next) => {
     try {
-        const { postId } = req.params
+        const { id } = req.params
         const { userId, comment } = req.body
 
-        const post = await db.query('SELECT * FROM posts WHERE id = $1', [
-            postId,
-        ])
+        const post = await db.query('SELECT * FROM posts WHERE id = $1', [id])
         const postBody = post.rows[0]
         if (!postBody) {
             return res.status(422).json({
@@ -54,11 +52,11 @@ const createComment = async (req, res, next) => {
             })
         }
         const postComments = await db.query(
-            'INSERT INTO comments ("userId" , "postId", content) VALUES ($1 , $2 ,$3) RETURNING *',
-            [userId, postId, comment]
+            'INSERT INTO comments ("userId" , "postId" , content) VALUES ($1 , $2 ,$3) RETURNING *',
+            [userId, id, comment]
         )
-
         const postComment = postComments.rows[0]
+
         return res.status(201).json({
             status: 'success',
             data: {
@@ -90,8 +88,8 @@ const getPost = async (req, res, next) => {
             GROUP BY p.id;`,
             [id]
         )
-        const article = posts.rows[0]
 
+        const article = posts.rows[0]
         if (!article) {
             return res.status(404).json({
                 success: false,
@@ -110,7 +108,7 @@ const getPost = async (req, res, next) => {
                     .filter((comment) => comment)
                     .map((comment) => ({
                         id: comment.id,
-                        comment: comment.comment,
+                        comment: comment.content,
                         userId: comment.userId,
                     })),
             },
@@ -212,7 +210,7 @@ const updatePost = async (req, res) => {
 // Routes
 
 router.route('/:id').delete(deletePost).patch(updatePost).get(getPost)
-router.route('/:postId/comment').post(createComment)
+router.route('/:id/comment').post(createComment)
 router.route('/').post(createPost).get(fetchPosts)
 
 module.exports = router
