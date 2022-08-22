@@ -6,6 +6,9 @@ const {
 const passportjwt = require('./passport-jwt')
 const passportlocal = require('./passport-local')
 const logger = require('./logger')
+const AppError = require('./app-error')
+const statusCode = require('./status-codes')
+const catchAsync = require('./catch-async')
 
 module.exports = {
 	schemas,
@@ -13,5 +16,8 @@ module.exports = {
 	verifyPassword,
 	passportjwt,
 	passportlocal,
-	logger
+	logger,
+	AppError,
+	statusCode,
+	catchAsync
 }
