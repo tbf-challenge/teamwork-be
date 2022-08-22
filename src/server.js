@@ -4,6 +4,14 @@ const { logger }= require('./lib')
 const  log = logger()
 
 const port = process.env.PORT || 3000
-app.listen(port, () => {
+const server = app.listen(port, () => {
 	log.info(`App running on port ${port}...`)
+})
+
+process.on('unhandledRejection', err => {
+	log.error(err.name, err.message)
+	log.error('Unhandled Rejection! Shutting down...')
+	server.close(() => {
+		process.exit(1)
+	})
 })
