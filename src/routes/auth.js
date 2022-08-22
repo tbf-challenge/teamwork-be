@@ -1,6 +1,7 @@
 const express = require('express')
 const userSevice = require('../services/users')
 const validateSchema = require('../middleware/validateSchema')
+const { catchAsync } = require('../lib')
 
 const validateRequest = validateSchema(true)
 
@@ -9,7 +10,7 @@ const router = express.Router()
 router.post(
 	'/signin',
 	validateRequest, 
-	async (req, res) => {
+	catchAsync(async (req, res) => {
 		const{ email, password } = req.body
 
 		const { token, userId } = await userSevice
@@ -23,11 +24,11 @@ router.post(
 			}
 
 		})
-	})
+	}))
 
 router.post('/create-user',
 	validateRequest, 
-	async (req, res) => {
+	catchAsync(async (req, res) => {
 		const {
 			firstName,
 			lastName,
@@ -61,6 +62,6 @@ router.post('/create-user',
 			}
 		})
 
-	})
+	}))
 
 module.exports = router
