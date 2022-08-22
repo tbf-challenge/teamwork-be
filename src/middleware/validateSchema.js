@@ -40,17 +40,16 @@ module.exports = (shouldUseJoiError = false) => {
 						error: {
 							original: error._object,
 							// fetch only message and type from each error
-							details: map(error.details, ({message, type}) => ({
-								message: message.replace(/['"]/g, ''),
-								type
-							}))
+							message: map(error.details, ({message}) => (
+								message.replace(/['"]/g, '')
+							)).join(', ')
 						}
 					}
 
 					// Custom Error
 					const CustomError = {
 						status: 'failed',
-						error: 
+						message: 
             'Invalid request data. Please review request and try again.'
 					}
 					return res.status(422)
