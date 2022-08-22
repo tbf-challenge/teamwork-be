@@ -4,8 +4,9 @@
   "description": "",
   "main": "src/server.js",
   "scripts": {
-    "start": "node src/server.js",
+    "start": "nodemon src/server.js",
     "dev": "nodemon src/server.js",
+    "predev": "npm run prestart",
     "test": "jest",
     "prepare": "husky install",
     "lint": "eslint src",
