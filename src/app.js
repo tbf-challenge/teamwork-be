@@ -5,7 +5,9 @@ const passport = require('passport')
 
 const passportLocal = require('./lib/passport-local')
 const passportJwt = require('./lib/passport-jwt')
+const AppError = require('./lib')
 const router = require('./routes')
+const globalErrorHandler=require('./middleware/global-errorhandler')
 
 const app = express()
 
@@ -37,5 +39,16 @@ app.get('/api/v1/health', (req, res) => {
 
 // Routes
 app.use('/api/v1', router)
+
+app.all('*', (req, res, next) => {
+	const err = new AppError(
+		`Cannot find the requested url ${req.originalUrl}`,
+		404
+	)
+	next(err)
+})
+
+app.use(globalErrorHandler)
+
 
 module.exports = app
