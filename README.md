@@ -28,13 +28,14 @@ An in-depth paragraph about your project and overview of use.
         ```
         DATABASE_URL= <DB_CONNECTION_STRING>
         PORT= <PORT>
+        TOKEN_SECRET= <SECRET>
         ```
 
     <p align="right">(<a href="#top">back to top</a>)</p>
 
 ### Executing program
 
-1. `npm start`
+1. `npm run dev`
    Runs the app in the development mode.\
 
 The page will reload when you make changes.\

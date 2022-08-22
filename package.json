@@ -4,13 +4,16 @@
   "description": "",
   "main": "src/server.js",
   "scripts": {
-    "start": "nodemon src/server.js",
-    "test": "jest",
-    "prepare": "husky install",
-    "lint": "eslint src",
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
     "migrate": "node-pg-migrate",
     "prestart": "npm run migrate up",
-    "seeddb": "node src/scripts/seeddb.js"
+    "predev": "npm run migrate up",
+    "test": "jest",
+    "prepare": "husky install",
+    "lint": "eslint --fix src",
+    "seeddb": "node src/scripts/seeddb.js",
+    "debug": "ndb src/server.js"
   },
   "keywords": [],
   "author": "",
@@ -21,18 +24,32 @@
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-import": "2.26.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "husky": "^8.0.0",
     "jest": "28.1.0",
     "minimist": "1.2.6",
+    "ndb": "1.1.5",
     "nodemon": "2.0.19",
     "prettier": "2.6.2"
   },
   "dependencies": {
+    "bcrypt": "5.0.1",
+    "chalk": "4.1.2",
+    "cors": "2.8.5",
     "dotenv": "16.0.1",
     "express": "4.18.1",
+    "joi": "17.6.0",
+    "jsonwebtoken": "8.5.1",
+    "lodash": "4.17.21",
     "morgan": "1.10.0",
     "node-pg-migrate": "6.2.2",
+    "passport": "0.6.0",
+    "passport-jwt": "4.0.0",
+    "passport-local": "1.0.0",
     "pg": "8.7.3",
     "pg-format": "1.0.4"
+  },
+  "engines": {
+    "node": ">=14.x"
   }
 }
