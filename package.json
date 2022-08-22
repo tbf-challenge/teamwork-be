@@ -11,7 +11,8 @@
     "fix:lint": "lint --fix",
     "migrate": "node-pg-migrate",
     "prestart": "npm run migrate up",
-    "seeddb": "node src/scripts/seeddb.js"
+    "seeddb": "node src/scripts/seeddb.js",
+    "debug": "ndb src/server.js"
   },
   "keywords": [],
   "author": "",
@@ -25,6 +26,7 @@
     "husky": "^8.0.0",
     "jest": "28.1.0",
     "minimist": "1.2.6",
+    "ndb": "1.1.5",
     "nodemon": "2.0.19",
     "prettier": "2.6.2"
   },
