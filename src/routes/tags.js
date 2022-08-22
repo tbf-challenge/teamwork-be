@@ -41,7 +41,7 @@ const createTag = async (req, res, next) => {
 				data: { message: "Tag already exists" }
 			})
 		} else {
-			res.status(202).json({
+			res.status(201).json({
 				status: "success",
 				data: {
 					id: newTag.rows[0].id,
