@@ -8,6 +8,7 @@ const config = require('../config')
 const db = require('../db')
 const { AppError } = require('../lib')
 
+const invalidEmailAndPassword = 'Invalid email or password.'
 const createNewUser = async(user) => {
 	const [
 		firstName, 
@@ -49,7 +50,7 @@ const getUserByEmail = async (email) => {
 	const userProfile = rows[0]
 
 	if (!userProfile){
-		throw new AppError('User cannot be found', 404)
+		throw new AppError(invalidEmailAndPassword, 401)
 	}
 		
 	const user = userProfile
@@ -58,11 +59,10 @@ const getUserByEmail = async (email) => {
 
 const signInUserByEmail = async (email, password) => {
 	const user = await getUserByEmail(email)
-	if (!user.email) { return { message: 'Incorrect username or password.'} }
 	
 	const isPasswordSame = await verifyPassword(password, user.passwordHash) 
 	if(!isPasswordSame){ 
-		throw new AppError('Incorrect username or password.', 401)
+		throw new AppError(invalidEmailAndPassword, 401)
 	}
 
 	const body = { id: user.id, email: user.email }
