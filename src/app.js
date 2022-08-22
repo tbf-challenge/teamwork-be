@@ -13,8 +13,6 @@ const app = express()
 
 // TO do
 // testing
-// email
-// error handling
 // http statuscodes
 // Database changes
 // email should be unique
