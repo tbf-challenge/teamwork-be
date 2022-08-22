@@ -6,6 +6,7 @@ const {
 
 const config = require('../config')
 const db = require('../db')
+const { AppError } = require('../lib')
 
 const createNewUser = async(user) => {
 	const [
@@ -32,9 +33,7 @@ const createNewUser = async(user) => {
 			address
 		])
 
-	if (error) {
-		throw error
-	}
+	if (error) { throw error }
 	const userProfile = rows[0]
 	const body = { id: userProfile.id, email: userProfile.email }
 	const token = jwt.sign({ user: body }, config('TOKEN_SECRET'))
@@ -48,8 +47,11 @@ const getUserByEmail = async (email) => {
 	
 	if (error){ throw error }
 	const userProfile = rows[0]
+
+	if (!userProfile){
+		throw new AppError('User cannot be found', 404)
+	}
 		
-	if (!userProfile) { return userProfile  }
 	const user = userProfile
 	return user	
 }
