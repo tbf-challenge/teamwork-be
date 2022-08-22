@@ -60,13 +60,13 @@ const createTag = async (req, res, next) => {
 
 const updateTag = async (req, res, next) => {
 	try {
-		const { tid } = req.params
+		const { tagId } = req.params
 		const { content, title } = req.body
 
 		const updatedTag = await db.query(
 			// eslint-disable-next-line max-len
 			"UPDATE tags SET content = $1, title = $2 WHERE id = $3 RETURNING *",
-			[content, title, tid]
+			[content, title, tagId]
 		)
 
 		res.status(200).json({
