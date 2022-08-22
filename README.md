@@ -35,7 +35,7 @@ An in-depth paragraph about your project and overview of use.
 
 ### Executing program
 
-1. `npm start`
+1. `npm run dev`
    Runs the app in the development mode.\
 
 The page will reload when you make changes.\
