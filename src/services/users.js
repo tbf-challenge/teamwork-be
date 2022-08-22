@@ -62,7 +62,7 @@ const signInUserByEmail = async (email, password) => {
 	
 	const isPasswordSame = await verifyPassword(password, user.passwordHash) 
 	if(!isPasswordSame){ 
-		return { message: 'Incorrect username or password.'} 
+		throw new AppError('Incorrect username or password.', 401)
 	}
 
 	const body = { id: user.id, email: user.email }
