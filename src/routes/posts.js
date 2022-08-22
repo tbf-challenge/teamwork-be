@@ -110,11 +110,11 @@ const fetchPosts = async (req, res, next) => {
 const assignTagToPost = async (req, res) => {
     try {
         const { postId } = req.params // post id;
-        const { tagId, content, title } = req.body
+        const { tagId } = req.body
 
         const postsTags = await db.query(
-            'INSERT INTO posts_tags ("postId","tagId",content,title) SELECT $1,$2,$3,$4 WHERE NOT EXISTS (SELECT * FROM posts_tags WHERE "postId" = $1 AND "tagId" = $2) RETURNING *',
-            [postId, tagId, content, title]
+            'INSERT INTO posts_tags ("postId","tagId") SELECT $1,$2 WHERE NOT EXISTS (SELECT * FROM posts_tags WHERE "postId" = $1 AND "tagId" = $2) RETURNING *',
+            [postId, tagId]
         )
 
         if (!postsTags.rows[0]) {
@@ -127,8 +127,6 @@ const assignTagToPost = async (req, res) => {
                 data: {
                     postId: postsTags.rows[0].postId,
                     tagId: postsTags.rows[0].tagId,
-                    title: postsTags.rows[0].title,
-                    content: postsTags.rows[0].content,
                 },
             })
         }
@@ -143,35 +141,23 @@ const assignTagToPost = async (req, res) => {
 const queryPosts = async (req, res) => {
     try {
         const { tag } = req.query
-
-        // get all posts' id having the same tag
-        const postsIds = await db.query(
-            'SELECT ("postId") FROM posts_tags WHERE "tagId" = $1',
+        const feed = await db.query(
+            'SELECT * FROM posts p INNER JOIN posts_tags pt ON p.id=pt."postId" WHERE "tagId"=$1',
             [tag]
         )
-
-        // query for all feeds same tag
-        const feeds = await Promise.all(
-            postsIds.rows.map(async ({ postId }) => {
-                const post = await db.query(
-                    'SELECT * FROM posts WHERE id = $1',
-                    [postId]
-                )
-                return {
-                    id: post.rows[0].id,
-                    userId: post.rows[0].userId,
-                    title: post.rows[0].title,
-                    image: post.rows[0].image,
-                    content: post.rows[0].content,
-                    published: post.rows[0].published,
-                    createdAt: post.rows[0].createdAt,
-                }
-            })
-        )
+        const allArticles = feed.rows
 
         res.status(200).json({
             status: 'success',
-            data: feeds,
+            data: allArticles.map((article) => ({
+                id: article.id,
+                userId: article.userId,
+                title: article.title,
+                content: article.content,
+                image: article.image,
+                published: article.published,
+                createdAt: article.createdAt,
+            })),
         })
     } catch (error) {
         console.error(error)
@@ -263,10 +249,9 @@ const updatePost = async (req, res) => {
 
 // Routes
 
-router.route('/:id').delete(deletePost).patch(updatePost).get(getPost)
-
 router.route('/').post(createPost).get(fetchPosts)
 router.route('/query').get(queryPosts)
+router.route('/:id').delete(deletePost).patch(updatePost).get(getPost)
 router.route('/:postId/tags').post(assignTagToPost)
 router.route('/:postId/tags/:tagId').delete(deletePostTags)
 
