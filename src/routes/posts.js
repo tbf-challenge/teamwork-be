@@ -8,6 +8,9 @@ const  log = logger()
 const router = express.Router()
 
 // POST REQUESTS
+
+//  CREATE ARTICLE ENDPOINT
+
 const createPost = async (req, res, next) => {
 	try {
 		const userId = req.user.id
@@ -36,6 +39,47 @@ const createPost = async (req, res, next) => {
 		next(err)
 	}
 }
+
+// CREATE A POST COMMENT
+
+const createComment = async (req, res, next) => {
+	try {
+		const { id } = req.params
+		const { userId, comment } = req.body
+
+		const post = await db.query('SELECT * FROM posts WHERE id = $1', [id])
+		const postBody = post.rows[0]
+		if (!postBody) {
+			return res.status(422).json({
+				success: false,
+				message: 'Article does not exist'
+			})
+		}
+		const postComments = await db.query(
+			`INSERT INTO comments ("userId" , "postId" , content)
+             VALUES ($1 , $2 ,$3) RETURNING *`,
+			[userId, id, comment]
+		)
+		const postComment = postComments.rows[0]
+
+		return res.status(201).json({
+			status: 'success',
+			data: {
+				message: 'Comment successfully created',
+				createdAt: postComment.createdAt,
+				postTitle: postBody.title,
+				postContent: postBody.content,
+				comment: postComment.content
+			}
+		})
+	} catch (err) {
+		log.error(err.message)
+		return next(err)
+	}
+}
+
+
+// GET REQUESTS
 
 // GET POST BY ID
 const getPost = async (req, res, next) => {
@@ -80,6 +124,8 @@ const getPost = async (req, res, next) => {
 	}
 }
 
+// GET ALL ARTICLES
+
 const fetchPosts = async (req, res, next) => {
 	try {
 		const feed = await db.query('SELECT * FROM posts')
@@ -103,6 +149,8 @@ const fetchPosts = async (req, res, next) => {
 	}
 }
 
+// DELETE REQUESTS
+
 // DELETE AN ARTICLE
 const deletePost = async (req, res, next) => {
 	const { id } = req.params
@@ -121,6 +169,8 @@ const deletePost = async (req, res, next) => {
 		next(err)
 	}
 }
+
+// UPDATE REQUESTS
 
 // UPDATE AN ARTICLE
 const updatePost = async (req, res) => {
@@ -163,12 +213,17 @@ const updatePost = async (req, res) => {
 }
 
 
-router.route('/:id')
+router
+	.route('/:id')
 	.delete(passport.authenticate('jwt', { session: false }), deletePost)
 	.patch(passport.authenticate('jwt', { session: false }), updatePost)
 	.get(getPost)
-router.route('/')
+router
+	.route('/')
 	.post(passport.authenticate('jwt', { session: false }), createPost)
 	.get(fetchPosts)
-	
+router
+	.route('/:id/comment')
+	.post(passport.authenticate('jwt', {session : false}),createComment)
+
 module.exports = router
