@@ -5,7 +5,7 @@ const passport = require('passport')
 
 const passportLocal = require('./lib/passport-local')
 const passportJwt = require('./lib/passport-jwt')
-const AppError = require('./lib')
+const { AppError } = require('./lib')
 const router = require('./routes')
 const globalErrorHandler = require('./middleware/global-errorhandler')
 
