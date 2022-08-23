@@ -1,13 +1,16 @@
-const express = require("express")
-const passport = require("passport")
+const express = require('express')
+const passport = require('passport')
 
-const db = require("../db")
-const { logger } = require("../lib")
+const db = require('../db')
+const { logger } = require('../lib')
 
 const log = logger()
 const router = express.Router()
 
 // POST REQUESTS
+
+//  CREATE ARTICLE ENDPOINT
+
 const createPost = async (req, res, next) => {
 	try {
 		const userId = req.user.id
@@ -19,9 +22,9 @@ const createPost = async (req, res, next) => {
 		)
 		const articleBody = newArticle.rows[0]
 		res.status(201).json({
-			status: "success",
+			status: 'success',
 			data: {
-				message: "Article successfully posted",
+				message: 'Article successfully posted',
 				id: articleBody.id,
 				userId: articleBody.userId,
 				title: articleBody.title,
@@ -36,6 +39,46 @@ const createPost = async (req, res, next) => {
 		next(err)
 	}
 }
+
+// CREATE A POST COMMENT
+
+const createComment = async (req, res, next) => {
+	try {
+		const { id } = req.params
+		const { userId, comment } = req.body
+
+		const post = await db.query('SELECT * FROM posts WHERE id = $1', [id])
+		const postBody = post.rows[0]
+		if (!postBody) {
+			return res.status(422).json({
+				success: false,
+				message: 'Article does not exist'
+			})
+		}
+		const postComments = await db.query(
+			`INSERT INTO comments ("userId" , "postId" , content)
+             VALUES ($1 , $2 ,$3) RETURNING *`,
+			[userId, id, comment]
+		)
+		const postComment = postComments.rows[0]
+
+		return res.status(201).json({
+			status: 'success',
+			data: {
+				message: 'Comment successfully created',
+				createdAt: postComment.createdAt,
+				postTitle: postBody.title,
+				postContent: postBody.content,
+				comment: postComment.content
+			}
+		})
+	} catch (err) {
+		log.error(err.message)
+		return next(err)
+	}
+}
+
+// GET REQUESTS
 
 // GET POST BY ID
 const getPost = async (req, res, next) => {
@@ -54,11 +97,11 @@ const getPost = async (req, res, next) => {
 		if (!article) {
 			return res.status(404).json({
 				success: false,
-				message: "Article does not exist"
+				message: 'Article does not exist'
 			})
 		}
 		return res.status(200).json({
-			status: "success",
+			status: 'success',
 			data: {
 				id: article.id,
 				createdAt: article.createdAt,
@@ -80,13 +123,15 @@ const getPost = async (req, res, next) => {
 	}
 }
 
+// GET ALL ARTICLES
+
 const fetchPosts = async (req, res, next) => {
 	try {
-		const feed = await db.query("SELECT * FROM posts")
+		const feed = await db.query('SELECT * FROM posts')
 		const allArticles = feed.rows
 
 		res.status(200).json({
-			status: "success",
+			status: 'success',
 			data: allArticles.map((article) => ({
 				id: article.id,
 				userId: article.userId,
@@ -118,14 +163,14 @@ const assignTagToPost = async (req, res, next) => {
 
 		if (!postsTags.rows[0]) {
 			res.status(400).json({
-				status: "error",
+				status: 'error',
 				data: {
-					message: "Tag is already assigned to the post"
+					message: 'Tag is already assigned to the post'
 				}
 			})
 		} else {
 			res.status(200).json({
-				status: "success",
+				status: 'success',
 				data: {
 					postId: postsTags.rows[0].postId,
 					tagId: postsTags.rows[0].tagId
@@ -151,7 +196,7 @@ const queryPosts = async (req, res, next) => {
 		const allArticles = feed.rows
 
 		res.status(200).json({
-			status: "success",
+			status: 'success',
 			data: allArticles.map((article) => ({
 				id: article.id,
 				userId: article.userId,
@@ -175,12 +220,12 @@ const deletePost = async (req, res, next) => {
 	const { id } = req.params
 
 	try {
-		await db.query("DELETE FROM posts WHERE id = $1", [id])
+		await db.query('DELETE FROM posts WHERE id = $1', [id])
 
 		res.status(200).json({
-			status: "success",
+			status: 'success',
 			data: {
-				message: "Article was successfully deleted"
+				message: 'Article was successfully deleted'
 			}
 		})
 	} catch (err) {
@@ -201,9 +246,9 @@ const deletePostTags = async (req, res, next) => {
 		)
 
 		res.status(200).json({
-			status: "success",
+			status: 'success',
 			data: {
-				message: "Tag has been removed from post"
+				message: 'Tag has been removed from post'
 			}
 		})
 	} catch (err) {
@@ -222,7 +267,7 @@ const updatePost = async (req, res) => {
 	try {
 		const result = await db.query(
 			// eslint-disable-next-line max-len
-			"UPDATE posts SET title = $1, content = $2 , image = $3 , published = $4 WHERE id = $5 RETURNING *",
+			'UPDATE posts SET title = $1, content = $2 , image = $3 , published = $4 WHERE id = $5 RETURNING *',
 			[title, content, image, published, id]
 		)
 		const updatedArticle = result.rows[0]
@@ -230,13 +275,13 @@ const updatePost = async (req, res) => {
 		if (!updatedArticle) {
 			res.status(404).json({
 				success: false,
-				message: "Article does not exist"
+				message: 'Article does not exist'
 			})
 		} else {
 			res.status(200).json({
-				status: "success",
+				status: 'success',
 				data: {
-					message: "Article successfully updated",
+					message: 'Article successfully updated',
 					title: updatedArticle.title,
 					content: updatedArticle.content,
 					image: updatedArticle.image,
@@ -255,33 +300,44 @@ const updatePost = async (req, res) => {
 }
 // Routes
 
-router.route("/query").get(queryPosts)
-router.route("/:postId/tags").post(assignTagToPost)
-router.route("/:postId/tags/:tagId").delete(deletePostTags)
+router.route('/query').get(queryPosts)
+router.route('/:postId/tags').post(assignTagToPost)
+router.route('/:postId/tags/:tagId').delete(deletePostTags)
 
 router
-	.route("/")
+	.route('/')
 	.post(
-		passport.authenticate("jwt", {
+		passport.authenticate('jwt', {
 			session: false
 		}),
 		createPost
 	)
 	.get(fetchPosts)
 router
-	.route("/:id")
+	.route('/:id')
 	.delete(
-		passport.authenticate("jwt", {
+		passport.authenticate('jwt', {
 			session: false
 		}),
 		deletePost
 	)
 	.patch(
-		passport.authenticate("jwt", {
+		passport.authenticate('jwt', {
 			session: false
 		}),
 		updatePost
 	)
 	.get(getPost)
+	.route('/:id')
+	.delete(passport.authenticate('jwt', { session: false }), deletePost)
+	.patch(passport.authenticate('jwt', { session: false }), updatePost)
+	.get(getPost)
+router
+	.route('/')
+	.post(passport.authenticate('jwt', { session: false }), createPost)
+	.get(fetchPosts)
+router
+	.route('/:id/comment')
+	.post(passport.authenticate('jwt', { session: false }), createComment)
 
 module.exports = router
