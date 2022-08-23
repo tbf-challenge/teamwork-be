@@ -1,10 +1,10 @@
 const express = require('express')
-const passport= require('passport')
+const passport = require('passport')
 
 const db = require('../db')
 const { logger } = require('../lib')
 
-const  log = logger()
+const log = logger()
 const router = express.Router()
 
 // POST REQUESTS
@@ -162,13 +162,14 @@ const updatePost = async (req, res) => {
 	}
 }
 
-
-router.route('/:id')
+router
+	.route('/:id')
 	.delete(passport.authenticate('jwt', { session: false }), deletePost)
 	.patch(passport.authenticate('jwt', { session: false }), updatePost)
 	.get(getPost)
-router.route('/')
+router
+	.route('/')
 	.post(passport.authenticate('jwt', { session: false }), createPost)
 	.get(fetchPosts)
-	
+
 module.exports = router
