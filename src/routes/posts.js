@@ -306,36 +306,13 @@ router.route('/:postId/tags/:tagId').delete(deletePostTags)
 
 router
 	.route('/')
-	.post(
-		passport.authenticate('jwt', {
-			session: false
-		}),
-		createPost
-	)
+	.post(passport.authenticate('jwt', {session: false }), createPost)
 	.get(fetchPosts)
 router
-	.route('/:id')
-	.delete(
-		passport.authenticate('jwt', {
-			session: false
-		}),
-		deletePost
-	)
-	.patch(
-		passport.authenticate('jwt', {
-			session: false
-		}),
-		updatePost
-	)
-	.get(getPost)
 	.route('/:id')
 	.delete(passport.authenticate('jwt', { session: false }), deletePost)
 	.patch(passport.authenticate('jwt', { session: false }), updatePost)
 	.get(getPost)
-router
-	.route('/')
-	.post(passport.authenticate('jwt', { session: false }), createPost)
-	.get(fetchPosts)
 router
 	.route('/:id/comment')
 	.post(passport.authenticate('jwt', { session: false }), createComment)
