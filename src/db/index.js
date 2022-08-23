@@ -5,7 +5,10 @@ const logger= require('../lib/logger')
 const log = logger()
 
 
-const pool = new Pool({ connectionString: config('DATABASE_URL')})
+const pool = new Pool({ 
+	connectionString: config('DATABASE_URL'),
+	ssl: { rejectUnauthorized: false }
+})
 log.success('database successfully connected')
 module.exports = {
 	async query (text, params) {
