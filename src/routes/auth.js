@@ -9,13 +9,13 @@ const router = express.Router()
 
 router.post(
 	'/signin',
-	validateRequest, 
+	validateRequest,
 	catchAsync(async (req, res) => {
-		const{ email, password } = req.body
+		const { email, password } = req.body
 
 		const { token, userId } = await userSevice
 			.signInUserByEmail(email, password)
-		
+
 		return res.json({
 			status: 'success',
 			data: {
@@ -24,10 +24,12 @@ router.post(
 			}
 
 		})
-	}))
+	})
+)
 
-router.post('/create-user',
-	validateRequest, 
+router.post(
+	'/create-user',
+	validateRequest,
 	catchAsync(async (req, res) => {
 		const {
 			firstName,
@@ -40,28 +42,28 @@ router.post('/create-user',
 			address
 		} = req.body
 
-   
+
 		const { token, userId } = await userSevice.createNewUser([
-			firstName, 
+			firstName,
 			lastName,
-			email, 
-			password, 
-			gender, 
-			jobRole, 
+			email,
+			password,
+			gender,
+			jobRole,
 			department,
 			address
 		])
 
-		
+
 		return res.status(201).json({
-			status: "success",
+			status: 'success',
 			data: {
-				message: "User account successfully created",
+				message: 'User account successfully created',
 				token,
 				userId
 			}
 		})
-
-	}))
+	})
+)
 
 module.exports = router

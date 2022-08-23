@@ -5,21 +5,19 @@ const config = require('../config')
 
 const options = {
 	jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-	secretOrKey:config('TOKEN_SECRET')
+	secretOrKey: config('TOKEN_SECRET')
 }
 
-module.exports = ( passport ) => {
-	const verifyCallBack =  async (jwtPayload, done) => {
+module.exports = (passport) => {
+	const verifyCallBack = async (jwtPayload, done) => {
 		const { email } = jwtPayload.user
 		const user = await getUserByEmail(email)
-        
+
 		if (user) {
 			return done(null, user)
-		} 
+		}
 		return done(null, false)
-			       
-		
 	}
-    
+
 	passport.use(new Strategy(options, verifyCallBack))
 }

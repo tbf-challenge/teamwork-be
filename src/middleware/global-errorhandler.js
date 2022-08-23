@@ -1,7 +1,7 @@
-const { logger, AppError }= require('../lib')
+const { logger, AppError } = require('../lib')
 
-const  log = logger()
-const  errorCodeForDuplicateField = '23505'
+const log = logger()
+const errorCodeForDuplicateField = '23505'
 
 const sendDevError = (error, res) => {
 	res.status(error.statusCode).json({
@@ -12,7 +12,7 @@ const sendDevError = (error, res) => {
 	})
 }
 const sendProdError = (error, res) => {
-	if( error.isOperational){
+	if (error.isOperational) {
 		res.status(error.statusCode).json({
 			status: error.status,
 			message: error.message
@@ -28,7 +28,7 @@ const sendProdError = (error, res) => {
 }
 
 const handleErrorForDuplicateFields = (error) => {
-	const value =  error.detail.match( /\(([^)]+)\)/)
+	const value = error.detail.match(/\(([^)]+)\)/)
 	const field = value[1]
 	const message = `Field value ${field} already exists. 
     Please use a different ${field}`
@@ -43,13 +43,12 @@ module.exports = (err, req, res, next) => {
 	error.status = err.status || 'Internal server error'
 
 
-	if(process.env.NODE_ENV === 'development') {
+	if (process.env.NODE_ENV === 'development') {
 		sendDevError(error, res)
-	} else if (process.env.NODE_ENV === 'production'){
-		if(error.code === errorCodeForDuplicateField){ 
+	} else if (process.env.NODE_ENV === 'production') {
+		if (error.code === errorCodeForDuplicateField) {
 			error = handleErrorForDuplicateFields(error)
 		}
 		sendProdError(error, res)
 	}
-	
 }

@@ -1,7 +1,7 @@
 const schemas = require('./schema')
 const {
-	genPasswordHash, 
-	verifyPassword 
+	genPasswordHash,
+	verifyPassword
 } = require('./passwordlib')
 const passportjwt = require('./passport-jwt')
 const passportlocal = require('./passport-local')

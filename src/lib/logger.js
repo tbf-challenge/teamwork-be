@@ -6,15 +6,15 @@ const info = chalk.blue
 const success = chalk.green
 /* eslint-disable no-console */
 const logger = () => ({
-	error(message){
+	error(message) {
 		console.log(error(message))
 	},
 
-	warn(message){
+	warn(message) {
 		console.log(warn(message))
 	},
 
-	info(message){
+	info(message) {
 		console.info(info(message))
 	},
 

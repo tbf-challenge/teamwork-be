@@ -17,8 +17,8 @@ const createNewUser = () => ([
 	faker.internet.password(),
 	faker.helpers.arrayElement(['male', 'female']),
 	faker.helpers.arrayElement(['admin', 'user']),
-	faker.helpers.
-		arrayElement(['marketting', 'finance', 'sales', 'technology']),
+	faker.helpers
+		.arrayElement(['marketting', 'finance', 'sales', 'technology']),
 	faker.address(),
 	faker.date.past(),
 	faker.date.past()

@@ -7,7 +7,7 @@ const passportLocal = require('./lib/passport-local')
 const passportJwt = require('./lib/passport-jwt')
 const { AppError } = require('./lib')
 const router = require('./routes')
-const globalErrorHandler=require('./middleware/global-errorhandler')
+const globalErrorHandler = require('./middleware/global-errorhandler')
 
 const app = express()
 
@@ -28,7 +28,7 @@ app.use(cors())
 passportLocal(passport)
 passportJwt(passport)
 
-if(process.env.NODE_ENV === 'development'){
+if (process.env.NODE_ENV === 'development') {
 	app.use(morgan('dev'))
 }
 app.get('/api/v1/health', (req, res) => {
