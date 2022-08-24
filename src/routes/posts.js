@@ -1,8 +1,8 @@
 const express = require('express')
-const passport = require('passport')
 
 const db = require('../db')
 const { logger } = require('../lib')
+const isAuthenticated = require('../middleware/isAuthenticated')
 
 const log = logger()
 const router = express.Router()
@@ -270,20 +270,28 @@ const updatePost = async (req, res) => {
 }
 // Routes
 
-router.route('/query').get(queryPosts)
-router.route('/:postId/tags').post(assignTagToPost)
-router.route('/:postId/tags/:tagId').delete(deletePostTags)
+// isAuthenticated middle to protect all posts related requests
+router.use(isAuthenticated())
 
 router
 	.route('/')
 	.get(fetchPosts)
 router
+	.route('/query')
+	.get(queryPosts)
+router
+	.route('/:postId/tags')
+	.post(assignTagToPost)
+router
+	.route('/:postId/tags/:tagId')
+	.delete(deletePostTags)
+router
 	.route('/:id')
-	.delete(passport.authenticate('jwt', { session: false }), deletePost)
-	.patch(passport.authenticate('jwt', { session: false }), updatePost)
+	.delete(deletePost)
+	.patch(updatePost)
 	.get(getPost)
 router
 	.route('/:id/comment')
-	.post(passport.authenticate('jwt', { session: false }), createComment)
+	.post(createComment)
 
 module.exports = router
