@@ -14,24 +14,24 @@ const router = express.Router()
 const createPost = async (req, res, next) => {
 	try {
 		const userId = req.user.id
-		const { title, image, content, published } = req.body
+		const { title, image, article, published } = req.body
 		const newArticle = await db.query(
 			// eslint-disable-next-line max-len
 			'INSERT INTO posts ("userId", title , image , content , published ) VALUES ($1 , $2 , $3 , $4 , $5 ) RETURNING *',
-			[userId, title, image, content, published]
+			[userId, title, image, article, published]
 		)
 		const articleBody = newArticle.rows[0]
 		res.status(201).json({
 			status: 'success',
 			data: {
 				message: 'Article successfully posted',
-				id: articleBody.id,
+				articleId: articleBody.id,
 				userId: articleBody.userId,
 				title: articleBody.title,
 				image: articleBody.image,
-				content: articleBody.content,
+				article: articleBody.content,
 				published: articleBody.published,
-				createdAt: articleBody.createdAt
+				createdOn: articleBody.createdAt
 			}
 		})
 	} catch (err) {
@@ -112,7 +112,7 @@ const getPost = async (req, res, next) => {
 					.filter((comment) => comment)
 					.map((comment) => ({
 						id: comment.id,
-						comment: comment.comment,
+						comment: comment.content,
 						userId: comment.userId
 					}))
 			}
