@@ -9,36 +9,6 @@ const router = express.Router()
 
 // POST REQUESTS
 
-//  CREATE ARTICLE ENDPOINT
-
-const createPost = async (req, res, next) => {
-	try {
-		const userId = req.user.id
-		const { title, image, article, published } = req.body
-		const newArticle = await db.query(
-			// eslint-disable-next-line max-len
-			'INSERT INTO posts ("userId", title , image , content , published ) VALUES ($1 , $2 , $3 , $4 , $5 ) RETURNING *',
-			[userId, title, image, article, published]
-		)
-		const articleBody = newArticle.rows[0]
-		res.status(201).json({
-			status: 'success',
-			data: {
-				message: 'Article successfully posted',
-				articleId: articleBody.id,
-				userId: articleBody.userId,
-				title: articleBody.title,
-				image: articleBody.image,
-				article: articleBody.content,
-				published: articleBody.published,
-				createdOn: articleBody.createdAt
-			}
-		})
-	} catch (err) {
-		log.error(err.message)
-		next(err)
-	}
-}
 
 // CREATE A POST COMMENT
 
@@ -306,7 +276,6 @@ router.route('/:postId/tags/:tagId').delete(deletePostTags)
 
 router
 	.route('/')
-	.post(passport.authenticate('jwt', {session: false }), createPost)
 	.get(fetchPosts)
 router
 	.route('/:id')
