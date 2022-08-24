@@ -1,5 +1,6 @@
 const express = require("express")
 const db = require("../db")
+const isAuthenticated = require("../middleware/isAuthenticated")
 
 const router = express.Router()
 
@@ -15,8 +16,17 @@ const getUser = async (req, res) => {
 const updateUser = () => {}
 const deleteUser = () => {}
 
-router.route("/").get(fetchUsers).post(createUsers)
+// isAuthenticated middle to protect all posts related requests
+router.use(isAuthenticated())
 
-router.route("/:id").get(getUser).patch(updateUser).delete(deleteUser)
+router
+	.route("/")
+	.get(fetchUsers)
+	.post(createUsers)
+router
+	.route("/:id")
+	.get(getUser)
+	.patch(updateUser)
+	.delete(deleteUser)
 
 module.exports = router

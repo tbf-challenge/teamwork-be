@@ -1,6 +1,7 @@
 const tagRouter = require("express").Router()
 const db = require("../db")
 const { logger } = require("../lib")
+const isAuthenticated = require("../middleware/isAuthenticated")
 
 const log = logger()
 
@@ -101,7 +102,16 @@ const deleteTag = async (req, res, next) => {
 	}
 }
 
-tagRouter.route("/").get(fetchTags).post(createTag)
-tagRouter.route("/:tagId").patch(updateTag).delete(deleteTag)
+// isAuthenticated middle to protect all posts related requests
+tagRouter.use(isAuthenticated())
+
+tagRouter
+	.route("/")
+	.get(fetchTags)
+	.post(createTag)
+tagRouter
+	.route("/:tagId")
+	.patch(updateTag)
+	.delete(deleteTag)
 
 module.exports = tagRouter

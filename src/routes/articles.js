@@ -1,7 +1,7 @@
 const express = require('express')
-const passport = require('passport')
 const {createPost} = require('../services/posts')
 const { logger } = require('../lib')
+const isAuthenticated = require('../middleware/isAuthenticated')
 
 const log = logger()
 const router = express.Router()
@@ -43,7 +43,6 @@ const createArticle = async (req, res, next) => {
 
 router
 	.route('/')
-	.post(passport.authenticate('jwt', {session: false }), createArticle)
-
+	.post(isAuthenticated(), createArticle)
 
 module.exports = router
