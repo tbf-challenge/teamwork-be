@@ -1,10 +1,20 @@
 const express = require('express')
-const {createPost} = require('../services/posts')
+const {createPost , getPost } = require('../services/posts')
 const { logger } = require('../lib')
 const isAuthenticated = require('../middleware/isAuthenticated')
 
 const log = logger()
 const router = express.Router()
+
+const transformArticleResponse = (article) => ({
+	userId: article.userId,
+	title: article.title,
+	image: article.image,
+	article: article.content,
+	published: article.published,
+	createdOn: article.createdAt,
+	articleId: article.id
+})
 
 // POST REQUESTS
 
@@ -24,13 +34,7 @@ const createArticle = async (req, res, next) => {
 			status: 'success',
 			data: {
 				message: 'Article successfully posted',
-				userId: newArticle.userId,
-				title: newArticle.title,
-				image: newArticle.image,
-				article: newArticle.content,
-				published: newArticle.published,
-				createdOn: newArticle.createdAt,
-				articleId: newArticle.id
+				...transformArticleResponse(newArticle)
 			}
 		})
 	} catch (err) {
@@ -39,10 +43,44 @@ const createArticle = async (req, res, next) => {
 	}
 }
 
-// ROUTES
+// GET POST BY ID
+const getArticle = async (req, res, next) => {
+	const { id } = req.params
+	try {
+		const article = await getPost({
+			id
+		})
+		if (!article) {
+			return res.status(404).json({
+				success: false,
+				message: 'Article does not exist'
+			})
+		}
+		return res.status(200).json({
+			status: 'success',
+			data: {
+				...transformArticleResponse(article),
+				comments: article.comments
+					.filter((comment) => comment)
+					.map((comment) => ({
+						id: comment.id,
+						comment: comment.content,
+						userId: comment.userId
+					}))
+			}
+		})
+	} catch (err) {
+		log.error(err.message)
+		return next(err)
+	}
+}
 
+// ROUTES
+router.use(isAuthenticated())
 router
 	.route('/')
-	.post(isAuthenticated(), createArticle)
-
+	.post( createArticle)
+router
+	.route('/:id')
+	.get(getArticle)
 module.exports = router

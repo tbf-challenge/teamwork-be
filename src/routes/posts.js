@@ -50,49 +50,6 @@ const createComment = async (req, res, next) => {
 
 // GET REQUESTS
 
-// GET POST BY ID
-const getPost = async (req, res, next) => {
-	const { id } = req.params
-	try {
-		const posts = await db.query(
-			`SELECT p.*, jsonb_agg(c.* ORDER BY c."createdAt" DESC) as comments
-            FROM posts p 
-            LEFT JOIN comments c ON p.id = c."postId"
-            WHERE p.id=$1 
-            GROUP BY p.id;`,
-			[id]
-		)
-		const article = posts.rows[0]
-
-		if (!article) {
-			return res.status(404).json({
-				success: false,
-				message: 'Article does not exist'
-			})
-		}
-		return res.status(200).json({
-			status: 'success',
-			data: {
-				id: article.id,
-				createdAt: article.createdAt,
-				title: article.title,
-				image: article.image,
-				published: article.published,
-				comments: article.comments
-					.filter((comment) => comment)
-					.map((comment) => ({
-						id: comment.id,
-						comment: comment.content,
-						userId: comment.userId
-					}))
-			}
-		})
-	} catch (err) {
-		log.error(err.message)
-		return next(err)
-	}
-}
-
 // GET ALL ARTICLES
 
 const fetchPosts = async (req, res, next) => {
@@ -289,7 +246,6 @@ router
 	.route('/:id')
 	.delete(deletePost)
 	.patch(updatePost)
-	.get(getPost)
 router
 	.route('/:id/comment')
 	.post(createComment)
