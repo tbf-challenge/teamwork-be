@@ -76,11 +76,11 @@ const getArticle = async (req, res, next) => {
 }
 
 // ROUTES
-
+router.use(isAuthenticated())
 router
 	.route('/')
-	.post(isAuthenticated(), createArticle)
+	.post( createArticle)
 router
 	.route('/:id')
-	.get(isAuthenticated(),getArticle)
+	.get(getArticle)
 module.exports = router
