@@ -1,10 +1,20 @@
 const express = require('express')
-const {createPost , getPost} = require('../services/posts')
+const {createPost , getPost } = require('../services/posts')
 const { logger } = require('../lib')
 const isAuthenticated = require('../middleware/isAuthenticated')
 
 const log = logger()
 const router = express.Router()
+
+const transformArticleResponse = (article) => ({
+	userId: article.userId,
+	title: article.title,
+	image: article.image,
+	article: article.content,
+	published: article.published,
+	createdOn: article.createdAt,
+	articleId: article.id
+})
 
 // POST REQUESTS
 
@@ -24,13 +34,7 @@ const createArticle = async (req, res, next) => {
 			status: 'success',
 			data: {
 				message: 'Article successfully posted',
-				userId: newArticle.userId,
-				title: newArticle.title,
-				image: newArticle.image,
-				article: newArticle.content,
-				published: newArticle.published,
-				createdOn: newArticle.createdAt,
-				articleId: newArticle.id
+				...transformArticleResponse(newArticle)
 			}
 		})
 	} catch (err) {
@@ -55,12 +59,7 @@ const getArticle = async (req, res, next) => {
 		return res.status(200).json({
 			status: 'success',
 			data: {
-				articleId: article.id,
-				createdOn: article.createdAt,
-				title: article.title,
-				article : article.content,
-				image: article.image,
-				published: article.published,
+				...transformArticleResponse(article),
 				comments: article.comments
 					.filter((comment) => comment)
 					.map((comment) => ({
@@ -83,5 +82,5 @@ router
 	.post(isAuthenticated(), createArticle)
 router
 	.route('/:id')
-	.get(getArticle)
+	.get(isAuthenticated(),getArticle)
 module.exports = router
