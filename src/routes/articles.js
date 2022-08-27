@@ -1,5 +1,5 @@
 const express = require('express')
-const {createPost , getPost , createComment } = require('../services/posts')
+const postService = require('../services/posts')
 const { logger } = require('../lib')
 const isAuthenticated = require('../middleware/isAuthenticated')
 const {
@@ -31,7 +31,7 @@ const createArticle = async (req, res, next) => {
 	try {
 		const userId = req.user.id
 		const { title, image, article, published } = req.body
-		const newArticle = await createPost({
+		const newArticle = await postService.createPost({
 			userId,
 			title, 
 			image, 
@@ -51,11 +51,11 @@ const createArticle = async (req, res, next) => {
 }
 // CREATE A POST COMMENT
 
-const createComments = async (req, res, next) => {
+const createComment = async (req, res, next) => {
 	try {
 		const { id } = req.params
 		const { userId, comment } = req.body
-		const {post, insertedComment} = await createComment({
+		const {post, insertedComment} = await postService.createComment({
 			userId, 
 			id, 
 			comment})
@@ -79,7 +79,7 @@ const createComments = async (req, res, next) => {
 const getArticle = async (req, res, next) => {
 	const { id } = req.params
 	try {
-		const article = await getPost({
+		const article = await postService.getPost({
 			id
 		})
 		if (!article) {
@@ -117,7 +117,7 @@ router
 	.get(getArticle)
 router
 	.route('/:id/comment')
-	.post(createComments)
+	.post(createComment)
 router
 	.use((err, req, res, next)=> {
 		// eslint-disable-next-line no-param-reassign
