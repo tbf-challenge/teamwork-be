@@ -1,10 +1,17 @@
 const express = require('express')
-const {createPost , getPost } = require('../services/posts')
+const postService = require('../services/posts')
 const { logger } = require('../lib')
 const isAuthenticated = require('../middleware/isAuthenticated')
+const {
+	ArticleDoesNotExistError
+} = require("../services/errors")
 
 const log = logger()
 const router = express.Router()
+const ERROR_MAP = {
+	[ArticleDoesNotExistError.name] : 422
+	
+}
 
 const transformArticleResponse = (article) => ({
 	userId: article.userId,
@@ -24,7 +31,7 @@ const createArticle = async (req, res, next) => {
 	try {
 		const userId = req.user.id
 		const { title, image, article, published } = req.body
-		const newArticle = await createPost({
+		const newArticle = await postService.createPost({
 			userId,
 			title, 
 			image, 
@@ -42,12 +49,37 @@ const createArticle = async (req, res, next) => {
 		next(err)
 	}
 }
+// CREATE A POST COMMENT
 
+const createComment = async (req, res, next) => {
+	try {
+		const { id } = req.params
+		const { userId, comment } = req.body
+		const {post, insertedComment} = await postService.createComment({
+			userId, 
+			id, 
+			comment})
+		
+		return res.status(201).json({
+			status: 'success',
+			data: {
+				message: 'Comment successfully created',
+				createdOn: insertedComment.createdAt,
+				articleTitle: post.title,
+				article: post.content,
+				comment: insertedComment.content
+			}
+		})
+	} catch (err) {
+		log.error(err.message)
+		return next(err)
+	}
+}
 // GET POST BY ID
 const getArticle = async (req, res, next) => {
 	const { id } = req.params
 	try {
-		const article = await getPost({
+		const article = await postService.getPost({
 			id
 		})
 		if (!article) {
@@ -83,4 +115,19 @@ router
 router
 	.route('/:id')
 	.get(getArticle)
+router
+	.route('/:id/comment')
+	.post(createComment)
+router
+	.use((err, req, res, next)=> {
+		// eslint-disable-next-line no-param-reassign
+		err.success = false
+		if(ERROR_MAP[err.name] ){
+			// eslint-disable-next-line no-param-reassign
+			err.statusCode = ERROR_MAP[err.name]
+			
+		} 
+		next(err)
+	})
+
 module.exports = router
