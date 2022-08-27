@@ -7,47 +7,6 @@ const isAuthenticated = require('../middleware/isAuthenticated')
 const log = logger()
 const router = express.Router()
 
-// POST REQUESTS
-
-
-// CREATE A POST COMMENT
-
-const createComment = async (req, res, next) => {
-	try {
-		const { id } = req.params
-		const { userId, comment } = req.body
-
-		const post = await db.query('SELECT * FROM posts WHERE id = $1', [id])
-		const postBody = post.rows[0]
-		if (!postBody) {
-			return res.status(422).json({
-				success: false,
-				message: 'Article does not exist'
-			})
-		}
-		const postComments = await db.query(
-			`INSERT INTO comments ("userId" , "postId" , content)
-             VALUES ($1 , $2 ,$3) RETURNING *`,
-			[userId, id, comment]
-		)
-		const postComment = postComments.rows[0]
-
-		return res.status(201).json({
-			status: 'success',
-			data: {
-				message: 'Comment successfully created',
-				createdAt: postComment.createdAt,
-				postTitle: postBody.title,
-				postContent: postBody.content,
-				comment: postComment.content
-			}
-		})
-	} catch (err) {
-		log.error(err.message)
-		return next(err)
-	}
-}
-
 // GET REQUESTS
 
 // GET ALL ARTICLES
@@ -246,8 +205,5 @@ router
 	.route('/:id')
 	.delete(deletePost)
 	.patch(updatePost)
-router
-	.route('/:id/comment')
-	.post(createComment)
 
 module.exports = router
