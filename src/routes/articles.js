@@ -3,13 +3,15 @@ const postService = require('../services/posts')
 const { logger } = require('../lib')
 const isAuthenticated = require('../middleware/isAuthenticated')
 const {
+	ArticleDoesNotExistForCommentError,
 	ArticleDoesNotExistError
 } = require("../services/errors")
 
 const log = logger()
 const router = express.Router()
 const ERROR_MAP = {
-	[ArticleDoesNotExistError.name] : 422 
+	[ArticleDoesNotExistForCommentError.name] : 422 ,
+	[ArticleDoesNotExistError.name] : 404
 	
 }
 
@@ -77,12 +79,6 @@ const getArticle = async (req, res, next) => {
 		const article = await postService.getPost({
 			id
 		})
-		if (!article) {
-			return res.status(404).json({
-				success: false,
-				message: 'Article does not exist'
-			})
-		}
 		return res.status(200).json({
 			status: 'success',
 			data: {

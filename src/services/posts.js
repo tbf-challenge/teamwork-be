@@ -1,5 +1,6 @@
 const db = require("../db")
-const {ArticleDoesNotExistError} = require("./errors")
+const {ArticleDoesNotExistError,
+	 ArticleDoesNotExistForCommentError} = require("./errors")
 
 
 const createPost = async({userId, title, image, content, published}) => {
@@ -16,9 +17,9 @@ const createComment = async({id, userId, comment}) => {
 	const result = await db.query('SELECT * FROM posts WHERE id = $1', [id])
 	const post = result.rows[0]
 	if (!post) {
-		const errorMessage = ArticleDoesNotExistError.message
+		const errorMessage = ArticleDoesNotExistForCommentError.message
 		const err =  Error(errorMessage)
-		err.name = ArticleDoesNotExistError.name
+		err.name = ArticleDoesNotExistForCommentError.name
 		throw err
 	}
 	
@@ -32,7 +33,7 @@ const createComment = async({id, userId, comment}) => {
 }
 
 const getPost = async({id}) => {
-	const post = await db.query(
+	const result = await db.query(
 		`SELECT p.*, jsonb_agg(c.* ORDER BY c."createdAt" DESC) as comments
 	FROM posts p 
 	LEFT JOIN comments c ON p.id = c."postId"
@@ -40,7 +41,14 @@ const getPost = async({id}) => {
 	GROUP BY p.id;`,
 		[id]
 	)
-	return post.rows[0]
+	const post = result.rows[0]
+	if (!post) {
+		const errorMessage = ArticleDoesNotExistError.message
+		const err =  Error(errorMessage)
+		err.name = ArticleDoesNotExistError.name
+		throw err
+	}
+	return post
 }
 
 
