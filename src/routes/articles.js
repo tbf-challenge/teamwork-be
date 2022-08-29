@@ -3,13 +3,15 @@ const postService = require('../services/posts')
 const { logger } = require('../lib')
 const isAuthenticated = require('../middleware/isAuthenticated')
 const {
+	ArticleDoesNotExistForCommentError,
 	ArticleDoesNotExistError
 } = require("../services/errors")
 
 const log = logger()
 const router = express.Router()
 const ERROR_MAP = {
-	[ArticleDoesNotExistError.name] : 422
+	[ArticleDoesNotExistForCommentError.name] : 422 ,
+	[ArticleDoesNotExistError.name] : 404
 	
 }
 
@@ -22,10 +24,6 @@ const transformArticleResponse = (article) => ({
 	createdOn: article.createdAt,
 	articleId: article.id
 })
-
-// POST REQUESTS
-
-//  CREATE ARTICLE ENDPOINT
 
 const createArticle = async (req, res, next) => {
 	try {
@@ -49,7 +47,6 @@ const createArticle = async (req, res, next) => {
 		next(err)
 	}
 }
-// CREATE A POST COMMENT
 
 const createComment = async (req, res, next) => {
 	try {
@@ -75,19 +72,13 @@ const createComment = async (req, res, next) => {
 		return next(err)
 	}
 }
-// GET POST BY ID
+
 const getArticle = async (req, res, next) => {
 	const { id } = req.params
 	try {
 		const article = await postService.getPost({
 			id
 		})
-		if (!article) {
-			return res.status(404).json({
-				success: false,
-				message: 'Article does not exist'
-			})
-		}
 		return res.status(200).json({
 			status: 'success',
 			data: {
@@ -107,6 +98,33 @@ const getArticle = async (req, res, next) => {
 	}
 }
 
+
+const updateArticle = async (req, res, next) => {
+	const { id } = req.params 
+	const { title, article, image, published } = req.body 
+
+	try {
+		const updatedArticle = await postService.updatePost({
+			title,
+			content : article,
+			image,
+			published,
+			id
+		})
+		return res.status(200).json({
+			status: 'success',
+			data: {
+				message: 'Article successfully updated',
+				...transformArticleResponse(updatedArticle)
+			}
+		})
+		
+	} catch (err) {
+		log.error(err.message)
+		return next(err)
+	}
+}
+
 // ROUTES
 router.use(isAuthenticated())
 router
@@ -115,6 +133,7 @@ router
 router
 	.route('/:id')
 	.get(getArticle)
+	.patch(updateArticle)
 router
 	.route('/:id/comment')
 	.post(createComment)
