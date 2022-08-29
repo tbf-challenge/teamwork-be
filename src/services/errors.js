@@ -1,6 +1,6 @@
 module.exports= {
 	ArticleDoesNotExistForCommentError : { 
-		name : 'ArticleDoesNotExistError', 
+		name : 'ArticleDoesNotExistForCommentError', 
 		message : 'Article does not exist'
 	},
 	ArticleDoesNotExistError : { 
