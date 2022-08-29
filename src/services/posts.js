@@ -1,7 +1,7 @@
 const db = require("../db")
 const {ArticleDoesNotExistError} = require("./errors")
 
-//	CREATE ARTICLE ENDPOINT
+
 const createPost = async({userId, title, image, content, published}) => {
 	const newPost = await db.query(
 		// eslint-disable-next-line max-len
@@ -11,7 +11,6 @@ const createPost = async({userId, title, image, content, published}) => {
 	return newPost.rows[0]
 }
 
-// CREATE ARTICLE COMMENT
 
 const createComment = async({id, userId, comment}) => {
 	const result = await db.query('SELECT * FROM posts WHERE id = $1', [id])
@@ -31,7 +30,7 @@ const createComment = async({id, userId, comment}) => {
 	const insertedComment = queryResult.rows[0]
 	return {post , insertedComment}
 }
-// GET ARTICLE BY ID ENDPOINT
+
 const getPost = async({id}) => {
 	const post = await db.query(
 		`SELECT p.*, jsonb_agg(c.* ORDER BY c."createdAt" DESC) as comments
@@ -44,7 +43,7 @@ const getPost = async({id}) => {
 	return post.rows[0]
 }
 
-// UPDATE ARTICLES ENDPOINT
+
 const updatePost = async({title, content, image, published, id}) => {
 	const update = await db.query(
 		// eslint-disable-next-line max-len

@@ -9,7 +9,7 @@ const {
 const log = logger()
 const router = express.Router()
 const ERROR_MAP = {
-	[ArticleDoesNotExistError.name] : 422
+	[ArticleDoesNotExistError.name] : 422 
 	
 }
 
@@ -22,10 +22,6 @@ const transformArticleResponse = (article) => ({
 	createdOn: article.createdAt,
 	articleId: article.id
 })
-
-// POST REQUESTS
-
-//  CREATE ARTICLE ENDPOINT
 
 const createArticle = async (req, res, next) => {
 	try {
@@ -49,7 +45,6 @@ const createArticle = async (req, res, next) => {
 		next(err)
 	}
 }
-// CREATE A POST COMMENT
 
 const createComment = async (req, res, next) => {
 	try {
@@ -75,7 +70,7 @@ const createComment = async (req, res, next) => {
 		return next(err)
 	}
 }
-// GET POST BY ID
+
 const getArticle = async (req, res, next) => {
 	const { id } = req.params
 	try {
@@ -107,11 +102,10 @@ const getArticle = async (req, res, next) => {
 	}
 }
 
-// UPDATE ARTICLES ENDPOINT
 
 const updateArticle = async (req, res, next) => {
-	const { id } = req.params // WHERE
-	const { title, article, image, published } = req.body // SET
+	const { id } = req.params 
+	const { title, article, image, published } = req.body 
 
 	try {
 		const updatedArticle = await postService.updatePost({
@@ -122,10 +116,10 @@ const updateArticle = async (req, res, next) => {
 			id
 		})
 		if (!updatedArticle) {
-			return res.status(404).json({
-				success: false,
-				message: 'Article does not exist'
-			})
+			const errorMessage = ArticleDoesNotExistError.message
+			const err =  Error(errorMessage)
+			err.name = ArticleDoesNotExistError.name
+			throw err
 		} 
 		return res.status(200).json({
 			status: 'success',
