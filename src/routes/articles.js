@@ -107,6 +107,23 @@ const getArticle = async (req, res, next) => {
 	}
 }
 
+const deleteArticle = async (req, res, next) => {
+	const { id } = req.params
+
+	try {
+		await postService.deletePost({id})
+
+		return res.status(200).json({
+			status: 'success',
+			data: {
+				message: 'Article was successfully deleted'
+			}
+		})
+	} catch (err) {
+		log.error(err.message)
+		return next(err)
+	}
+}
 // ROUTES
 router.use(isAuthenticated())
 router
@@ -115,6 +132,7 @@ router
 router
 	.route('/:id')
 	.get(getArticle)
+	.delete(deleteArticle)
 router
 	.route('/:id/comment')
 	.post(createComment)

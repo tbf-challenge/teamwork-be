@@ -43,10 +43,13 @@ const getPost = async({id}) => {
 	)
 	return post.rows[0]
 }
-
-
+const deletePost = async({id}) => {
+	const result = await db.query('DELETE FROM posts WHERE id = $1', [id])
+	return result
+}
 module.exports = {
 	createPost,
 	getPost,
-	createComment
+	createComment,
+	deletePost
 }

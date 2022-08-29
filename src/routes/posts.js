@@ -101,25 +101,6 @@ const queryPosts = async (req, res, next) => {
 
 // DELETE REQUESTS
 
-// DELETE AN ARTICLE
-const deletePost = async (req, res, next) => {
-	const { id } = req.params
-
-	try {
-		await db.query('DELETE FROM posts WHERE id = $1', [id])
-
-		res.status(200).json({
-			status: 'success',
-			data: {
-				message: 'Article was successfully deleted'
-			}
-		})
-	} catch (err) {
-		log.error(err.message)
-		next(err)
-	}
-}
-
 // DELETE TAGS IN AN ARTICLE
 
 const deletePostTags = async (req, res, next) => {
@@ -203,7 +184,6 @@ router
 	.delete(deletePostTags)
 router
 	.route('/:id')
-	.delete(deletePost)
 	.patch(updatePost)
 
 module.exports = router
