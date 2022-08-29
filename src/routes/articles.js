@@ -115,12 +115,6 @@ const updateArticle = async (req, res, next) => {
 			published,
 			id
 		})
-		if (!updatedArticle) {
-			const errorMessage = ArticleDoesNotExistError.message
-			const err =  Error(errorMessage)
-			err.name = ArticleDoesNotExistError.name
-			throw err
-		} 
 		return res.status(200).json({
 			status: 'success',
 			data: {
