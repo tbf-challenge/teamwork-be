@@ -51,6 +51,10 @@ const getPost = async({id}) => {
 	return post
 }
 
+const deletePost = async({id}) => {
+	const result = await db.query('DELETE FROM posts WHERE id = $1', [id])
+	return result
+}
 
 const updatePost = async({title, content, image, published, id}) => {
 	const result = await db.query(
@@ -70,9 +74,11 @@ const updatePost = async({title, content, image, published, id}) => {
 
 }
 
+
 module.exports = {
 	createPost,
 	getPost,
 	createComment,
+	deletePost,
 	updatePost
 }
