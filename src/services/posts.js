@@ -44,9 +44,20 @@ const getPost = async({id}) => {
 	return post.rows[0]
 }
 
+// UPDATE ARTICLES ENDPOINT
+const updatePost = async({title, content, image, published, id}) => {
+	const update = await db.query(
+		// eslint-disable-next-line max-len
+		'UPDATE posts SET title = $1, content = $2 , image = $3 , published = $4 WHERE id = $5 RETURNING *',
+		[title, content, image, published, id]
+	)
+	return update.rows[0]
+
+}
 
 module.exports = {
 	createPost,
 	getPost,
-	createComment
+	createComment,
+	updatePost
 }
