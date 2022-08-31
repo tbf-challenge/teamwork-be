@@ -1,0 +1,459 @@
+openapi: 3.0.0
+info:
+  title: Teamwork API
+  description: An API for an internal social network for employees of an organization.
+  version: 1.0.0
+servers:
+  - url: https://team-worker.herokuapp.com/api/v1
+    description: Main (production) server
+  - url: http://localhost:3000/api/v1
+    description: Internal development server for local testing
+tags:
+  - name: user
+    description: Operations about users
+  - name: article
+    description: Access to article
+paths:
+  /auth/create-user:
+    post:
+      tags:
+        - user
+      operationId: createUser
+      summary: Create new user
+      description: Create a new user by an admin
+      requestBody:
+        description: Create a new user in Teamwork
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: A successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: success
+                    example: success
+                  data:
+                    type: object
+                    description: data
+                    properties:
+                      message: 
+                        type: string
+                        description: message
+                        example: User account successfully created
+                      token:
+                        type: string
+                        description: user token
+                        example: eyajhjdla2jkqh489q83hquirpq
+                      userId:
+                        type: integer
+                        description: user id
+                        example: 10
+      security:
+        - access_token: []                  
+  /auth/signin:
+    post:
+      tags: 
+        - user
+      operationId: signinUser
+      summary: Sign in a user
+      description: Sign in a user
+      requestBody:
+        description: Sign in a new user in Teamwork
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: user email
+                  format: email
+                  example: jones@gmail.com
+                password:
+                  type: string
+                  description: user password
+                  example: modestrighteous1
+      responses:
+        '200':
+          description: A successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: success
+                    example: success
+                  data:
+                    type: object
+                    description: data
+                    properties:
+                      message: 
+                        type: string
+                        description: message
+                        example: User account successfully created
+                      token:
+                        type: string
+                        description: user token
+                        example: eyajhjdla2jkqh489q83hquirpq
+                      userId:
+                        type: integer
+                        description: user id
+                        example: 10
+  /articles:
+    post:
+      tags:
+        - article
+      operationId: createArticle
+      summary: Create a new article
+      description: Create a new article
+      requestBody:
+        description: Create a new article
+        content:
+          application/json:
+            schema: 
+              type: object
+              required:
+                - title
+                - article
+              properties:
+                title:
+                  type: string
+                  description: Title of article
+                  example: How to become a 10x software developer
+                article:
+                  type: string
+                  description: Article content
+                  example: /You are expected to create a set of ​ API endpoints​ listed under the ​ API Endpoints Specification\
+                      section and ensure you persist your data using a PostgreSQL database.\
+                      You are to write SQL queries that will help you write to and read from your database. The
+                      endpoints are to be secured with JSON Web Token (JWT)
+      responses:
+        '201':
+          description: A successful operation
+          content: 
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: successful
+                    example: success
+                  data:
+                    type: object
+                    description: Data for new article created
+                    properties:
+                      message:
+                        type: string
+                        description: Message for article created
+                        example: Article successfully posted
+                      articleId:
+                        type: integer
+                        description: Article id
+                        example: 10
+                      createdOn: 
+                        type: string
+                        description: Created date of a new article
+                        pattern: /([0-9]{4})-(?:[0-9]{2})-([0-9]{2})/
+                        example: "2019-05-17"
+                      title: 
+                        type: string
+                        description: Title of article
+                        example: How to become a 10x software developer
+      security:
+        - access_token: []
+  /articles/{articleId}:
+    patch:
+      tags:
+        - article
+      operationId: updateArticle
+      summary: Edit article
+      description: Edit article with an article id
+      requestBody:
+        description: Edit a new article by article userId
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: Title of the article
+                  example: How to be a 10x Frontend developer
+                article:
+                  type: string
+                  description: Content of the article
+                  example: You need to design and build 10x spectacular projects 
+      responses:
+        '201':
+          description: A Successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: A successful content update
+                    example: success
+                  data:
+                    type: object
+                    description: Article returned on a successful article update
+                    properties:
+                      message:
+                        type: string
+                        description: Message to indicate successful update
+                        example: Article successfully updated 
+                      title:
+                        type: string
+                        description: Title of the article
+                        example: How to be a 10x Frontend developer
+                      article:
+                        type: string
+                        description: Content of the article
+                        example: You need to design and build 10x spectacular projects
+      security:
+        - access_token: [] 
+    delete:
+      tags:
+        - article
+      operationId: deleteArticle
+      summary: Delete article
+      description: Delete article with an article id
+      responses:
+        '204':
+          description: A Successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: success
+                    example: success
+                  data:
+                    type: object
+                    description: Article deleted successfuly
+                    properties:
+                      message:
+                        type: string
+                        description: Message to indicate successful delete
+                        example: Article successfully deleted 
+      security:
+        - access_token: []
+    get:
+      tags:
+        - article
+      operationId: getArticle
+      summary: Get an article
+      description: Get an article with an article id
+      responses:
+        '200':
+          description: A successfully Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: success
+                    example: success
+                  data:
+                    type: object
+                    description: Article deleted successfuly
+                    properties:
+                      id:
+                        type: integer
+                        description: Article id
+                        example: 10
+                      createdOn: 
+                        type: string
+                        description: Created date of a new article
+                        pattern: /([0-9]{4})-(?:[0-9]{2})-([0-9]{2})/
+                        example: "2019-05-17"
+                      articleTitle: 
+                        type: string
+                        description: Title of article
+                        example: How to become a 10x software developer
+                      article: 
+                        type: string
+                        description: Article comment was created for
+                        example: /You are expected to create a set of ​ API endpoints​ listed under the ​ API Endpoints Specification\
+                          section and ensure you persist your data using a PostgreSQL database.\
+                          You are to write SQL queries that will help you write to and read from your database. The
+                          endpoints are to be secured with JSON Web Token (JWT)
+                      comments:
+                        type: array
+                        items:
+                          properties:
+                            commentId:
+                              type: integer
+                              description: Comment Id
+                              example: 10
+                            comment:
+                              type: string
+                              description: New comment to be created
+                              example: This post articulates all there is to be a 10x software developer
+                            authorId:
+                              type: integer
+                              description: Comment Id
+                              example: 10
+      security:
+          - access_token: []
+  /articles/{articleId}/comment:
+    post:
+      tags:
+        - article
+      operationId: Create a comment for an article
+      summary: Create a comment for an article
+      description: Create a comment for an article
+      requestBody:
+        description: Create a new comment for a post
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                comment:
+                  type: string
+                  description: New comment to be created
+                  example: This post articulates all there is to be a 10x software developer
+      responses:
+        '201':
+          description: Successful creation of comment for article
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: successful creation of comment
+                    example: success
+                  data:
+                    type: object
+                    description: Data for new comment created on article
+                    properties:
+                      message:
+                        type: string
+                        description: Message for comment created on article.
+                        example: Comment successfully created
+                      createdOn: 
+                        type: string
+                        description: Created date of a new article
+                        pattern: /([0-9]{4})-(?:[0-9]{2})-([0-9]{2})/
+                        example: "2019-05-17"
+                      articleTitle: 
+                        type: string
+                        description: Title of article
+                        example: How to become a 10x software developer
+                      article: 
+                        type: string
+                        description: Article comment was created for
+                        example: /You are expected to create a set of ​ API endpoints​ listed under the ​ API Endpoints Specification\
+                          section and ensure you persist your data using a PostgreSQL database.\
+                          You are to write SQL queries that will help you write to and read from your database. The
+                          endpoints are to be secured with JSON Web Token (JWT)
+                      comment:
+                        type: string
+                        description: New comment to be created
+                        example: This post articulates all there is to be a 10x software developer
+      security:
+        - access_token: []
+  /feed:
+    get:
+      tags:
+        - article
+      operationId: getAllFeed
+      summary: Get all articles and gifs
+      description: Get all articles and gifs
+      responses:
+        '200':
+          description: Get all articles and gifs (feed)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: successfully retrieved all feed
+                    example: success
+                  data:
+                    type: array
+                    items:
+                      properties:
+                        id:
+                          type: integer
+                          description: Article id
+                          example: 10
+                        createdOn: 
+                          type: string
+                          description: Created date of a new article
+                          pattern: /([0-9]{4})-(?:[0-9]{2})-([0-9]{2})/
+                          example: "2019-05-17"
+                        title: 
+                          type: string
+                          description: Title of article
+                          example: How to become a 10x software developer
+                        article/url: 
+                          type: string
+                          description: Article comment was created for
+                          example: /You are expected to create a set of ​ API endpoints​ listed under the ​ API Endpoints Specification\
+                            section and ensure you persist your data using a PostgreSQL database.\
+                            You are to write SQL queries that will help you write to and read from your database. The
+                            endpoints are to be secured with JSON Web Token (JWT)
+                        authorId:
+                          type: integer
+                          description: Article id
+                          example: 10
+                        
+      security:
+        - access_token: []
+  /users:
+    get:
+      tags:
+        - user
+      summary: Returns a list of users.
+      description: Optional extended description in CommonMark or HTML.
+      responses:
+        '200':    # status code
+          description: A JSON array of user names
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: string
+      security:
+        - access_token: []
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        # firstName:
+        #   type: string
+        #   description: First Name
+        #   example: Jones
+        # lastName:
+        #   type: string
+        #   description: Last Name
+        #   example: Azeez
+        email: 
+          type: string
+          example: jones@gmail.com
+          format: email
+        
+      

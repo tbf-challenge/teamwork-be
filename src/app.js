@@ -2,12 +2,18 @@ const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
 const passport = require('passport')
+const swaggerUI = require('swagger-ui-express')
+const fs = require('fs')
+const YAML = require('yaml')
 
 const passportLocal = require('./lib/passport-local')
 const passportJwt = require('./lib/passport-jwt')
 const { AppError } = require('./lib')
 const router = require('./routes')
 const globalErrorHandler = require('./middleware/global-errorhandler')
+
+const file = fs.readFileSync('./docs/swagger.yaml', 'utf8')
+const swaggerDocument = YAML.parse(file)
 
 const app = express()
 
@@ -23,6 +29,7 @@ app.use(passport.initialize())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cors())
+app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument))
 
 
 passportLocal(passport)
