@@ -1,74 +1,76 @@
-/* eslint-disable indent */
 // APLICATION LOGIC FOR TAGGING
 const { catchAsync, AppError } = require('../lib')
 const tagService = require('../services/tags')
 
-const transFormTag = (tag) => {
-    const data = {
-        id: tag.id,
-        title: tag.title,
-        content: tag.content
-    }
-    return data
+/**
+ * Destructure tag 
+ * @param {object} tag - The tag object
+ */
+const transformTag = (tag) => {
+	const data = {
+		id: tag.id,
+		title: tag.title,
+		content: tag.content
+	}
+	return data
 }
-// CREATE NEW TAG
+
+/** Controller for creating a new tag */ 
 const createNewTag = catchAsync(async (req, res, next) => {
-    const { content, title } = req.body
-    const newTag = await tagService.createTag({ content, title })
+	const { content, title } = req.body
+	const newTag = await tagService.createTag({ content, title })
 
-    if (!newTag) return next(new AppError('Tag already exists', 400))
-    const data = transFormTag(newTag)
+	if (!newTag) return next(new AppError('Tag already exists', 400))
+	const data = transformTag(newTag)
 
-    return res.status(201).json({
-        status: 'success',
-        data
-    })
+	return res.status(201).json({
+		status: 'success',
+		data
+	})
 })
 
-// GET ALL TAGS
+/** Controller for fetching all tags */ 
 const fetchTags = catchAsync(async (req, res) => {
-    const allTags = await tagService.fetchTags()
+	const allTags = await tagService.fetchTags()
 
-    return res.status(200).json({
-        status: 'success',
-        data: allTags.map((tag) => transFormTag(tag))
-    })
+	return res.status(200).json({
+		status: 'success',
+		data: allTags.map(transformTag)
+	})
 })
 
-// UPDATE A TAG
+/** Controller for updating a tag */ 
 const updateTag = catchAsync(async (req, res, next) => {
-    const { tagId } = req.params
-    const { content, title } = req.body
+	const { tagId } = req.params
+	const { content, title } = req.body
 
-    const updatedTag = await tagService.updateTag(title, content, tagId)
+	const updatedTag = await tagService.updateTag(title, content, tagId)
 
-    if (!updatedTag) {
-        return next(new AppError('Tag does not exist', 404))
-    }
-    const data = transFormTag(updatedTag)
-    return res.status(200).json({
-        status: 'success',
-        data
-    })
+	if (!updatedTag) {
+		return next(new AppError('Tag does not exist', 404))
+	}
+	const data = transformTag(updatedTag)
+	return res.status(200).json({
+		status: 'success',
+		data
+	})
 })
 
-// DELETE A TAG
-const deleteTag = catchAsync(async (req, res, next) => {
-    const { id } = req.params
+/** Controller for deleting a tag */ 
+const deleteTag = catchAsync(async (req, res) => {
+	const { id } = req.params
 
-    const response = await tagService.deleteTag(id)
-    if (!response.status === 'success')
-        return next(new AppError('No tag with that Id', 404))
-
-    return res.status(200).json({
-        status: 'success',
-        data: { message: 'Tag has been successfully deleted' }
-    })
+	await tagService.deleteTag(id)
+	
+	return res.status(200).json({
+		status: 'success',
+		data: { message: 'Tag has been successfully deleted' }
+	})
 })
 
 module.exports = {
-    createNewTag,
-    fetchTags,
-    updateTag,
-    deleteTag
+	createNewTag,
+	fetchTags,
+	updateTag,
+	deleteTag
 }

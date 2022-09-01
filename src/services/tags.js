@@ -1,6 +1,10 @@
 const db = require("../db")
 
-//	CREATE TAG ENDPOINT
+/**
+ * Create a tag
+ * @contructor
+ * @param {object} object containing the object and title
+ */
 const createTag = async ({ content, title }) => {
 	const newTag = await db.query(
 		// eslint-disable-next-line max-len
@@ -11,7 +15,10 @@ const createTag = async ({ content, title }) => {
 	return newTag.rows[0]
 }
 
-// FETCH ALL TAGS
+/**
+ * fetch all tags
+ * @contructor
+ */
 const fetchTags = async () => {
 
 	const tags = await db.query("SELECT * FROM tags")
@@ -19,7 +26,13 @@ const fetchTags = async () => {
 	return allTags
 }
 
-// UPDATE TAGS
+/**
+ * Update a tag
+ * @contructor
+ * @param {string} title - Tag title
+ * @param {string} content - Tag content
+ * @param {number} tagId - The id of the tag
+ */
 const updateTag = async (title, content, tagId) => {
 
 	const result = await db.query(
@@ -32,15 +45,14 @@ const updateTag = async (title, content, tagId) => {
 
 }
 
-// DELETE TAG
-const deleteTag = async (tagId) => {
-
-	await db.query("DELETE FROM tags WHERE id = $1", [tagId])
-	return {
-		status: "success"
-	}
-}
-
+/**
+ * Delete a tag
+ * @contructor
+ * @param {number} tagId - The id of the tag
+ */
+const deleteTag = tagId => 
+	db.query("DELETE FROM tags WHERE id = $1", [tagId])
+	
 module.exports = {
 	createTag,
 	fetchTags,
