@@ -1,5 +1,5 @@
 const express = require('express')
-const userSevice = require('../services/users')
+const userSevice = require('../services/auth')
 const validateSchema = require('../middleware/validateSchema')
 const { catchAsync } = require('../lib')
 
