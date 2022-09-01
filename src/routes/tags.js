@@ -2,8 +2,6 @@ const tagRouter = require("express").Router()
 const isAuthenticated = require("../middleware/isAuthenticated")
 const { tagController } = require('../controllers')
 
-// NOTE: All the application logic were moved to the the controllers/tags file
-
 // isAuthenticated middle to protect all posts related requests
 tagRouter.use(isAuthenticated())
 
