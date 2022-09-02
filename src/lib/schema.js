@@ -1,4 +1,3 @@
-/* eslint-disable prefer-regex-literals */
 const Joi = require('joi')
 
 const authSchema = Joi.object({
@@ -15,7 +14,13 @@ const authSchema = Joi.object({
 		.required(),
 
 	password: Joi.string()
-		.pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')),
+		.min(8)
+		.pattern(/[-!$%^&*()_+|~=`{}[\]:/;<>?,.@#]/)
+		.message('Password should contain special characters')
+		.pattern(/(?=.*?\d)(?=.*?[a-zA-Z])[a-zA-Z\d]+/)
+		.message('Password should contain alphanumeric characters')
+		.pattern(/(?=.*?[a-z])(?=.*?[A-Z])[a-zA-Z]+/)
+		.message('Password should contain uppercase and lowercase characters'),
 
 	email: Joi.string()
 		.email({
@@ -70,7 +75,7 @@ const signinSchema = Joi.object({
 		})
 		.required(),
 	password: Joi.string()
-		.pattern(new RegExp('^[a-zA-Z0-9]{3,30}$'))
+		.required()
 
 })
 
