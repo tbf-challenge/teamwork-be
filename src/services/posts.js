@@ -73,12 +73,18 @@ const updatePost = async({title, content, image, published, id}) => {
 	return updatedPost
 
 }
-
-
+const deletePostTags = async({postId, tagId}) => {
+	const result = await db.query(
+		'DELETE FROM posts_tags WHERE "postId" = $1 AND "tagId" = $2',
+		[postId, tagId]
+	)
+	return result
+}
 module.exports = {
 	createPost,
 	getPost,
 	createComment,
 	deletePost,
-	updatePost
+	updatePost,
+	deletePostTags
 }

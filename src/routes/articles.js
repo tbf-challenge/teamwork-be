@@ -143,6 +143,26 @@ const updateArticle = async (req, res, next) => {
 	}
 }
 
+const deletePostTags = async (req, res, next) => {
+	
+	const { postId, tagId } = req.params
+	try {
+		 await postService.deletePostTags({
+			postId,
+			tagId
+		})
+		res.status(200).json({
+			status: 'success',
+			data: {
+				message: 'Tag has been removed from post'
+			}
+		})
+	} catch (err) {
+		log.error(err.message)
+		next(err)
+	}
+}
+
 // ROUTES
 router.use(isAuthenticated())
 router
@@ -157,6 +177,9 @@ router
 router
 	.route('/:id/comment')
 	.post(createComment)
+router
+	.route('/:postId/tags/:tagId')
+	.delete(deletePostTags)
 router
 	.use((err, req, res, next)=> {
 		// eslint-disable-next-line no-param-reassign

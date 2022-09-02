@@ -99,31 +99,6 @@ const queryPosts = async (req, res, next) => {
 	}
 }
 
-// DELETE REQUESTS
-
-// DELETE TAGS IN AN ARTICLE
-
-const deletePostTags = async (req, res, next) => {
-	try {
-		const { postId, tagId } = req.params
-
-		await db.query(
-			'DELETE FROM posts_tags WHERE "postId" = $1 AND "tagId" = $2',
-			[postId, tagId]
-		)
-
-		res.status(200).json({
-			status: 'success',
-			data: {
-				message: 'Tag has been removed from post'
-			}
-		})
-	} catch (err) {
-		log.error(err.message)
-		next(err)
-	}
-}
-
 
 // Routes
 
@@ -139,8 +114,5 @@ router
 router
 	.route('/:postId/tags')
 	.post(assignTagToPost)
-router
-	.route('/:postId/tags/:tagId')
-	.delete(deletePostTags)
 
 module.exports = router
