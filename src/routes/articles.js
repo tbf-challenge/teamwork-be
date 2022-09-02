@@ -4,14 +4,16 @@ const { logger } = require('../lib')
 const isAuthenticated = require('../middleware/isAuthenticated')
 const {
 	ArticleDoesNotExistForCommentError,
-	ArticleDoesNotExistError
+	ArticleDoesNotExistError,
+	TagAlreadyAssignedToPostError
 } = require("../services/errors")
 
 const log = logger()
 const router = express.Router()
 const ERROR_MAP = {
 	[ArticleDoesNotExistForCommentError.name] : 422 ,
-	[ArticleDoesNotExistError.name] : 404
+	[ArticleDoesNotExistError.name] : 404,
+	[TagAlreadyAssignedToPostError] : 400
 	
 }
 
@@ -181,6 +183,30 @@ const queryPostsTags = async (req, res, next) => {
 	}
 }
 
+const assignTagToPost = async (req, res, next) => {
+	try {
+		const { postId } = req.params // post id;
+		const { tagId } = req.body
+
+		const postsTags = await postService.assignTagToPost({
+			postId,
+			tagId
+		})
+ 
+		return	res.status(200).json({
+			status: 'success',
+			data: {
+				postId: postsTags.rows[0].postId,
+				tagId: postsTags.rows[0].tagId
+			}
+		})
+		
+	} catch (err) {
+		log.error(err.message)
+		return next(err)
+	}
+}
+
 // ROUTES
 router.use(isAuthenticated())
 router
@@ -195,6 +221,9 @@ router
 router
 	.route('/:id/comment')
 	.post(createComment)
+router
+	.route('/:postId/tags')
+	.post(assignTagToPost)
 router
 	.route('/query')
 	.get(queryPostsTags)

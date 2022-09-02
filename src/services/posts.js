@@ -1,6 +1,7 @@
 const db = require("../db")
 const {ArticleDoesNotExistError,
-	 ArticleDoesNotExistForCommentError} = require("./errors")
+	 ArticleDoesNotExistForCommentError,
+	  TagAlreadyAssignedToPostError} = require("./errors")
 
 
 const createPost = async({userId, title, image, content, published}) => {
@@ -88,6 +89,23 @@ const queryPostTags = async({tag}) => {
 	)
 	return feed.rows
 }
+const assignTagToPost = async({postId , tagId}) => {
+	const result = await db.query(
+		// eslint-disable-next-line max-len
+		`INSERT INTO posts_tags ("postId","tagId") 
+		SELECT $1,$2 WHERE NOT EXISTS 
+		(SELECT * FROM posts_tags WHERE "postId" = $1 AND "tagId" = $2) 
+		RETURNING *`,
+		[postId, tagId]
+	)
+	const postsTags = result.rows[0]
+	if (!postsTags) {
+		const errorMessage = TagAlreadyAssignedToPostError.message
+		const err =  Error(errorMessage)
+		err.name = TagAlreadyAssignedToPostError.name
+		throw err
+	}
+}
 module.exports = {
 	createPost,
 	getPost,
@@ -95,5 +113,6 @@ module.exports = {
 	deletePost,
 	updatePost,
 	deletePostTags,
-	queryPostTags
+	queryPostTags,
+	assignTagToPost
 }
