@@ -80,11 +80,20 @@ const deletePostTags = async({postId, tagId}) => {
 	)
 	return result
 }
+const queryPostTags = async({tag}) => {
+	const feed = await db.query(
+	// eslint-disable-next-line max-len
+		'SELECT * FROM posts p INNER JOIN posts_tags pt ON p.id=pt."postId" WHERE "tagId"=$1',
+		[tag]
+	)
+	return feed.rows
+}
 module.exports = {
 	createPost,
 	getPost,
 	createComment,
 	deletePost,
 	updatePost,
-	deletePostTags
+	deletePostTags,
+	queryPostTags
 }

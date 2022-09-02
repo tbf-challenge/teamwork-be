@@ -69,36 +69,6 @@ const assignTagToPost = async (req, res, next) => {
 	}
 }
 
-// GET ALL ARTICLES WITH SAME TAG
-
-const queryPosts = async (req, res, next) => {
-	try {
-		const { tag } = req.query
-		const feed = await db.query(
-			// eslint-disable-next-line max-len
-			'SELECT * FROM posts p INNER JOIN posts_tags pt ON p.id=pt."postId" WHERE "tagId"=$1',
-			[tag]
-		)
-		const allArticles = feed.rows
-
-		res.status(200).json({
-			status: 'success',
-			data: allArticles.map((article) => ({
-				id: article.id,
-				userId: article.userId,
-				title: article.title,
-				content: article.content,
-				image: article.image,
-				published: article.published,
-				createdAt: article.createdAt
-			}))
-		})
-	} catch (err) {
-		log.error(err.message)
-		next(err)
-	}
-}
-
 
 // Routes
 
@@ -108,9 +78,6 @@ router.use(isAuthenticated())
 router
 	.route('/')
 	.get(fetchPosts)
-router
-	.route('/query')
-	.get(queryPosts)
 router
 	.route('/:postId/tags')
 	.post(assignTagToPost)

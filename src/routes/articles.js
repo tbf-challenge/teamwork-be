@@ -163,6 +163,24 @@ const deletePostTags = async (req, res, next) => {
 	}
 }
 
+const queryPostsTags = async (req, res, next) => {
+	try {
+		const { tag } = req.query
+		const feed = postService.queryPostTags({
+			tag
+		})
+
+		res.status(200).json({
+			status: 'success',
+			data: {...transformArticleResponse(feed)
+			}
+		})
+	} catch (err) {
+		log.error(err.message)
+		next(err)
+	}
+}
+
 // ROUTES
 router.use(isAuthenticated())
 router
@@ -177,6 +195,9 @@ router
 router
 	.route('/:id/comment')
 	.post(createComment)
+router
+	.route('/query')
+	.get(queryPostsTags)
 router
 	.route('/:postId/tags/:tagId')
 	.delete(deletePostTags)
