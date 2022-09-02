@@ -14,4 +14,6 @@ tagRouter
 	.patch(tagController.updateTag)
 	.delete(tagController.deleteTag)
 
+tagRouter.use(tagController.tagErrorMiddleware)
+
 module.exports = tagRouter

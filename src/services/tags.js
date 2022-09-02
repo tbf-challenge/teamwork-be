@@ -1,23 +1,30 @@
 const db = require("../db")
+const { TagDoesNotExistError, TagAlreadyExistsError } = require("./errors")
+
 
 /**
  * Create a tag
- * @contructor
- * @param {object} object containing the object and title
+ * @param {object} object containing the content and title
  */
 const createTag = async ({ content, title }) => {
-	const newTag = await db.query(
+	const result = await db.query(
 		// eslint-disable-next-line max-len
 		"INSERT INTO tags (content, title) SELECT $1, $2 WHERE NOT EXISTS (SELECT * FROM tags WHERE title = $2) RETURNING *",
 		[content, title]
 	)
+	const newTag =  result.rows[0]
+	if (!newTag){
+		const errorMessage = TagAlreadyExistsError.message
+		const err =  Error(errorMessage)
+		err.name = TagAlreadyExistsError.name
+		throw err
+	}
 
-	return newTag.rows[0]
+	return newTag
 }
 
 /**
  * fetch all tags
- * @contructor
  */
 const fetchTags = async () => {
 
@@ -28,7 +35,6 @@ const fetchTags = async () => {
 
 /**
  * Update a tag
- * @contructor
  * @param {string} title - Tag title
  * @param {string} content - Tag content
  * @param {number} tagId - The id of the tag
@@ -41,13 +47,18 @@ const updateTag = async (title, content, tagId) => {
 		[content, title, tagId]
 	)
 	const updatedTag = result.rows[0]
+	
+	if (!updatedTag){
+		const errorMessage = TagDoesNotExistError.message
+		const err =  Error(errorMessage)
+		err.name = TagDoesNotExistError.name
+		throw err
+	}
 	return updatedTag
-
 }
 
 /**
  * Delete a tag
- * @contructor
  * @param {number} tagId - The id of the tag
  */
 const deleteTag = tagId => 

@@ -1,6 +1,26 @@
 // APLICATION LOGIC FOR TAGGING
 const { catchAsync, AppError } = require('../lib')
 const tagService = require('../services/tags')
+const { TagDoesNotExistError, 
+	TagAlreadyExistsError } = require("../services/errors")
+
+
+const ERROR_MAP = {
+	[TagDoesNotExistError.name] : 404,
+	[TagAlreadyExistsError.name] : 400
+}
+
+/** Catches all tag errors */
+const tagErrorMiddleware = (err, req, res, next)=> {
+	// eslint-disable-next-line no-param-reassign
+	err.success = false
+	if(ERROR_MAP[err.name] ){
+		// eslint-disable-next-line no-param-reassign
+		err.statusCode = ERROR_MAP[err.name]
+		
+	} 
+	return next(new AppError(err.message, err.statusCode))
+}
 
 /**
  * Destructure tag 
@@ -16,11 +36,11 @@ const transformTag = (tag) => {
 }
 
 /** Controller for creating a new tag */ 
-const createNewTag = catchAsync(async (req, res, next) => {
+const createNewTag = catchAsync(async (req, res) => {
 	const { content, title } = req.body
 	const newTag = await tagService.createTag({ content, title })
 
-	if (!newTag) return next(new AppError('Tag already exists', 400))
+	// if (!newTag) return next(new AppError('Tag already exists', 400))
 	const data = transformTag(newTag)
 
 	return res.status(201).json({
@@ -40,15 +60,12 @@ const fetchTags = catchAsync(async (req, res) => {
 })
 
 /** Controller for updating a tag */ 
-const updateTag = catchAsync(async (req, res, next) => {
+const updateTag = catchAsync(async (req, res) => {
 	const { tagId } = req.params
 	const { content, title } = req.body
 
 	const updatedTag = await tagService.updateTag(title, content, tagId)
 
-	if (!updatedTag) {
-		return next(new AppError('Tag does not exist', 404))
-	}
 	const data = transformTag(updatedTag)
 	return res.status(200).json({
 		status: 'success',
@@ -72,5 +89,6 @@ module.exports = {
 	createNewTag,
 	fetchTags,
 	updateTag,
-	deleteTag
+	deleteTag,
+	tagErrorMiddleware
 }

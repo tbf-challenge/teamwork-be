@@ -6,6 +6,14 @@ module.exports= {
 	ArticleDoesNotExistError : { 
 		name : 'ArticleDoesNotExistError', 
 		message : 'Article does not exist'
+	},
+	TagDoesNotExistError : {
+		name: 'TagDoesNotExistError',
+		message: 'Tag does not exist'
+	},
+	TagAlreadyExistsError : {
+		name: 'TagAlreadyExistsError',
+		message: 'Tag already exists'
 	}
 
 }
