@@ -40,7 +40,6 @@ const createNewTag = catchAsync(async (req, res) => {
 	const { content, title } = req.body
 	const newTag = await tagService.createTag({ content, title })
 
-	// if (!newTag) return next(new AppError('Tag already exists', 400))
 	const data = transformTag(newTag)
 
 	return res.status(201).json({
