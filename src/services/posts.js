@@ -7,8 +7,10 @@ const {customError} = require("../lib/custom-error")
 
 const createPost = async({userId, title, image, content, published}) => {
 	const newPost = await db.query(
-		// eslint-disable-next-line max-len
-		'INSERT INTO posts ("userId", title , image , content , published ) VALUES ($1 , $2 , $3 , $4 , $5 ) RETURNING *',
+		`INSERT INTO posts
+		 ("userId", title , image , content , published )
+		  VALUES ($1 , $2 , $3 , $4 , $5 ) 
+		  RETURNING *`,
 		[userId, title, image, content, published]
 	)
 	return newPost.rows[0]
@@ -23,8 +25,9 @@ const createComment = async({id, userId, comment}) => {
 	}
 	
 	const queryResult = await db.query(
-		`INSERT INTO comments ("userId" , "postId" , content)
-	 VALUES ($1 , $2 ,$3) RETURNING *`,
+		`INSERT INTO comments 
+		("userId" , "postId" , content)
+	 	VALUES ($1 , $2 ,$3) RETURNING *`,
 		[userId, id, comment]
 	)
 	const insertedComment = queryResult.rows[0]
@@ -54,8 +57,10 @@ const deletePost = async({id}) => {
 
 const updatePost = async({title, content, image, published, id}) => {
 	const result = await db.query(
-		// eslint-disable-next-line max-len
-		'UPDATE posts SET title = $1, content = $2 , image = $3 , published = $4 WHERE id = $5 RETURNING *',
+		`UPDATE posts 
+		SET title = $1, content = $2 , image = $3 , published = $4
+		 WHERE id = $5 
+		 RETURNING *`,
 		[title, content, image, published, id]
 	)
 	const updatedPost = result.rows[0]
@@ -75,15 +80,16 @@ const deletePostTags = async({postId, tagId}) => {
 }
 const queryPostTags = async({tag}) => {
 	const feed = await db.query(
-	// eslint-disable-next-line max-len
-		'SELECT * FROM posts p INNER JOIN posts_tags pt ON p.id=pt."postId" WHERE "tagId"=$1',
+		`SELECT * FROM posts 
+		p INNER JOIN posts_tags pt 
+		ON p.id=pt."postId" 
+		WHERE "tagId"=$1`,
 		[tag]
 	)
 	return feed.rows
 }
 const assignTagToPost = async({postId , tagId}) => {
 	const result = await db.query(
-		// eslint-disable-next-line max-len
 		`INSERT INTO posts_tags ("postId","tagId") 
 		SELECT $1,$2 WHERE NOT EXISTS 
 		(SELECT * FROM posts_tags WHERE "postId" = $1 AND "tagId" = $2) 
