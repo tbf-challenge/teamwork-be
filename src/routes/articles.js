@@ -13,7 +13,7 @@ const router = express.Router()
 const ERROR_MAP = {
 	[ArticleDoesNotExistForCommentError.name] : 422 ,
 	[ArticleDoesNotExistError.name] : 404,
-	[TagAlreadyAssignedToPostError] : 400
+	[TagAlreadyAssignedToPostError.name] : 422
 	
 }
 
