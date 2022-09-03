@@ -1,6 +1,6 @@
 const db = require("../db")
 const { TagDoesNotExistError, TagAlreadyExistsError } = require("./errors")
-const {customError} = require("../lib/custom-error")
+const customError = require("../lib/custom-error")
 
 /**
  * Create a tag

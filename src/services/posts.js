@@ -2,7 +2,7 @@ const db = require("../db")
 const {ArticleDoesNotExistError,
 	 ArticleDoesNotExistForCommentError,
 	  TagAlreadyAssignedToPostError} = require("./errors")
-const {customError} = require("../lib/custom-error")
+const customError = require("../lib/custom-error")
 
 
 const createPost = async({userId, title, image, content, published}) => {
@@ -100,6 +100,7 @@ const assignTagToPost = async({postId , tagId}) => {
 	if (!postsTags) {
 		throw customError(TagAlreadyAssignedToPostError)
 	}
+	return postsTags
 }
 module.exports = {
 	createPost,

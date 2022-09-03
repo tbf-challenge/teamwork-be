@@ -145,12 +145,12 @@ const updateArticle = async (req, res, next) => {
 	}
 }
 
-const deletePostTags = async (req, res, next) => {
+const deleteArticleTags = async (req, res, next) => {
 	
-	const { postId, tagId } = req.params
+	const { articleId, tagId } = req.params
 	try {
 		 await postService.deletePostTags({
-			postId,
+			postId : articleId,
 			tagId
 		})
 		res.status(200).json({
@@ -165,7 +165,7 @@ const deletePostTags = async (req, res, next) => {
 	}
 }
 
-const queryPostsTags = async (req, res, next) => {
+const queryArticleTags = async (req, res, next) => {
 	try {
 		const { tag } = req.query
 		const feed = postService.queryPostTags({
@@ -183,21 +183,21 @@ const queryPostsTags = async (req, res, next) => {
 	}
 }
 
-const assignTagToPost = async (req, res, next) => {
+const assignTagToArticle = async (req, res, next) => {
 	try {
-		const { postId } = req.params // post id;
+		const { articleId } = req.params 
 		const { tagId } = req.body
 
 		const postsTags = await postService.assignTagToPost({
-			postId,
+			postId : articleId,
 			tagId
 		})
  
 		return	res.status(200).json({
 			status: 'success',
 			data: {
-				postId: postsTags.rows[0].postId,
-				tagId: postsTags.rows[0].tagId
+				articleId: postsTags.postId,
+				tagId: postsTags.tagId
 			}
 		})
 		
@@ -222,14 +222,14 @@ router
 	.route('/:id/comment')
 	.post(createComment)
 router
-	.route('/:postId/tags')
-	.post(assignTagToPost)
+	.route('/:articleId/tags')
+	.post(assignTagToArticle)
 router
 	.route('/query')
-	.get(queryPostsTags)
+	.get(queryArticleTags)
 router
-	.route('/:postId/tags/:tagId')
-	.delete(deletePostTags)
+	.route('/:articleId/tags/:tagId')
+	.delete(deleteArticleTags)
 router
 	.use((err, req, res, next)=> {
 		// eslint-disable-next-line no-param-reassign
