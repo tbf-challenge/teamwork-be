@@ -14,6 +14,10 @@ module.exports= {
 	TagAlreadyExistsError : {
 		name: 'TagAlreadyExistsError',
 		message: 'Tag already exists'
+	},
+	TagAlreadyAssignedToPostError : {
+		name: 'TagAlreadyAssignedToPostError',
+		message: 'Tag is already assigned to post '
 	}
 
 }

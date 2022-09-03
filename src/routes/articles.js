@@ -4,14 +4,16 @@ const { logger } = require('../lib')
 const isAuthenticated = require('../middleware/isAuthenticated')
 const {
 	ArticleDoesNotExistForCommentError,
-	ArticleDoesNotExistError
+	ArticleDoesNotExistError,
+	TagAlreadyAssignedToPostError
 } = require("../services/errors")
 
 const log = logger()
 const router = express.Router()
 const ERROR_MAP = {
 	[ArticleDoesNotExistForCommentError.name] : 422 ,
-	[ArticleDoesNotExistError.name] : 404
+	[ArticleDoesNotExistError.name] : 404,
+	[TagAlreadyAssignedToPostError.name] : 422
 	
 }
 
@@ -143,12 +145,12 @@ const updateArticle = async (req, res, next) => {
 	}
 }
 
-const deletePostTags = async (req, res, next) => {
+const deleteArticleTags = async (req, res, next) => {
 	
-	const { postId, tagId } = req.params
+	const { articleId, tagId } = req.params
 	try {
 		 await postService.deletePostTags({
-			postId,
+			postId : articleId,
 			tagId
 		})
 		res.status(200).json({
@@ -163,7 +165,7 @@ const deletePostTags = async (req, res, next) => {
 	}
 }
 
-const queryPostsTags = async (req, res, next) => {
+const queryArticleTags = async (req, res, next) => {
 	try {
 		const { tag } = req.query
 		const feed = postService.queryPostTags({
@@ -178,6 +180,30 @@ const queryPostsTags = async (req, res, next) => {
 	} catch (err) {
 		log.error(err.message)
 		next(err)
+	}
+}
+
+const assignTagToArticle = async (req, res, next) => {
+	try {
+		const { articleId } = req.params 
+		const { tagId } = req.body
+
+		const postsTags = await postService.assignTagToPost({
+			postId : articleId,
+			tagId
+		})
+ 
+		return	res.status(200).json({
+			status: 'success',
+			data: {
+				articleId: postsTags.postId,
+				tagId: postsTags.tagId
+			}
+		})
+		
+	} catch (err) {
+		log.error(err.message)
+		return next(err)
 	}
 }
 
@@ -196,11 +222,14 @@ router
 	.route('/:id/comment')
 	.post(createComment)
 router
-	.route('/query')
-	.get(queryPostsTags)
+	.route('/:articleId/tags')
+	.post(assignTagToArticle)
 router
-	.route('/:postId/tags/:tagId')
-	.delete(deletePostTags)
+	.route('/query')
+	.get(queryArticleTags)
+router
+	.route('/:articleId/tags/:tagId')
+	.delete(deleteArticleTags)
 router
 	.use((err, req, res, next)=> {
 		// eslint-disable-next-line no-param-reassign
