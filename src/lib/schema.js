@@ -97,12 +97,11 @@ const updatePostSchema = Joi.object({
 	userId: Joi.number()
 		.required(),
 	title: Joi.string()
-		.alphanum()
 		.min(3)
 		.max(30)
 		.required(),
 	image: Joi.string()
-		.alphanum(),
+		.uri(),
 	content: Joi.string()
 		.required(),
 	published: Joi.boolean()
