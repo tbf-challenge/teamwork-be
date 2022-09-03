@@ -105,7 +105,8 @@ const updatePostSchema = Joi.object({
 		.alphanum(),
 	content: Joi.string(),
 	published: Joi.boolean()
-})
+}).or('content', 'image')
+
 module.exports = {
 	'/create-user': authSchema,
 	'/signin': signinSchema,
