@@ -2,6 +2,7 @@ const db = require("../db")
 const {ArticleDoesNotExistError,
 	 ArticleDoesNotExistForCommentError,
 	  TagAlreadyAssignedToPostError} = require("./errors")
+const {customError} = require("../lib/custom-error")
 
 
 const createPost = async({userId, title, image, content, published}) => {
@@ -18,10 +19,7 @@ const createComment = async({id, userId, comment}) => {
 	const result = await db.query('SELECT * FROM posts WHERE id = $1', [id])
 	const post = result.rows[0]
 	if (!post) {
-		const errorMessage = ArticleDoesNotExistForCommentError.message
-		const err =  Error(errorMessage)
-		err.name = ArticleDoesNotExistForCommentError.name
-		throw err
+		throw customError(ArticleDoesNotExistForCommentError)
 	}
 	
 	const queryResult = await db.query(
@@ -44,10 +42,7 @@ const getPost = async({id}) => {
 	)
 	const post = result.rows[0]
 	if (!post) {
-		const errorMessage = ArticleDoesNotExistError.message
-		const err =  Error(errorMessage)
-		err.name = ArticleDoesNotExistError.name
-		throw err
+		throw customError(ArticleDoesNotExistError)
 	}
 	return post
 }
@@ -65,10 +60,7 @@ const updatePost = async({title, content, image, published, id}) => {
 	)
 	const updatedPost = result.rows[0]
 	if (!updatedPost) {
-		const errorMessage = ArticleDoesNotExistError.message
-		const err =  Error(errorMessage)
-		err.name = ArticleDoesNotExistError.name
-		throw err
+		throw customError(ArticleDoesNotExistError)
 	}
 	
 	return updatedPost
@@ -100,10 +92,7 @@ const assignTagToPost = async({postId , tagId}) => {
 	)
 	const postsTags = result.rows[0]
 	if (!postsTags) {
-		const errorMessage = TagAlreadyAssignedToPostError.message
-		const err =  Error(errorMessage)
-		err.name = TagAlreadyAssignedToPostError.name
-		throw err
+		throw customError(TagAlreadyAssignedToPostError)
 	}
 }
 module.exports = {
