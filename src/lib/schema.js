@@ -93,8 +93,22 @@ const postSchema = Joi.object({
 	published: Joi.boolean()
 })
 
+const updatePostSchema = Joi.object({
+	userId: Joi.number()
+		.required(),
+	title: Joi.string()
+		.alphanum()
+		.min(3)
+		.max(30)
+		.required(),
+	image: Joi.string()
+		.alphanum(),
+	content: Joi.string(),
+	published: Joi.boolean()
+})
 module.exports = {
 	'/create-user': authSchema,
 	'/signin': signinSchema,
-	'/articles': postSchema
+	'/articles': postSchema,
+	'/articles/:id': updatePostSchema
 }
