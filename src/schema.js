@@ -101,7 +101,8 @@ const updatePostSchema = Joi.object({
 		.max(30)
 		.required(),
 	image: Joi.string()
-		.uri(),
+		.uri()
+		.required(),
 	content: Joi.string()
 		.required(),
 	published: Joi.boolean()

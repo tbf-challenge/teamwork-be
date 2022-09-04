@@ -7,6 +7,9 @@ const {
 	ArticleDoesNotExistError,
 	TagAlreadyAssignedToPostError
 } = require("../services/errors")
+const validateSchema = require('../middleware/validateSchema')
+
+const validateRequest = validateSchema(true)
 
 const log = logger()
 const router = express.Router()
@@ -216,7 +219,7 @@ router
 	.route('/:id')
 	.get(getArticle)
 	.delete(deleteArticle)
-	.patch(updateArticle)
+	.patch(validateRequest, updateArticle)
 
 router
 	.route('/:id/comment')

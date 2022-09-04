@@ -1,4 +1,4 @@
-const schemas = require('./schema')
+const schemas = require('../schema')
 const {
 	genPasswordHash,
 	verifyPassword

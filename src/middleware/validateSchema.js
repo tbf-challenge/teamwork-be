@@ -3,7 +3,7 @@
 const {
 	isBoolean, includes, map, has, get
 } = require('lodash')
-const { schemas } = require('../lib')
+const { schemas } = require('../schema')
 
 module.exports = (shouldUseJoiError = false) => {
 	// useJoiError determines if we should respond with the base Joi error
@@ -11,8 +11,7 @@ module.exports = (shouldUseJoiError = false) => {
 	const useJoiError = isBoolean(shouldUseJoiError) && shouldUseJoiError
 
 	// enabled HTTP methods for request data validation
-	const supportedMethods = ['post', 'put']
-
+	const supportedMethods = ['post', 'put', 'patch']
 	// Joi validation options
 	const validationOptions = {
 		abortEarly: false, // abort after the last validation error
@@ -29,7 +28,6 @@ module.exports = (shouldUseJoiError = false) => {
 		if (includes(supportedMethods, method) && has(schemas, route)) {
 			// get schema for the current route
 			const schema = get(schemas, route)
-
 			if (schema) {
 				// Validate req.body using the schema and validation options
 				const { value, error } = schema
