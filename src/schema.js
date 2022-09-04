@@ -109,8 +109,8 @@ const updatePostSchema = Joi.object({
 })
 
 module.exports = {
-	'/create-user': authSchema,
-	'/signin': signinSchema,
-	'/articles': postSchema,
-	'/articles/:id': updatePostSchema
+	authSchema,
+	signinSchema,
+	postSchema,
+	updatePostSchema
 }

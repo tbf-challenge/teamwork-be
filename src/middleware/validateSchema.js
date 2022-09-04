@@ -3,7 +3,7 @@
 const {
 	isBoolean, includes, map, has, get
 } = require('lodash')
-const { schemas } = require('../schema')
+const  schemas  = require('../schema')
 
 module.exports = (shouldUseJoiError = false) => {
 	// useJoiError determines if we should respond with the base Joi error
