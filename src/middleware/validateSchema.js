@@ -5,7 +5,7 @@ const {
 } = require('lodash')
 
 
-module.exports = ( schema, shouldUseJoiError = false ) => {
+module.exports = (schema , shouldUseJoiError = false  ) => {
 	// useJoiError determines if we should respond with the base Joi error
 	// boolean: defaults to false
 	const useJoiError = isBoolean(shouldUseJoiError) && shouldUseJoiError
@@ -20,7 +20,7 @@ module.exports = ( schema, shouldUseJoiError = false ) => {
 	// return the validation middleware
 	// eslint-disable-next-line consistent-return
 	return (req, res, next) => {
-	
+
 		if (schema) {
 			// Validate req.body using the schema and validation options
 			const { value, error } = schema

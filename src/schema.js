@@ -89,21 +89,19 @@ const postSchema = Joi.object({
 		.required(),
 	image: Joi.string()
 		.alphanum(),
-	content: Joi.string(),
+	content: Joi.string()
+		.required(),
 	published: Joi.boolean()
 })
 
 const updatePostSchema = Joi.object({
-	userId: Joi.number()
-		.required(),
 	title: Joi.string()
 		.min(3)
 		.max(30)
 		.required(),
 	image: Joi.string()
-		.uri()
-		.required(),
-	content: Joi.string()
+		.uri(),
+	article: Joi.string()
 		.required(),
 	published: Joi.boolean()
 })
