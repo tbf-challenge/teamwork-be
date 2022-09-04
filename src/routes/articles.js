@@ -10,6 +10,7 @@ const {
 const validateSchema = require('../middleware/validateSchema')
 
 const validateRequest = validateSchema(true)
+const {updatePostSchema} = require('../schema')
 
 const log = logger()
 const router = express.Router()
@@ -219,7 +220,7 @@ router
 	.route('/:id')
 	.get(getArticle)
 	.delete(deleteArticle)
-	.patch(validateRequest, updateArticle)
+	.patch(validateRequest(updatePostSchema , true), updateArticle)
 
 router
 	.route('/:id/comment')

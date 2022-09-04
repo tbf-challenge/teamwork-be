@@ -5,11 +5,16 @@ const { catchAsync } = require('../lib')
 
 const validateRequest = validateSchema(true)
 
+const {
+	authSchema,
+	signinSchema
+} = require('../schema')
+
 const router = express.Router()
 
 router.post(
 	'/signin',
-	validateRequest,
+	validateRequest(signinSchema , true),
 	catchAsync(async (req, res) => {
 		const { email, password } = req.body
 
@@ -29,7 +34,7 @@ router.post(
 
 router.post(
 	'/create-user',
-	validateRequest,
+	validateRequest(authSchema , true),
 	catchAsync(async (req, res) => {
 		const {
 			firstName,
