@@ -118,9 +118,25 @@ const updatePostSchema = Joi.object({
 	}
 })
 
+const createCommentSchema = Joi.object({
+	params: {
+		id :Joi.number()
+			.required()
+	},
+	body: {
+		articleTitle: Joi.string()
+			.min(3)
+			.max(30),
+		article: Joi.string(),
+		comment: Joi.string()
+			.required()
+	}
+})
+
 module.exports = {
 	authSchema,
 	signinSchema,
 	postSchema,
-	updatePostSchema
+	updatePostSchema,
+	createCommentSchema
 }
