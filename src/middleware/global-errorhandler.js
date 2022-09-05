@@ -38,6 +38,7 @@ const handleErrorForDuplicateFields = (error) => {
 
 // eslint-disable-next-line no-unused-vars
 module.exports = (err, req, res, next) => {
+	
 	let error = err
 	error.statusCode = err.statusCode || 500
 	error.status = err.status || 'Internal server error'

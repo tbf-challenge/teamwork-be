@@ -7,6 +7,9 @@ const {
 	ArticleDoesNotExistError,
 	TagAlreadyAssignedToPostError
 } = require("../services/errors")
+const validateSchema = require('../middleware/validateSchema')
+
+const {updatePostSchema} = require('../schema')
 
 const log = logger()
 const router = express.Router()
@@ -122,7 +125,7 @@ const deleteArticle = async (req, res, next) => {
 const updateArticle = async (req, res, next) => {
 	const { id } = req.params 
 	const { title, article, image, published } = req.body 
-
+	
 	try {
 		const updatedArticle = await postService.updatePost({
 			title,
@@ -216,7 +219,7 @@ router
 	.route('/:id')
 	.get(getArticle)
 	.delete(deleteArticle)
-	.patch(updateArticle)
+	.patch(validateSchema(updatePostSchema), updateArticle)
 
 router
 	.route('/:id/comment')
