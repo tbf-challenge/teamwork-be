@@ -89,6 +89,7 @@ const createPostSchema = Joi.object({
 			.required(),
 		title: Joi.string()
 			.alphanum()
+			.min(3)
 			.max(30)
 			.required(),
 		image: Joi.string()
@@ -146,7 +147,6 @@ const deletePostSchema = Joi.object({
 const createTagSchema = Joi.object({
 	body: {
 		title: Joi.string()
-			.min(3)
 			.max(30)
 			.required(),
 		content: Joi.string()
