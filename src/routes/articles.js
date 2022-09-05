@@ -9,7 +9,9 @@ const {
 } = require("../services/errors")
 const validateSchema = require('../middleware/validateSchema')
 
-const {updatePostSchema} = require('../schema')
+const {updatePostSchema ,
+	 createCommentSchema 
+} = require('../schema')
 
 const log = logger()
 const router = express.Router()
@@ -223,7 +225,7 @@ router
 
 router
 	.route('/:id/comment')
-	.post(createComment)
+	.post(validateSchema(createCommentSchema), createComment)
 router
 	.route('/:articleId/tags')
 	.post(assignTagToArticle)
