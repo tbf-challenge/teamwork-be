@@ -144,6 +144,16 @@ const deletePostSchema = Joi.object({
 			.required()
 	}
 })
+const createTagSchema = Joi.object({
+	body: {
+		title: Joi.string()
+			.max(30)
+			.required(),
+		content: Joi.string()
+			.required()
+	}
+})
+
 module.exports = {
 	authSchema,
 	signinSchema,
@@ -151,5 +161,6 @@ module.exports = {
 	updatePostSchema,
 	createCommentSchema,
 	getPostByIdSchema,
-	deletePostSchema
+	deletePostSchema,
+	createTagSchema
 }
