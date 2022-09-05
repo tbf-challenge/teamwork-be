@@ -1,4 +1,3 @@
-const schemas = require('../schema')
 const {
 	genPasswordHash,
 	verifyPassword
@@ -11,7 +10,6 @@ const statusCode = require('./status-codes')
 const catchAsync = require('./catch-async')
 
 module.exports = {
-	schemas,
 	genPasswordHash,
 	verifyPassword,
 	passportjwt,
