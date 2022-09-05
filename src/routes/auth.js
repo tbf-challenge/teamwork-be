@@ -13,7 +13,7 @@ const router = express.Router()
 
 router.post(
 	'/signin',
-	validateSchema(signinSchema , true),
+	validateSchema(signinSchema),
 	catchAsync(async (req, res) => {
 		const { email, password } = req.body
 
@@ -33,7 +33,7 @@ router.post(
 
 router.post(
 	'/create-user',
-	validateSchema(authSchema , true),
+	validateSchema(authSchema),
 	catchAsync(async (req, res) => {
 		const {
 			firstName,

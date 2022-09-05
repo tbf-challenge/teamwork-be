@@ -36,7 +36,7 @@ module.exports = (schema ) => {
 					}
 				}
 
-				return res.status(422)
+				return res.status(400)
 					.json( JoiError )
 			}
 			return next()
