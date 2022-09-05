@@ -89,7 +89,6 @@ const createPostSchema = Joi.object({
 			.required(),
 		title: Joi.string()
 			.alphanum()
-			.min(3)
 			.max(30)
 			.required(),
 		image: Joi.string()
