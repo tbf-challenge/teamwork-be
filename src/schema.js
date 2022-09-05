@@ -83,7 +83,7 @@ const signinSchema = Joi.object({
 	}
 })
 
-const postSchema = Joi.object({
+const createPostSchema = Joi.object({
 	body:{
 		userId: Joi.number()
 			.required(),
@@ -93,8 +93,8 @@ const postSchema = Joi.object({
 			.max(30)
 			.required(),
 		image: Joi.string()
-			.alphanum(),
-		content: Joi.string()
+			.uri(),
+		article: Joi.string()
 			.required(),
 		published: Joi.boolean()
 	}
@@ -138,11 +138,18 @@ const getPostByIdSchema = Joi.object({
 	}
 })
 
+const deletePostSchema = Joi.object({
+	params: {
+		id :Joi.number()
+			.required()
+	}
+})
 module.exports = {
 	authSchema,
 	signinSchema,
-	postSchema,
+	createPostSchema,
 	updatePostSchema,
 	createCommentSchema,
-	getPostByIdSchema
+	getPostByIdSchema,
+	deletePostSchema
 }

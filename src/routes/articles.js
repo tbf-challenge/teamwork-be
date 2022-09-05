@@ -9,9 +9,12 @@ const {
 } = require("../services/errors")
 const validateSchema = require('../middleware/validateSchema')
 
-const {updatePostSchema ,
+const {
+	createPostSchema,
+	updatePostSchema ,
 	 createCommentSchema ,
-	 getPostByIdSchema
+	 getPostByIdSchema,
+	 deletePostSchema
 } = require('../schema')
 
 const log = logger()
@@ -217,11 +220,11 @@ const assignTagToArticle = async (req, res, next) => {
 router.use(isAuthenticated())
 router
 	.route('/')
-	.post( createArticle)
+	.post( validateSchema(createPostSchema), createArticle)
 router
 	.route('/:id')
 	.get(validateSchema(getPostByIdSchema), getArticle)
-	.delete(deleteArticle)
+	.delete(validateSchema(deletePostSchema), deleteArticle)
 	.patch(validateSchema(updatePostSchema), updateArticle)
 
 router
