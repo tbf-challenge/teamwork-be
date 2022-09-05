@@ -131,10 +131,18 @@ const createCommentSchema = Joi.object({
 	}
 })
 
+const getPostByIdSchema = Joi.object({
+	params: {
+		id :Joi.number()
+			.required()
+	}
+})
+
 module.exports = {
 	authSchema,
 	signinSchema,
 	postSchema,
 	updatePostSchema,
-	createCommentSchema
+	createCommentSchema,
+	getPostByIdSchema
 }
