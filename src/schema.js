@@ -167,6 +167,12 @@ const updateTagSchema = Joi.object({
 			.required()
 	}
 })
+const deleteTagSchema = Joi.object({
+	params: {
+		tagId :Joi.number()
+			.required()
+	}
+})
 
 module.exports = {
 	authSchema,
@@ -177,5 +183,6 @@ module.exports = {
 	getPostByIdSchema,
 	deletePostSchema,
 	createTagSchema,
-	updateTagSchema
+	updateTagSchema,
+	deleteTagSchema
 }
