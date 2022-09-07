@@ -15,7 +15,8 @@ const {
 	 createCommentSchema ,
 	 getPostByIdSchema,
 	 deletePostSchema,
-	 assignTagToArticleSchema
+	 assignTagToArticleSchema,
+	 deleteArticleTagsSchema
 } = require('../schema')
 
 const log = logger()
@@ -239,7 +240,7 @@ router
 	.get(queryArticleTags)
 router
 	.route('/:articleId/tags/:tagId')
-	.delete(deleteArticleTags)
+	.delete(validateSchema(deleteArticleTagsSchema), deleteArticleTags)
 router
 	.use((err, req, res, next)=> {
 		// eslint-disable-next-line no-param-reassign
