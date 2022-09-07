@@ -154,6 +154,20 @@ const createTagSchema = Joi.object({
 	}
 })
 
+const updateTagSchema = Joi.object({
+	params: {
+		tagId :Joi.number()
+			.required()
+	},
+	body: {
+		title: Joi.string()
+			.max(30)
+			.required(),
+		content: Joi.string()
+			.required()
+	}
+})
+
 module.exports = {
 	authSchema,
 	signinSchema,
@@ -162,5 +176,6 @@ module.exports = {
 	createCommentSchema,
 	getPostByIdSchema,
 	deletePostSchema,
-	createTagSchema
+	createTagSchema,
+	updateTagSchema
 }

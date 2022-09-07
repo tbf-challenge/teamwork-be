@@ -4,7 +4,8 @@ const { tagController } = require('../controllers')
 const validateSchema = require('../middleware/validateSchema')
 
 const {
-	createTagSchema
+	createTagSchema,
+	updateTagSchema
 } = require('../schema')
 // isAuthenticated middle to protect all posts related requests
 tagRouter.use(isAuthenticated())
@@ -15,7 +16,7 @@ tagRouter
 	.post( validateSchema(createTagSchema), tagController.createNewTag)
 tagRouter
 	.route("/:tagId")
-	.patch(tagController.updateTag)
+	.patch(validateSchema(updateTagSchema), tagController.updateTag)
 	.delete(tagController.deleteTag)
 
 tagRouter.use(tagController.tagErrorMiddleware)
