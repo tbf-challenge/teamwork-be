@@ -104,7 +104,7 @@ const assignTagToPost = async({postId , tagId}) => {
 	return postsTags
 }
 
-const fetchPost = async() => {
+const fetchPosts = async() => {
 	const feed = await db.query('SELECT * FROM posts')
 
 	return feed.rows
@@ -119,5 +119,5 @@ module.exports = {
 	deletePostTags,
 	queryPostTags,
 	assignTagToPost,
-	fetchPost
+	fetchPosts
 }
