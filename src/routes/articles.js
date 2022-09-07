@@ -4,14 +4,25 @@ const { logger } = require('../lib')
 const isAuthenticated = require('../middleware/isAuthenticated')
 const {
 	ArticleDoesNotExistForCommentError,
-	ArticleDoesNotExistError
+	ArticleDoesNotExistError,
+	TagAlreadyAssignedToPostError
 } = require("../services/errors")
+const validateSchema = require('../middleware/validateSchema')
+
+const {
+	createPostSchema,
+	updatePostSchema ,
+	 createCommentSchema ,
+	 getPostByIdSchema,
+	 deletePostSchema
+} = require('../schema')
 
 const log = logger()
 const router = express.Router()
 const ERROR_MAP = {
 	[ArticleDoesNotExistForCommentError.name] : 422 ,
-	[ArticleDoesNotExistError.name] : 404
+	[ArticleDoesNotExistError.name] : 404,
+	[TagAlreadyAssignedToPostError.name] : 422
 	
 }
 
@@ -120,7 +131,7 @@ const deleteArticle = async (req, res, next) => {
 const updateArticle = async (req, res, next) => {
 	const { id } = req.params 
 	const { title, article, image, published } = req.body 
-
+	
 	try {
 		const updatedArticle = await postService.updatePost({
 			title,
@@ -143,20 +154,91 @@ const updateArticle = async (req, res, next) => {
 	}
 }
 
+const deleteArticleTags = async (req, res, next) => {
+	
+	const { articleId, tagId } = req.params
+	try {
+		 await postService.deletePostTags({
+			postId : articleId,
+			tagId
+		})
+		res.status(200).json({
+			status: 'success',
+			data: {
+				message: 'Tag has been removed from post'
+			}
+		})
+	} catch (err) {
+		log.error(err.message)
+		next(err)
+	}
+}
+
+const queryArticleTags = async (req, res, next) => {
+	try {
+		const { tag } = req.query
+		const feed = postService.queryPostTags({
+			tag
+		})
+
+		res.status(200).json({
+			status: 'success',
+			data: {...transformArticleResponse(feed)
+			}
+		})
+	} catch (err) {
+		log.error(err.message)
+		next(err)
+	}
+}
+
+const assignTagToArticle = async (req, res, next) => {
+	try {
+		const { articleId } = req.params 
+		const { tagId } = req.body
+
+		const postsTags = await postService.assignTagToPost({
+			postId : articleId,
+			tagId
+		})
+ 
+		return	res.status(200).json({
+			status: 'success',
+			data: {
+				articleId: postsTags.postId,
+				tagId: postsTags.tagId
+			}
+		})
+		
+	} catch (err) {
+		log.error(err.message)
+		return next(err)
+	}
+}
+
 // ROUTES
 router.use(isAuthenticated())
 router
 	.route('/')
-	.post( createArticle)
+	.post( validateSchema(createPostSchema), createArticle)
 router
 	.route('/:id')
-	.get(getArticle)
-	.delete(deleteArticle)
-	.patch(updateArticle)
+	.get(validateSchema(getPostByIdSchema), getArticle)
+	.delete(validateSchema(deletePostSchema), deleteArticle)
+	.patch(validateSchema(updatePostSchema), updateArticle)
 
 router
 	.route('/:id/comment')
-	.post(createComment)
+	.post(validateSchema(createCommentSchema), createComment)
+router
+	.route('/:articleId/tags')
+	.post(assignTagToArticle)
+router
+	.route('/query')
+	.get(queryArticleTags)
+router
+	.route('/:articleId/tags/:tagId')
+	.delete(deleteArticleTags)
 router
 	.use((err, req, res, next)=> {
 		// eslint-disable-next-line no-param-reassign

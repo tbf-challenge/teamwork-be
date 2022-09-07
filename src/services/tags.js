@@ -1,6 +1,6 @@
 const db = require("../db")
 const { TagDoesNotExistError, TagAlreadyExistsError } = require("./errors")
-
+const customError = require("../lib/custom-error")
 
 /**
  * Create a tag
@@ -8,16 +8,16 @@ const { TagDoesNotExistError, TagAlreadyExistsError } = require("./errors")
  */
 const createTag = async ({ content, title }) => {
 	const result = await db.query(
-		// eslint-disable-next-line max-len
-		"INSERT INTO tags (content, title) SELECT $1, $2 WHERE NOT EXISTS (SELECT * FROM tags WHERE title = $2) RETURNING *",
+		`INSERT INTO tags (content, title) 
+		SELECT $1, $2 
+		WHERE NOT EXISTS 
+		(SELECT * FROM tags WHERE title = $2) 
+		RETURNING *`,
 		[content, title]
 	)
 	const newTag =  result.rows[0]
 	if (!newTag){
-		const errorMessage = TagAlreadyExistsError.message
-		const err =  Error(errorMessage)
-		err.name = TagAlreadyExistsError.name
-		throw err
+		throw customError(TagAlreadyExistsError)
 	}
 
 	return newTag
@@ -42,17 +42,15 @@ const fetchTags = async () => {
 const updateTag = async (title, content, tagId) => {
 
 	const result = await db.query(
-		// eslint-disable-next-line max-len
-		"UPDATE tags SET content = $1, title = $2 WHERE id = $3 RETURNING *",
+		`UPDATE tags 
+		SET content = $1, title = $2
+		 WHERE id = $3 RETURNING *`,
 		[content, title, tagId]
 	)
 	const updatedTag = result.rows[0]
 	
 	if (!updatedTag){
-		const errorMessage = TagDoesNotExistError.message
-		const err =  Error(errorMessage)
-		err.name = TagDoesNotExistError.name
-		throw err
+		throw customError(TagDoesNotExistError)
 	}
 	return updatedTag
 }
