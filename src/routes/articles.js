@@ -16,7 +16,8 @@ const {
 	 getPostByIdSchema,
 	 deletePostSchema,
 	 assignTagToArticleSchema,
-	 deleteArticleTagsSchema
+	 deleteArticleTagsSchema,
+	 queryArticleTagsSchema
 } = require('../schema')
 
 const log = logger()
@@ -35,7 +36,8 @@ const transformArticleResponse = (article) => ({
 	article: article.content,
 	published: article.published,
 	createdOn: article.createdAt,
-	articleId: article.id
+	articleId: article.id,
+	tagId : article.tagId
 })
 
 const createArticle = async (req, res, next) => {
@@ -179,14 +181,14 @@ const deleteArticleTags = async (req, res, next) => {
 const queryArticleTags = async (req, res, next) => {
 	try {
 		const { tag } = req.query
-		const feed = postService.queryPostTags({
+		const feed = await postService.queryPostTags({
 			tag
 		})
-
+		
 		res.status(200).json({
 			status: 'success',
-			data: {...transformArticleResponse(feed)
-			}
+			data:  feed.map(transformArticleResponse)
+
 		})
 	} catch (err) {
 		log.error(err.message)
@@ -224,6 +226,9 @@ router
 	.route('/')
 	.post( validateSchema(createPostSchema), createArticle)
 router
+	.route('/query')
+	.get(validateSchema(queryArticleTagsSchema), queryArticleTags)
+router
 	.route('/:id')
 	.get(validateSchema(getPostByIdSchema), getArticle)
 	.delete(validateSchema(deletePostSchema), deleteArticle)
@@ -235,9 +240,6 @@ router
 router
 	.route('/:articleId/tags')
 	.post(validateSchema(assignTagToArticleSchema), assignTagToArticle)
-router
-	.route('/query')
-	.get(queryArticleTags)
 router
 	.route('/:articleId/tags/:tagId')
 	.delete(validateSchema(deleteArticleTagsSchema), deleteArticleTags)
