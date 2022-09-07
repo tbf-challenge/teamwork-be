@@ -19,5 +19,4 @@ module.exports= {
 		name: 'TagAlreadyAssignedToPostError',
 		message: 'Tag is already assigned to post '
 	}
-
 }

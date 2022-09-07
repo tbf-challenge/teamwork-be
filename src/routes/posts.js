@@ -1,11 +1,12 @@
 const express = require('express')
-
-const db = require('../db')
 const { logger } = require('../lib')
 const isAuthenticated = require('../middleware/isAuthenticated')
 
+const postService = require('../services/posts')
+
 const log = logger()
 const router = express.Router()
+
 
 // GET REQUESTS
 
@@ -13,12 +14,11 @@ const router = express.Router()
 
 const fetchPosts = async (req, res, next) => {
 	try {
-		const feed = await db.query('SELECT * FROM posts')
-		const allArticles = feed.rows
+		const feed = await postService.fetchPost({})
 
 		res.status(200).json({
 			status: 'success',
-			data: allArticles.map((article) => ({
+			data: feed.map((article) => ({
 				id: article.id,
 				userId: article.userId,
 				title: article.title,
