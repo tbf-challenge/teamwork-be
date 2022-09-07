@@ -3,15 +3,10 @@ const { logger } = require('../lib')
 const isAuthenticated = require('../middleware/isAuthenticated')
 
 const postService = require('../services/posts')
-const {
-	FeedDoesNotExistError
-} = require("../services/errors")
 
 const log = logger()
 const router = express.Router()
-const ERROR_MAP = {
-	[FeedDoesNotExistError.name] : 422 
-}
+
 
 // GET REQUESTS
 
@@ -47,16 +42,5 @@ router.use(isAuthenticated())
 router
 	.route('/')
 	.get(fetchPosts)
-router
-	.use((err, req, res, next)=> {
-		// eslint-disable-next-line no-param-reassign
-		err.success = false
-		if(ERROR_MAP[err.name] ){
-			// eslint-disable-next-line no-param-reassign
-			err.statusCode = ERROR_MAP[err.name]
-			
-		} 
-		next(err)
-	})
 
 module.exports = router

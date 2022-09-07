@@ -1,8 +1,7 @@
 const db = require("../db")
 const {ArticleDoesNotExistError,
 	 ArticleDoesNotExistForCommentError,
-	  TagAlreadyAssignedToPostError,
-	FeedDoesNotExistError
+	  TagAlreadyAssignedToPostError
 } = require("./errors")
 const customError = require("../lib/custom-error")
 
@@ -106,12 +105,9 @@ const assignTagToPost = async({postId , tagId}) => {
 }
 
 const fetchPost = async() => {
-	const result = await db.query('SELECT * FROM posts')
-	const feed = result.rows
-	if (!feed) {
-		throw customError(FeedDoesNotExistError)
-	}
-	return feed
+	const feed = await db.query('SELECT * FROM posts')
+
+	return feed.rows
 }
 
 module.exports = {
