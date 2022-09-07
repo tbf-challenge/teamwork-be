@@ -4,6 +4,21 @@ const {
 	 map
 } = require('lodash')
 
+/**
+ * 
+ * @param {object} req this is the request object containing extra details
+ * @returns {object} Returns the stripped 
+ * request object with body, params and query
+ */
+const stripReq = (req) => {
+	const strippedReq = {
+		body: req.body,
+		params: req.params,
+		query: req.query
+	}
+	return strippedReq
+}
+
 
 module.exports = (schema ) => {
 	
@@ -19,9 +34,14 @@ module.exports = (schema ) => {
 	return (req, res, next) => {
 
 		if (schema) {
+
+			// Strip request 
+			const strippedReq = stripReq(req)
+
+
 			// Validate req.body using the schema and validation options
 			const {  error } = schema
-				.validate(req, validationOptions)
+				.validate(strippedReq, validationOptions)
 
 			if (error) {
 				// Joi Error
@@ -32,13 +52,23 @@ module.exports = (schema ) => {
 						// fetch only message and type from each error
 						message: map(error.details, ({ message }) => (
 							message.replace(/['"]/g, '')
+								.replace('body.', '')
+								.replace('query.', '')
+								.replace('params.', '')
 						)).join(', ')
 					}
 				}
 
+
 				return res.status(400)
 					.json( JoiError )
 			}
+
+			// reassign validated data to request
+			req.body = strippedReq.body
+			req.params = strippedReq.params
+			req.query = strippedReq.query
+
 			return next()
 		}
 	}
