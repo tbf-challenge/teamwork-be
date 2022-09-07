@@ -40,7 +40,7 @@ module.exports = (schema ) => {
 
 
 			// Validate req.body using the schema and validation options
-			const {  error } = schema
+			const { value,  error } = schema
 				.validate(strippedReq, validationOptions)
 
 			if (error) {
@@ -65,9 +65,9 @@ module.exports = (schema ) => {
 			}
 
 			// reassign validated data to request
-			req.body = strippedReq.body
-			req.params = strippedReq.params
-			req.query = strippedReq.query
+			req.body = value.body || strippedReq.body
+			req.params = value.params || strippedReq.params
+			req.query = value.query || strippedReq.query
 
 			return next()
 		}
