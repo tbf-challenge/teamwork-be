@@ -18,6 +18,10 @@ module.exports= {
 	TagAlreadyAssignedToPostError : {
 		name: 'TagAlreadyAssignedToPostError',
 		message: 'Tag is already assigned to post '
+	},
+	FeedDoesNotExistError : {
+		name : 'FeedDoesNotExistError',
+		message : 'Feed does not exist'
 	}
 
 }
