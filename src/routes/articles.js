@@ -14,7 +14,8 @@ const {
 	updatePostSchema ,
 	 createCommentSchema ,
 	 getPostByIdSchema,
-	 deletePostSchema
+	 deletePostSchema,
+	 assignTagToArticleSchema
 } = require('../schema')
 
 const log = logger()
@@ -232,7 +233,7 @@ router
 	.post(validateSchema(createCommentSchema), createComment)
 router
 	.route('/:articleId/tags')
-	.post(assignTagToArticle)
+	.post(validateSchema(assignTagToArticleSchema), assignTagToArticle)
 router
 	.route('/query')
 	.get(queryArticleTags)
