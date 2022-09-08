@@ -5,6 +5,7 @@ const {ArticleDoesNotExistError,
 } = require("./errors")
 const customError = require("../lib/custom-error")
 
+const uniqueErrorCode = '23505'
 
 const createPost = async({userId, title, image, content, published}) => {
 	const newPost = await db.query(
@@ -96,7 +97,7 @@ const assignTagToPost = async({postId , tagId}) => {
 		RETURNING *`,
 		[postId, tagId]
 	).catch(error => {
-		if(error.code === '23505'){
+		if(error.code === uniqueErrorCode ){
 			throw customError(TagAlreadyAssignedToPostError)
 		}
 		else{
