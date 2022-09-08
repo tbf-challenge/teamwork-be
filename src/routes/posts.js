@@ -14,7 +14,7 @@ const router = express.Router()
 
 const fetchPosts = async (req, res, next) => {
 	try {
-		const feed = await postService.fetchPost({})
+		const feed = await postService.fetchPosts({})
 
 		res.status(200).json({
 			status: 'success',

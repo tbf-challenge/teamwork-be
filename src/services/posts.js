@@ -92,8 +92,7 @@ const queryPostTags = async({tag}) => {
 const assignTagToPost = async({postId , tagId}) => {
 	const result = await db.query(
 		`INSERT INTO posts_tags ("postId","tagId") 
-		SELECT $1,$2 WHERE NOT EXISTS 
-		(SELECT * FROM posts_tags WHERE "postId" = $1 AND "tagId" = $2) 
+		VALUES ($1,$2) 
 		RETURNING *`,
 		[postId, tagId]
 	)
