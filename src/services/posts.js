@@ -5,6 +5,7 @@ const {ArticleDoesNotExistError,
 } = require("./errors")
 const customError = require("../lib/custom-error")
 
+const uniqueErrorCode = '23505'
 
 const createPost = async({userId, title, image, content, published}) => {
 	const newPost = await db.query(
@@ -92,16 +93,19 @@ const queryPostTags = async({tag}) => {
 const assignTagToPost = async({postId , tagId}) => {
 	const result = await db.query(
 		`INSERT INTO posts_tags ("postId","tagId") 
-		SELECT $1,$2 WHERE NOT EXISTS 
-		(SELECT * FROM posts_tags WHERE "postId" = $1 AND "tagId" = $2) 
+		VALUES ($1,$2) 
 		RETURNING *`,
 		[postId, tagId]
-	)
-	const postsTags = result.rows[0]
-	if (!postsTags) {
-		throw customError(TagAlreadyAssignedToPostError)
-	}
-	return postsTags
+	).catch(error => {
+		if(error.code === uniqueErrorCode ){
+			throw customError(TagAlreadyAssignedToPostError)
+		}
+		else{
+			throw error
+		}
+	})
+	
+	return result.rows[0]
 }
 
 const fetchPosts = async() => {
