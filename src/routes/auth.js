@@ -1,6 +1,8 @@
 const express = require('express')
 const userSevice = require('../services/users')
 const validateSchema = require('../middleware/validateSchema')
+const isAuthenticated = require('../middleware/isAuthenticated')
+const isAdmin = require('../middleware/isAdmin')
 const { catchAsync } = require('../lib')
 
 
@@ -30,9 +32,10 @@ router.post(
 		})
 	})
 )
-
+router.use(isAuthenticated())
 router.post(
 	'/create-user',
+	isAdmin,
 	validateSchema(authSchema),
 	catchAsync(async (req, res) => {
 		const {
