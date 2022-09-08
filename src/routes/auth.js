@@ -32,9 +32,10 @@ router.post(
 		})
 	})
 )
-router.use(isAuthenticated())
+
 router.post(
 	'/create-user',
+	isAuthenticated(),
 	isAdmin,
 	validateSchema(authSchema),
 	catchAsync(async (req, res) => {
