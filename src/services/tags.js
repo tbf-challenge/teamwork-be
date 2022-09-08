@@ -2,25 +2,27 @@ const db = require("../db")
 const { TagDoesNotExistError, TagAlreadyExistsError } = require("./errors")
 const customError = require("../lib/custom-error")
 
+const uniqueErrorCode = '23505'
 /**
  * Create a tag
  * @param {object} object containing the content and title
  */
 const createTag = async ({ content, title }) => {
-	const result = await db.query(
+	const newTag = await db.query(
 		`INSERT INTO tags (content, title) 
-		SELECT $1, $2 
-		WHERE NOT EXISTS 
-		(SELECT * FROM tags WHERE title = $2) 
+		VALUES ($1,$2) 
 		RETURNING *`,
 		[content, title]
-	)
-	const newTag =  result.rows[0]
-	if (!newTag){
-		throw customError(TagAlreadyExistsError)
-	}
+	).catch(error => {
+		if(error.code === uniqueErrorCode ){
+			throw customError(TagAlreadyExistsError)
+		}
+		else{
+			throw error
+		}
+	})
 
-	return newTag
+	return newTag.rows[0]
 }
 
 /**
