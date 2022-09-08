@@ -95,12 +95,16 @@ const assignTagToPost = async({postId , tagId}) => {
 		VALUES ($1,$2) 
 		RETURNING *`,
 		[postId, tagId]
-	)
-	const postsTags = result.rows[0]
-	if (!postsTags) {
-		throw customError(TagAlreadyAssignedToPostError)
-	}
-	return postsTags
+	).catch(error => {
+		if(error.code === '23505'){
+			throw customError(TagAlreadyAssignedToPostError)
+		}
+		else{
+			throw error
+		}
+	})
+	
+	return result.rows[0]
 }
 
 const fetchPosts = async() => {
