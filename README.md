@@ -65,6 +65,7 @@ npm run migrate create {migration-name}
 
 2. A new migration file will be created.
 3. The content of the migration to be added will depend mainly on the task being done. [Here is a guide](https://salsita.github.io/node-pg-migrate/#/migrations) which shows how to define the migration based on the specific task in question.
+4. After the migration is properly defined, starting the server should run the new migration and effect the corresponding changes in the database.
 
 ## Authors
 
