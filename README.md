@@ -51,9 +51,21 @@ You may also see any lint errors in the console.
 
 Any advise for common problems or issues.
 
+### How do I add a new migration?
+For context, a migration is basically a file that is run to make changes to the existing database structure or schema. For example, adding a new column, making a column required/optional/unique, dropping a column, inserting data and more. 
+
+To create a new migration. Kindly follow the steps outlined below:
+
+1. Create a migration and name it to suit what the migration will be doing. This is done by running 
+
+```bash
+npm run migrate create {migration-name} 
 ```
-command to run if program contains helper info
-```
+ **NB: Change `{migration-name}` to the actual name of the migration. The name should represent the change you're making so it is readable. See the existing names in the `migrations` folder**
+
+2. A new migration file will be created.
+3. The content of the migration to be added will depend mainly on the task being done. [Here is a guide](https://salsita.github.io/node-pg-migrate/#/migrations) which shows how to define the migration based on the specific task in question.
+4. After the migration is properly defined, starting the server should run the new migration and effect the corresponding changes in the database.
 
 ## Authors
 
