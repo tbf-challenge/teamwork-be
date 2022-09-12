@@ -146,7 +146,6 @@ const createTagSchema = Joi.object({
 			.max(30)
 			.required(),
 		content: Joi.string()
-			.required()
 	}
 })
 
@@ -160,7 +159,6 @@ const updateTagSchema = Joi.object({
 			.max(30)
 			.required(),
 		content: Joi.string()
-			.required()
 	}
 })
 const deleteTagSchema = Joi.object({
