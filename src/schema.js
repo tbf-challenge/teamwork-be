@@ -40,14 +40,12 @@ const authSchema = Joi.object({
 			'intersex',
 			'none'
 		)
-			.lowercase()
-			.required(),
+			.lowercase(),
 		jobRole: Joi.string().valid(
 			'admin',
 			'user'
 		)
-			.lowercase()
-			.required(),
+			.lowercase(),
 		department: Joi.string()
 			.valid(
 				'sales',
@@ -59,12 +57,10 @@ const authSchema = Joi.object({
 				'customer support',
 				'software developers'
 			)
-			.lowercase()
-			.required(),
+			.lowercase(),
 		address: Joi.string()
 			.min(3)
 			.max(100)
-			.required()
 	}
 })
 
@@ -150,7 +146,6 @@ const createTagSchema = Joi.object({
 			.max(30)
 			.required(),
 		content: Joi.string()
-			.required()
 	}
 })
 
@@ -164,7 +159,6 @@ const updateTagSchema = Joi.object({
 			.max(30)
 			.required(),
 		content: Joi.string()
-			.required()
 	}
 })
 const deleteTagSchema = Joi.object({
