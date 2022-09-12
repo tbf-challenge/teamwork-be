@@ -41,7 +41,8 @@ const authSchema = Joi.object({
 			'none'
 		)
 			.lowercase(),
-		jobRole: Joi.string().valid(
+		jobRole: Joi.string(),
+		role: Joi.string().valid(
 			'admin',
 			'user'
 		)
