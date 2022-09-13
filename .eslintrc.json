@@ -2,13 +2,14 @@
   "env": {
     "browser": true,
     "commonjs": true,
-    "es2021": true
+    "es2021": true,
+    "mocha" : true
   },
   "extends": ["airbnb-base", "prettier"],
   "parserOptions": {
     "ecmaVersion": "latest"
   },
-  "plugins": ["prettier" , "mocha-no-only"],
+  "plugins": ["prettier"],
   "rules": {
     "linebreak-style": 0,
     "max-len": ["error", { "code": 80 }],
@@ -24,7 +25,6 @@
         "functions": "never"
       }
     ],
-    "no-multiple-empty-lines": ["error", { "max": 2, "maxEOF": 0 }],
-    "mocha-no-only/mocha-no-only": ["error"]
+    "no-multiple-empty-lines": ["error", { "max": 2, "maxEOF": 0 }]
   }
 }
