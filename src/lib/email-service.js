@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 const nodemailer = require("nodemailer")
 const config = require('../config')
 
@@ -32,7 +31,7 @@ const prodConfig = {
 const sendEmail = (from, to, subject, text) => {
 	const configOptions = 
 	 config("NODE_ENV") === "production" ? prodConfig : devConfig
-	 
+
 	const transporter = nodemailer.createTransport(configOptions)
 
 	return transporter.sendMail({
