@@ -1,5 +1,6 @@
 /* eslint-disable class-methods-use-this */
 const nodemailer = require("nodemailer")
+const config = require('../config')
 
 module.exports = class Email {
 	/** Represents the email sender
@@ -9,7 +10,7 @@ module.exports = class Email {
 	constructor(user) {
 		this.to = user.email
 		this.firstName = user.firstName
-		this.from = process.env.EMAIL_FROM
+		this.from = config("EMAIL_FROM")
 	}
 
 	/**
@@ -18,23 +19,23 @@ module.exports = class Email {
      */
 	newTransport() {
 
-		if (process.env.NODE_ENV === 'development') {
+		if (config('NODE_ENV') === 'development') {
 			return nodemailer.createTransport({
-				host: process.env.EMAIL_HOST,
-				port: process.env.EMAIL_PORT,
+				host: config('EMAIL_HOST'),
+				port: config('EMAIL_PORT'),
 				auth: {
-					user: process.env.EMAIL_USERNAME,
-					pass: process.env.EMAIL_PASSWORD
+					user: config('EMAIL_USERNAME'),
+					pass: config('EMAIL_PASSWORD')
 				}
 			})
 		}
 
 		// mail service we decide to use in production
 		return nodemailer.createTransport({
-			service: process.env.MAIL_SERVICE,
+			service: config('MAIL_SERVICE'),
 			auth: {
-				user: process.env.MAIL_SERVICE_USERNAME,
-				pass: process.env.MAIL_SERVICE_PASSWORD
+				user: config('MAIL_SERVICE_USERNAME'),
+				pass: config('MAIL_SERVICE_PASSWORD')
 			}
 		})
 	}
