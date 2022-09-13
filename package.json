@@ -9,7 +9,7 @@
     "migrate": "node-pg-migrate",
     "prestart": "node-pg-migrate --reject-unauthorized=false up",
     "predev": "npm run migrate up",
-    "test": "jest",
+    "test": "mocha \"./{,!(node_modules)/**/}*.test.js\"",
     "prepare": "husky install",
     "lint": "eslint --fix src",
     "seeddb": "node src/scripts/seeddb.js",
@@ -20,17 +20,19 @@
   "license": "ISC",
   "devDependencies": {
     "@faker-js/faker": "7.4.0",
+    "chai": "^4.3.6",
     "eslint": "8.16.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-prettier": "^4.2.1",
     "husky": "^8.0.0",
-    "jest": "28.1.0",
     "minimist": "1.2.6",
+    "mocha": "^10.0.0",
     "ndb": "1.1.5",
     "nodemon": "2.0.19",
-    "prettier": "2.6.2"
+    "prettier": "2.6.2",
+    "supertest": "^6.2.4"
   },
   "dependencies": {
     "bcrypt": "5.0.1",
