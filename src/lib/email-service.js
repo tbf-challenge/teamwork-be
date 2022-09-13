@@ -1,23 +1,28 @@
 const nodemailer = require("nodemailer")
 const config = require('../config')
 
+let transportConfig
 
-const devConfig = {
-	host: config('EMAIL_HOST'),
-	port: config('EMAIL_PORT'),
-	auth: {
-		user: config('EMAIL_USERNAME'),
-		pass: config('EMAIL_PASSWORD')
+if (config("NODE_ENV") === "production"){
+	transportConfig = {
+		service: config('MAIL_SERVICE'),
+		auth: {
+			user: config('MAIL_SERVICE_USERNAME'),
+			pass: config('MAIL_SERVICE_PASSWORD')
+		}
+	}
+} else {
+	transportConfig = {
+		host: config('EMAIL_HOST'),
+		port: config('EMAIL_PORT'),
+		auth: {
+			user: config('EMAIL_USERNAME'),
+			pass: config('EMAIL_PASSWORD')
+		}
 	}
 }
 
-const prodConfig = {
-	service: config('MAIL_SERVICE'),
-	auth: {
-		user: config('MAIL_SERVICE_USERNAME'),
-		pass: config('MAIL_SERVICE_PASSWORD')
-	}
-}
+const transporter = nodemailer.createTransport(transportConfig)
 
 
 /** 
@@ -28,20 +33,13 @@ const prodConfig = {
  * @param {string} text - body of the mail
  * @returns {Promise}
 */
-const sendEmail = (from, to, subject, text) => {
-	const configOptions = 
-	 config("NODE_ENV") === "production" ? prodConfig : devConfig
-
-	const transporter = nodemailer.createTransport(configOptions)
-
-	return transporter.sendMail({
+const sendEmail = ({ from=config('EMAIL_FROM'), to, 
+	subject, text }) => transporter
+	.sendMail({
 		from,
 		to,
 		subject,
 		text
 	})
-
-	
-}
 
 module.exports = sendEmail
