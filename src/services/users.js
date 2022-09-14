@@ -5,6 +5,8 @@ const config = require("../config")
 const db = require("../db")
 const { AppError } = require("../lib")
 
+const frontendUrl = config("FE_URL")
+
 const invalidEmailAndPassword = "Invalid email or password."
 const createNewUser = async (user) => {
 	const [
@@ -88,7 +90,7 @@ const inviteUser = async (email) => {
 		config("TOKEN_SECRET"),
 		 {expiresIn: "7d"})
 
-	const url = `${config("FE_URL")}/signup?token=${token}`
+	const url = `${frontendUrl}/signup?token=${token}`
 
 	const text = `Hi,
 	\n\nPlease click on the following link to complete your registration:
