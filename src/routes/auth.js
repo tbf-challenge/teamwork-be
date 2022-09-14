@@ -13,6 +13,7 @@ const {
 
 const router = express.Router()
 
+
 router.post(
 	'/signin',
 	validateSchema(signinSchema),
@@ -32,6 +33,25 @@ router.post(
 		})
 	})
 )
+
+router.post(
+	'/invite-user',
+	isAuthenticated(),
+	isAdmin,
+
+	catchAsync(async (req, res) => {
+		const { email } = req.body
+		const inviteInfo = await userSevice.inviteUser(email)
+
+		res.status(200).json({
+			status: 'success',
+			data: {
+				inviteInfo
+			}
+		})
+	})
+)
+
 
 router.post(
 	'/create-user',
