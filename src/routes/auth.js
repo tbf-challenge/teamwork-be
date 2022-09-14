@@ -41,12 +41,14 @@ router.post(
 
 	catchAsync(async (req, res) => {
 		const { email } = req.body
-		const inviteInfo = await userSevice.inviteUser(email)
+
+		const { email:userEmail, status } = await userSevice.inviteUser(email)
 
 		res.status(200).json({
 			status: 'success',
 			data: {
-				inviteInfo
+				email: userEmail,
+				status
 			}
 		})
 	})

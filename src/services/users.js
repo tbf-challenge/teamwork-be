@@ -1,11 +1,11 @@
 const jwt = require("jsonwebtoken")
-const { genPasswordHash, verifyPassword, emailService } = require("../lib")
+const { genPasswordHash, verifyPassword, emailLib } = require("../lib")
 
 const config = require("../config")
 const db = require("../db")
 const { AppError } = require("../lib")
 
-const frontendUrl = config("FE_URL")
+const frontendUrl = config("FRONTEND_BASE_URL")
 
 const invalidEmailAndPassword = "Invalid email or password."
 const createNewUser = async (user) => {
@@ -96,14 +96,12 @@ const inviteUser = async (email) => {
 	\n\nPlease click on the following link to complete your registration:
 	\n${url}\n\nIf you did not request this, please ignore this email.\n`
 
-	await emailService({ to: email, subject: "Invitation to signup", text })
+	await emailLib({ to: email, subject: "Invitation to signup", text })
 
-	const { rows, error } = await db.query(
+	const { rows } = await db.query(
 		`INSERT INTO user_invites ("email") VALUES ($1) RETURNING *`, [email])
 
-	if (error) {
-		throw error
-	}
+	
 	const signupInfo = rows[0]
 
 	return signupInfo
