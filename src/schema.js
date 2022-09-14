@@ -192,6 +192,13 @@ const queryArticleTagsSchema = Joi.object({
 	}
 })
 
+const inviteUserSchema = Joi.object({
+	body: {
+		email: Joi.string()
+			.email()
+			.required()
+	}
+})
 
 module.exports = {
 	authSchema,
@@ -206,5 +213,6 @@ module.exports = {
 	deleteTagSchema,
 	assignTagToArticleSchema,
 	deleteArticleTagsSchema,
-	queryArticleTagsSchema
+	queryArticleTagsSchema,
+	inviteUserSchema
 }

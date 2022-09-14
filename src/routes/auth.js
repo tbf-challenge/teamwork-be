@@ -8,10 +8,12 @@ const { catchAsync } = require('../lib')
 
 const {
 	authSchema,
-	signinSchema
+	signinSchema,
+	inviteUserSchema
 } = require('../schema')
 
 const router = express.Router()
+
 
 router.post(
 	'/signin',
@@ -32,6 +34,28 @@ router.post(
 		})
 	})
 )
+
+router.post(
+	'/invite-user',
+	isAuthenticated(),
+	isAdmin,
+	validateSchema(inviteUserSchema),
+
+	catchAsync(async (req, res) => {
+		const { email } = req.body
+
+		const { email:userEmail, status } = await userSevice.inviteUser(email)
+
+		res.status(200).json({
+			status: 'success',
+			data: {
+				email: userEmail,
+				status
+			}
+		})
+	})
+)
+
 
 router.post(
 	'/create-user',
