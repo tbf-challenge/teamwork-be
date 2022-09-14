@@ -5,7 +5,6 @@ const config = require("../config")
 const db = require("../db")
 const { AppError } = require("../lib")
 
-const frontendUrl = config("FRONTEND_BASE_URL")
 
 const invalidEmailAndPassword = "Invalid email or password."
 const createNewUser = async (user) => {
@@ -90,20 +89,24 @@ const inviteUser = async (email) => {
 		config("TOKEN_SECRET"),
 		 {expiresIn: "7d"})
 
-	const url = `${frontendUrl}/signup?token=${token}`
+	const { rows } = await db.query(
+			`INSERT INTO user_invites ("email") VALUES ($1) RETURNING *`, [email])
+	
+		
+	const signupInfo = rows[0]
+	
+
+	const url = `${config("FRONTEND_BASE_URL")}/signup?token=${token}`
 
 	const text = `Hi,
 	\n\nPlease click on the following link to complete your registration:
 	\n${url}\n\nIf you did not request this, please ignore this email.\n`
 
-	await emailLib({ to: email, subject: "Invitation to signup", text })
-
-	const { rows } = await db.query(
-		`INSERT INTO user_invites ("email") VALUES ($1) RETURNING *`, [email])
+	await emailLib({ to: email, 
+		subject: `Invitation to join the ${config("ORGANIZATION_NAME")} organization`, 
+		text })
 
 	
-	const signupInfo = rows[0]
-
 	return signupInfo
 }
 
