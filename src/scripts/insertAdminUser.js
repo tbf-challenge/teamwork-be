@@ -1,6 +1,10 @@
 const db = require("../db")
+const  {logger}  = require('../lib')
 
-const insertQuery = async() => {
+const log = logger()
+
+const insertAdminUser = async() => {
+	log.info('adding admin user...' )
 	await db.query(
 		`INSERT INTO users
         ("firstName", "lastName", email, "passwordHash",
@@ -10,7 +14,8 @@ const insertQuery = async() => {
          ,'non-binary','admin','sales','KL 201','sales')
         `
 	)
+	log.success('admin user successfully added')
 
 }
 
-insertQuery()
+insertAdminUser()
