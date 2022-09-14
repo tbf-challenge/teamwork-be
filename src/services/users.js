@@ -90,7 +90,7 @@ const inviteUser = async (email) => {
 		 {expiresIn: "7d"})
 
 	const { rows } = await db.query(
-			`INSERT INTO user_invites ("email") VALUES ($1) RETURNING *`, [email])
+		`INSERT INTO user_invites ("email") VALUES ($1) RETURNING *`, [email])
 	
 		
 	const signupInfo = rows[0]
@@ -103,7 +103,8 @@ const inviteUser = async (email) => {
 	\n${url}\n\nIf you did not request this, please ignore this email.\n`
 
 	await emailLib({ to: email, 
-		subject: `Invitation to join the ${config("ORGANIZATION_NAME")} organization`, 
+		subject: `Invitation to join the 
+		${config("ORGANIZATION_NAME")} organization`, 
 		text })
 
 	
