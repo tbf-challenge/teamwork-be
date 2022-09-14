@@ -195,12 +195,7 @@ const queryArticleTagsSchema = Joi.object({
 const inviteUserSchema = Joi.object({
 	body: {
 		email: Joi.string()
-			.email({
-				minDomainSegments: 2,
-				tlds: {
-					allow: ['com', 'net']
-				}
-			})
+			.email()
 			.required()
 	}
 })
