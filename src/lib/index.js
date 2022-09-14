@@ -8,7 +8,7 @@ const logger = require('./logger')
 const AppError = require('./app-error')
 const statusCode = require('./status-codes')
 const catchAsync = require('./catch-async')
-const emailService = require('./email-service')
+const emailLib = require('./email-lib')
 
 module.exports = {
 	genPasswordHash,
@@ -19,5 +19,5 @@ module.exports = {
 	AppError,
 	statusCode,
 	catchAsync,
-	emailService
+	emailLib
 }
