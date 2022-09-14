@@ -6,7 +6,8 @@ const insertQuery = async() => {
         ("firstName", "lastName", email, "passwordHash",
              gender, role, department, address, "jobRole")
          VALUES ('Jida', 'Asare', 'jakazzy@gmail.com',
-         'passwordHash','non-binary','admin','sales','KL 201','sales')
+         '$2b$10$YyFD0lR0usnySjxAtUoYx.xtHi4TKPsCRJ404To.VaWDc3S3ahLbq'
+         ,'non-binary','admin','sales','KL 201','sales')
         `
 	)
 
