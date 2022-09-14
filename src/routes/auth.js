@@ -8,7 +8,8 @@ const { catchAsync } = require('../lib')
 
 const {
 	authSchema,
-	signinSchema
+	signinSchema,
+	inviteUserSchema
 } = require('../schema')
 
 const router = express.Router()
@@ -38,6 +39,7 @@ router.post(
 	'/invite-user',
 	isAuthenticated(),
 	isAdmin,
+	validateSchema(inviteUserSchema),
 
 	catchAsync(async (req, res) => {
 		const { email } = req.body
