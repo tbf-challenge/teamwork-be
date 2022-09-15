@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken")
+const crypto = require('crypto')
 const { genPasswordHash, verifyPassword, emailLib } = require("../lib")
 
 const config = require("../config")
@@ -22,7 +23,9 @@ const createNewUser = async (user) => {
 	// eslint-disable-next-line max-len
 	const { rows, error } = await db.query(
 		// eslint-disable-next-line max-len
-		'INSERT INTO users ("firstName", "lastName", "email", "passwordHash", "gender", "jobRole", "department", "address") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
+		`INSERT INTO users ("firstName", "lastName", "email", "passwordHash", "gender",
+		 "jobRole", "department", "address") 
+		 VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
 		[
 			firstName,
 			lastName,
@@ -40,9 +43,11 @@ const createNewUser = async (user) => {
 	}
 	const userProfile = rows[0]
 	const body = { id: userProfile.id, email: userProfile.email }
-	const token = jwt.sign({ user: body }, config("TOKEN_SECRET"))
+	const accessToken = jwt.sign({ user: body }, config("TOKEN_SECRET"),
+		{expiresIn: '900s'})
+	const refreshToken = crypto.randomBytes()
 
-	return { token, userId: userProfile.id }
+	return { accessToken, refreshToken, userId: userProfile.id }
 }
 
 const getUserByEmail = async (email) => {
@@ -73,9 +78,11 @@ const signInUserByEmail = async (email, password) => {
 	}
 
 	const body = { id: user.id, email: user.email }
-	const token = jwt.sign({ user: body }, config("TOKEN_SECRET"))
+	const accessToken = jwt.sign({ user: body }, config("TOKEN_SECRET"),
+		{expiresIn: '900s'})
+	const refreshToken = crypto.randomBytes()
 
-	return { token, userId: user.id }
+	return { accessToken, refreshToken, userId: user.id }
 }
 
 /**

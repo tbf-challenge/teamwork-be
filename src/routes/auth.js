@@ -21,14 +21,15 @@ router.post(
 	catchAsync(async (req, res) => {
 		const { email, password } = req.body
 
-		const { token, userId } = await userSevice
+		const { accessToken, refreshToken, userId } = await userSevice
 			.signInUserByEmail(email, password)
 
 		return res.json({
 			status: 'success',
 			data: {
-				token,
-				userId
+				accessToken,
+				userId,
+				refreshToken
 			}
 
 		})
@@ -75,7 +76,8 @@ router.post(
 		} = req.body
 
 
-		const { token, userId } = await userSevice.createNewUser([
+		const { accessToken, refreshToken, userId } = 
+		await userSevice.createNewUser([
 			firstName,
 			lastName,
 			email,
@@ -91,8 +93,9 @@ router.post(
 			status: 'success',
 			data: {
 				message: 'User account successfully created',
-				token,
-				userId
+				accessToken,
+				userId,
+				refreshToken
 			}
 		})
 	})
