@@ -5,9 +5,6 @@ const { genPasswordHash, verifyPassword, emailLib } = require("../lib")
 const config = require("../config")
 const db = require("../db")
 const { AppError } = require("../lib")
-const logger = require('../lib/logger')
-
-const log = logger()
 
 
 const invalidEmailAndPassword = "Invalid email or password."
@@ -23,13 +20,10 @@ const createNewUser = async (user) => {
 		address
 	] = user
 	const passwordHash = await genPasswordHash(password)
-	const refreshToken = crypto.randomBytes(127, (err, buf) => {
-		if(err){
-			log.error(err.message)
-		}
-		log.info(`The random data is: ${
-		 buf.toString('hex')}`)
-	})
+	const refreshToken = async () => {
+		const buffer = await crypto.randomBytes(40)
+		return buffer.toString("hex")
+	  }
 	const { rows } = await db.query(
 		`INSERT INTO users ("firstName", "lastName", "email", "passwordHash"
 		, "gender","jobRole", "department", "address", "refreshToken") 
@@ -84,15 +78,12 @@ const signInUserByEmail = async (email, password) => {
 	const body = { id: user.id, email: user.email }
 	const accessToken = jwt.sign({ user: body }, config("TOKEN_SECRET"),
 		{expiresIn: '900s'})
-	const updatedRefreshToken = crypto.randomBytes(127, (err, buf) => {
-		if(err){
-			log.error(err.message)
-		}
-		log.info(`The random data is: ${
-		 buf.toString('hex')}`)
-	})
+	const refreshToken = async () => {
+		const buffer = await crypto.randomBytes(40)
+		return buffer.toString("hex")
+		  }
 
-	return { accessToken, updatedRefreshToken, userId: user.id }
+	return { accessToken, refreshToken, userId: user.id }
 }
 
 /**

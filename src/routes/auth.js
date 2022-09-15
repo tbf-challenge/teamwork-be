@@ -14,12 +14,10 @@ const {
 
 const router = express.Router()
 
-const transformUserResponse = ({accessToken,
-	userId,
-	refreshToken}) => ({
-	accessToken,
-	userId,
-	refreshToken
+const transformUserResponse = (userDetails) => ({
+	accessToken : userDetails.accessToken,
+	userId : userDetails.userId,
+	refreshToken : userDetails.refreshToken
 })
 
 
@@ -29,17 +27,13 @@ router.post(
 	catchAsync(async (req, res) => {
 		const { email, password } = req.body
 
-		const { accessToken, updatedRefreshToken, userId } = await userSevice
+		const userDetails = await userSevice
 			.signInUserByEmail(email, password)
 
 		return res.json({
 			status: 'success',
 			data: {
-				...transformUserResponse({
-					accessToken,
-					refreshToken : updatedRefreshToken,
-					 userId
-				})
+				...transformUserResponse(userDetails)
 			}
 
 		})
@@ -86,7 +80,7 @@ router.post(
 		} = req.body
 
 
-		const { accessToken, refreshToken, userId } = 
+		const userDetails = 
 		await userSevice.createNewUser([
 			firstName,
 			lastName,
@@ -103,7 +97,7 @@ router.post(
 			status: 'success',
 			data: {
 				message: 'User account successfully created',
-				...transformUserResponse(accessToken,refreshToken,userId)
+				...transformUserResponse(userDetails)
 			}
 		})
 	})
