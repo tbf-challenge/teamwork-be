@@ -1,10 +1,10 @@
 const jwt = require("jsonwebtoken")
-const { genPasswordHash, verifyPassword, emailLib } = require("../lib")
-
-const config = require("../config")
-const db = require("../db")
-const { AppError } = require("../lib")
-
+const { genPasswordHash, verifyPassword, emailLib } = require("../../lib")
+const config = require("../../config")
+const db = require("../../db")
+const { AppError } = require("../../lib")
+const generateAccessToken = require("./generate-access-token")
+const generateRefreshToken = require("./generate-refresh-token")
 
 const invalidEmailAndPassword = "Invalid email or password."
 const createNewUser = async (user) => {
@@ -19,10 +19,11 @@ const createNewUser = async (user) => {
 		address
 	] = user
 	const passwordHash = await genPasswordHash(password)
-	// eslint-disable-next-line max-len
-	const { rows, error } = await db.query(
-		// eslint-disable-next-line max-len
-		'INSERT INTO users ("firstName", "lastName", "email", "passwordHash", "gender", "jobRole", "department", "address") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
+	const refreshToken =  await generateRefreshToken()
+	const { rows } = await db.query(
+		`INSERT INTO users ("firstName", "lastName", "email", "passwordHash"
+		, "gender","jobRole", "department", "address", "refreshToken") 
+		 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`,
 		[
 			firstName,
 			lastName,
@@ -31,18 +32,17 @@ const createNewUser = async (user) => {
 			gender,
 			jobRole,
 			department,
-			address
+			address,
+			refreshToken
 		]
 	)
-
-	if (error) {
-		throw error
-	}
 	const userProfile = rows[0]
 	const body = { id: userProfile.id, email: userProfile.email }
-	const token = jwt.sign({ user: body }, config("TOKEN_SECRET"))
-
-	return { token, userId: userProfile.id }
+	const accessToken = await generateAccessToken({
+		data: {user : body}, 
+		expiry : '15m'
+	})
+	return { accessToken, refreshToken, userId: userProfile.id }
 }
 
 const getUserByEmail = async (email) => {
@@ -71,11 +71,23 @@ const signInUserByEmail = async (email, password) => {
 	if (!isPasswordSame) {
 		throw new AppError(invalidEmailAndPassword, 401)
 	}
-
+	
 	const body = { id: user.id, email: user.email }
-	const token = jwt.sign({ user: body }, config("TOKEN_SECRET"))
+	const accessToken = await generateAccessToken({
+		data: {user : body}, 
+		expiry : '15m'
+	})
+	
+	const refreshToken = await generateRefreshToken()
+	 await db.query(
+		`UPDATE users
+		SET "refreshToken" = $1 
+		WHERE id = $2 `,
+		[refreshToken , user.id]
+	
+	)
 
-	return { token, userId: user.id }
+	return { accessToken, refreshToken, userId: user.id }
 }
 
 /**
