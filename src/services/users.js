@@ -5,6 +5,9 @@ const { genPasswordHash, verifyPassword, emailLib } = require("../lib")
 const config = require("../config")
 const db = require("../db")
 const { AppError } = require("../lib")
+const logger = require('../lib/logger')
+
+const log = logger()
 
 
 const invalidEmailAndPassword = "Invalid email or password."
@@ -20,12 +23,17 @@ const createNewUser = async (user) => {
 		address
 	] = user
 	const passwordHash = await genPasswordHash(password)
-	// eslint-disable-next-line max-len
-	const { rows, error } = await db.query(
-		// eslint-disable-next-line max-len
-		`INSERT INTO users ("firstName", "lastName", "email", "passwordHash", "gender",
-		 "jobRole", "department", "address") 
-		 VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
+	const refreshToken = crypto.randomBytes(127, (err, buf) => {
+		if(err){
+			log.error(err.message)
+		}
+		log.info(`The random data is: ${
+		 buf.toString('hex')}`)
+	})
+	const { rows } = await db.query(
+		`INSERT INTO users ("firstName", "lastName", "email", "passwordHash"
+		, "gender","jobRole", "department", "address", "refreshToken") 
+		 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`,
 		[
 			firstName,
 			lastName,
@@ -34,18 +42,14 @@ const createNewUser = async (user) => {
 			gender,
 			jobRole,
 			department,
-			address
+			address,
+			refreshToken
 		]
 	)
-
-	if (error) {
-		throw error
-	}
 	const userProfile = rows[0]
 	const body = { id: userProfile.id, email: userProfile.email }
 	const accessToken = jwt.sign({ user: body }, config("TOKEN_SECRET"),
 		{expiresIn: '900s'})
-	const refreshToken = crypto.randomBytes()
 
 	return { accessToken, refreshToken, userId: userProfile.id }
 }
@@ -76,13 +80,19 @@ const signInUserByEmail = async (email, password) => {
 	if (!isPasswordSame) {
 		throw new AppError(invalidEmailAndPassword, 401)
 	}
-
+	
 	const body = { id: user.id, email: user.email }
 	const accessToken = jwt.sign({ user: body }, config("TOKEN_SECRET"),
 		{expiresIn: '900s'})
-	const refreshToken = crypto.randomBytes()
+	const updatedRefreshToken = crypto.randomBytes(127, (err, buf) => {
+		if(err){
+			log.error(err.message)
+		}
+		log.info(`The random data is: ${
+		 buf.toString('hex')}`)
+	})
 
-	return { accessToken, refreshToken, userId: user.id }
+	return { accessToken, updatedRefreshToken, userId: user.id }
 }
 
 /**
