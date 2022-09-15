@@ -1,7 +1,6 @@
 const jwt = require("jsonwebtoken")
 const crypto = require('crypto')
 const { genPasswordHash, verifyPassword, emailLib } = require("../lib")
-
 const config = require("../config")
 const db = require("../db")
 const { AppError } = require("../lib")
@@ -20,10 +19,7 @@ const createNewUser = async (user) => {
 		address
 	] = user
 	const passwordHash = await genPasswordHash(password)
-	const refreshToken = async () => {
-		const buffer = await crypto.randomBytes(40)
-		return buffer.toString("hex")
-	  }
+	const refreshToken = await crypto.randomBytes(40).toString("hex")
 	const { rows } = await db.query(
 		`INSERT INTO users ("firstName", "lastName", "email", "passwordHash"
 		, "gender","jobRole", "department", "address", "refreshToken") 
@@ -78,10 +74,7 @@ const signInUserByEmail = async (email, password) => {
 	const body = { id: user.id, email: user.email }
 	const accessToken = jwt.sign({ user: body }, config("TOKEN_SECRET"),
 		{expiresIn: '900s'})
-	const refreshToken = async () => {
-		const buffer = await crypto.randomBytes(40)
-		return buffer.toString("hex")
-		  }
+	const refreshToken = await crypto.randomBytes(40).toString("hex")
 
 	return { accessToken, refreshToken, userId: user.id }
 }
