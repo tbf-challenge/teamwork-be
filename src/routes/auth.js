@@ -32,9 +32,8 @@ router.post(
 
 		return res.json({
 			status: 'success',
-			data: {
-				...transformUserResponse(userDetails)
-			}
+			data: transformUserResponse(userDetails)
+			
 
 		})
 	})

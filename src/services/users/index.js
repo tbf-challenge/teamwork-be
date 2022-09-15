@@ -1,10 +1,10 @@
 const jwt = require("jsonwebtoken")
-const crypto = require('crypto')
-const { genPasswordHash, verifyPassword, emailLib } = require("../lib")
-const config = require("../config")
-const db = require("../db")
-const { AppError } = require("../lib")
-
+const { genPasswordHash, verifyPassword, emailLib } = require("../../lib")
+const config = require("../../config")
+const db = require("../../db")
+const { AppError } = require("../../lib")
+const generateAccessToken = require("./generate-access-token")
+const generateRefreshToken = require("./generate-refresh-token")
 
 const invalidEmailAndPassword = "Invalid email or password."
 const createNewUser = async (user) => {
@@ -19,7 +19,7 @@ const createNewUser = async (user) => {
 		address
 	] = user
 	const passwordHash = await genPasswordHash(password)
-	const refreshToken = await crypto.randomBytes(40).toString("hex")
+	const refreshToken =  await generateRefreshToken()
 	const { rows } = await db.query(
 		`INSERT INTO users ("firstName", "lastName", "email", "passwordHash"
 		, "gender","jobRole", "department", "address", "refreshToken") 
@@ -38,9 +38,10 @@ const createNewUser = async (user) => {
 	)
 	const userProfile = rows[0]
 	const body = { id: userProfile.id, email: userProfile.email }
-	const accessToken = jwt.sign({ user: body }, config("TOKEN_SECRET"),
-		{expiresIn: '900s'})
-
+	const accessToken = await generateAccessToken({
+		data: {user : body}, 
+		expiry : '15m'
+	})
 	return { accessToken, refreshToken, userId: userProfile.id }
 }
 
@@ -72,9 +73,19 @@ const signInUserByEmail = async (email, password) => {
 	}
 	
 	const body = { id: user.id, email: user.email }
-	const accessToken = jwt.sign({ user: body }, config("TOKEN_SECRET"),
-		{expiresIn: '900s'})
-	const refreshToken = await crypto.randomBytes(40).toString("hex")
+	const accessToken = await generateAccessToken({
+		data: {user : body}, 
+		expiry : '15m'
+	})
+	
+	const refreshToken = await generateRefreshToken()
+	 await db.query(
+		`UPDATE users
+		SET "refreshToken" = $1 
+		WHERE id = $2 `,
+		[refreshToken , user.id]
+	
+	)
 
 	return { accessToken, refreshToken, userId: user.id }
 }
