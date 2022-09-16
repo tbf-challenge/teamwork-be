@@ -2,17 +2,19 @@ const jwt = require("jsonwebtoken")
 const { 
 	genPasswordHash, 
 	verifyPassword, 
-	emailLib ,
-	verifyRefreshToken 
+	emailLib 
 } = require("../../lib")
 const config = require("../../config")
 const db = require("../../db")
 const { AppError } = require("../../lib")
 const generateAccessToken = require("./generate-access-token")
 const generateRefreshToken = require("./generate-refresh-token")
+const {
+	UnauthorizedError
+} = require("../errors")
+const customError = require("../../lib/custom-error")
 
 const invalidEmailAndPassword = "Invalid email or password."
-const unauthorized = "Unauthorized to perform this operation."
 const createNewUser = async (user) => {
 	const [
 		firstName,
@@ -132,11 +134,9 @@ const inviteUser = async (email) => {
 const getNewTokens = async (email, oldRefreshToken) => {
 	const user = await getUserByEmail(email)
 
-	const isrefreshTokenSame = await verifyRefreshToken (
-		oldRefreshToken, 
-		user.refreshToken)
+	const isrefreshTokenSame = oldRefreshToken === user.refreshToken
 	if (!isrefreshTokenSame) {
-		throw new AppError(unauthorized , 401)
+		throw customError(UnauthorizedError)
 	}
 	
 	const body = { id: user.id, email: user.email }

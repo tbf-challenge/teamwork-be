@@ -18,5 +18,9 @@ module.exports= {
 	TagAlreadyAssignedToPostError : {
 		name: 'TagAlreadyAssignedToPostError',
 		message: 'Tag is already assigned to post '
+	},
+	UnauthorizedError : {
+		name : 'UnauthorizedError',
+		message : "Unauthorized to perform this operation."
 	}
 }

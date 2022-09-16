@@ -4,6 +4,9 @@ const validateSchema = require('../middleware/validateSchema')
 const isAuthenticated = require('../middleware/isAuthenticated')
 const isAdmin = require('../middleware/isAdmin')
 const { catchAsync } = require('../lib')
+const {
+	UnauthorizedError
+} = require("../services/errors")
 
 
 const {
@@ -14,6 +17,9 @@ const {
 } = require('../schema')
 
 const router = express.Router()
+const ERROR_MAP = {
+	[ UnauthorizedError.name ] : 401
+}
 
 const transformUserResponse = (userDetails) => ({
 	accessToken : userDetails.accessToken,
@@ -106,13 +112,12 @@ router.post(
 router.post(
 	'/token',
 	isAuthenticated(),
-	isAdmin,
 	validateSchema(authTokenSchema),
 
 	catchAsync(async (req, res) => {
 		const { email ,  oldRefreshToken : refreshToken } = req.body
 
-		const userDetails = await userSevice.inviteUser(email, refreshToken)
+		const userDetails = await userSevice.getNewTokens(email, refreshToken)
 
 		res.status(200).json({
 			status: 'success',
@@ -126,5 +131,17 @@ router.post(
 		})
 	})
 )
+
+router
+	.use((err, req, res, next)=> {
+		// eslint-disable-next-line no-param-reassign
+		err.success = false
+		if(ERROR_MAP[err.name] ){
+			// eslint-disable-next-line no-param-reassign
+			err.statusCode = ERROR_MAP[err.name]
+			
+		} 
+		next(err)
+	})
 
 module.exports = router
