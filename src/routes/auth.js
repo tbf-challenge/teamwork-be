@@ -5,8 +5,7 @@ const isAuthenticated = require('../middleware/isAuthenticated')
 const isAdmin = require('../middleware/isAdmin')
 const { catchAsync } = require('../lib')
 const {
-	refreshTokenIsInvalidError,
-	emailAndRefreshTokenDoesNotExistError
+	refreshTokenIsInvalidError
 } = require("../services/errors")
 
 
@@ -19,8 +18,7 @@ const {
 
 const router = express.Router()
 const ERROR_MAP = {
-	[ refreshTokenIsInvalidError.name ] : 401,
-	[ emailAndRefreshTokenDoesNotExistError.name] : 404
+	[ refreshTokenIsInvalidError.name ] : 401
 }
 
 const transformUserResponse = (userDetails) => ({

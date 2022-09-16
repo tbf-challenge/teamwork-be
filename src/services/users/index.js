@@ -10,8 +10,7 @@ const { AppError } = require("../../lib")
 const generateAccessToken = require("./generate-access-token")
 const generateRefreshToken = require("./generate-refresh-token")
 const {
-	refreshTokenIsInvalidError,
-	emailAndRefreshTokenDoesNotExistError
+	refreshTokenIsInvalidError
 } = require("../errors")
 const customError = require("../../lib/custom-error")
 
@@ -73,28 +72,6 @@ const getUserByEmail = async (email) => {
 	return user
 }
 
-const getUserByEmailAndRefreshToken = async (email, refreshToken) => {
-	const { rows, error } = await db.query(
-		`SELECT * FROM users 
-		WHERE email = $1 
-		AND "refreshToken" = $2
-		`,
-		[email, refreshToken]
-	)
-
-	if (error) {
-		throw error
-	}
-	const userProfile = rows[0]
-	console.log(userProfile)
-
-	if (!userProfile) {
-		throw customError(emailAndRefreshTokenDoesNotExistError)
-	}
-
-	const user = userProfile
-	return user
-}
 
 const signInUserByEmail = async (email, password) => {
 	const user = await getUserByEmail(email)
@@ -156,16 +133,21 @@ const inviteUser = async (email) => {
 }
 
 const getNewTokens = async (email, currentRefreshToken) => {
-	const user = await getUserByEmailAndRefreshToken(
-		email , 
-		currentRefreshToken
+	const result = await  db.query(
+		`SELECT * FROM users 
+		WHERE email = $1 
+		AND "refreshToken" = $2
+		`,
+		[email, currentRefreshToken]
 	)
+	const userProfile = result.rows[0]
 
-	const isrefreshTokenSame = currentRefreshToken === user.refreshToken
-	if (!isrefreshTokenSame) {
+	if (!userProfile) {
 		throw customError(refreshTokenIsInvalidError)
 	}
-	
+
+	const user = userProfile
+
 	const body = { id: user.id, email: user.email }
 	const accessToken = await generateAccessToken({
 		data: {user : body}, 

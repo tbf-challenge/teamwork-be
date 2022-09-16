@@ -22,9 +22,5 @@ module.exports= {
 	refreshTokenIsInvalidError : {
 		name : 'refreshTokenIsInvalidError',
 		message : "Refresh token is invalid."
-	},
-	emailAndRefreshTokenDoesNotExistError : {
-		name : "emailAndRefreshTokenDoesNotExistError",
-		message : "Email and refresh token does not exist."
 	}
 }
