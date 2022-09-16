@@ -1,10 +1,19 @@
 const jwt = require("jsonwebtoken")
-const { genPasswordHash, verifyPassword, emailLib } = require("../../lib")
+const { 
+	genPasswordHash, 
+	verifyPassword, 
+	emailLib 
+} = require("../../lib")
 const config = require("../../config")
 const db = require("../../db")
 const { AppError } = require("../../lib")
 const generateAccessToken = require("./generate-access-token")
 const generateRefreshToken = require("./generate-refresh-token")
+const updateRefreshToken = require("./update-refresh-token")
+const {
+	refreshTokenIsInvalidError
+} = require("../errors")
+const customError = require("../../lib/custom-error")
 
 const invalidEmailAndPassword = "Invalid email or password."
 const createNewUser = async (user) => {
@@ -38,7 +47,7 @@ const createNewUser = async (user) => {
 	)
 	const userProfile = rows[0]
 	const body = { id: userProfile.id, email: userProfile.email }
-	const accessToken = await generateAccessToken({
+	const accessToken =  generateAccessToken({
 		data: {user : body}, 
 		expiry : '15m'
 	})
@@ -64,6 +73,7 @@ const getUserByEmail = async (email) => {
 	return user
 }
 
+
 const signInUserByEmail = async (email, password) => {
 	const user = await getUserByEmail(email)
 
@@ -73,19 +83,13 @@ const signInUserByEmail = async (email, password) => {
 	}
 	
 	const body = { id: user.id, email: user.email }
-	const accessToken = await generateAccessToken({
+	const accessToken =  generateAccessToken({
 		data: {user : body}, 
 		expiry : '15m'
 	})
 	
 	const refreshToken = await generateRefreshToken()
-	 await db.query(
-		`UPDATE users
-		SET "refreshToken" = $1 
-		WHERE id = $2 `,
-		[refreshToken , user.id]
-	
-	)
+	await updateRefreshToken(refreshToken , user.id)
 
 	return { accessToken, refreshToken, userId: user.id }
 }
@@ -123,10 +127,36 @@ const inviteUser = async (email) => {
 	return signupInfo
 }
 
+const getNewTokens = async (email, currentRefreshToken) => {
+	const result = await  db.query(
+		`SELECT id , email FROM users 
+		WHERE email = $1 
+		AND "refreshToken" = $2
+		`,
+		[email, currentRefreshToken]
+	)
+	const user = result.rows[0]
+
+	if (!user) {
+		throw customError(refreshTokenIsInvalidError)
+	}
+
+	const accessToken =  generateAccessToken({
+		data: user, 
+		expiry : '15m'
+	})
+	
+	const refreshToken = await generateRefreshToken()
+	await updateRefreshToken(refreshToken , user.id)
+	
+	return { accessToken, refreshToken, userId: user.id }
+}
+
 
 module.exports = {
 	createNewUser,
 	getUserByEmail,
 	signInUserByEmail,
-	inviteUser
+	inviteUser,
+	getNewTokens
 }

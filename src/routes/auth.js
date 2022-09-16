@@ -3,16 +3,23 @@ const userSevice = require('../services/users')
 const validateSchema = require('../middleware/validateSchema')
 const isAuthenticated = require('../middleware/isAuthenticated')
 const isAdmin = require('../middleware/isAdmin')
-const { catchAsync } = require('../lib')
+const { catchAsync , AppError} = require('../lib')
+const {
+	refreshTokenIsInvalidError
+} = require("../services/errors")
 
 
 const {
 	authSchema,
 	signinSchema,
-	inviteUserSchema
+	inviteUserSchema,
+	authTokenSchema
 } = require('../schema')
 
 const router = express.Router()
+const ERROR_MAP = {
+	[ refreshTokenIsInvalidError.name ] : 401
+}
 
 const transformUserResponse = (userDetails) => ({
 	accessToken : userDetails.accessToken,
@@ -101,5 +108,39 @@ router.post(
 		})
 	})
 )
+
+router.post(
+	'/token',
+	validateSchema(authTokenSchema),
+
+	catchAsync(async (req, res) => {
+		const { 
+			email ,  
+			refreshToken : currentRefreshToken 
+		 } = req.body
+
+		const userDetails = await userSevice.getNewTokens(
+			email,
+			currentRefreshToken
+		)
+
+		res.status(200).json({
+			status: 'success',
+			data: transformUserResponse(userDetails)
+			
+		})
+	})
+)
+
+router
+	.use((err, req, res, next)=> {
+		const error = err
+		error.success = false
+		if(ERROR_MAP[error.name] ){
+			next(new AppError( error.message ,ERROR_MAP[error.name] ))
+			
+		} 
+		next(err)
+	})
 
 module.exports = router

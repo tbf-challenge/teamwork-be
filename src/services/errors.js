@@ -18,5 +18,9 @@ module.exports= {
 	TagAlreadyAssignedToPostError : {
 		name: 'TagAlreadyAssignedToPostError',
 		message: 'Tag is already assigned to post '
+	},
+	refreshTokenIsInvalidError : {
+		name : 'refreshTokenIsInvalidError',
+		message : "Refresh token is invalid."
 	}
 }
