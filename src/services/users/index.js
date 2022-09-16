@@ -9,6 +9,7 @@ const db = require("../../db")
 const { AppError } = require("../../lib")
 const generateAccessToken = require("./generate-access-token")
 const generateRefreshToken = require("./generate-refresh-token")
+const updateRefreshToken = require("./update-refresh-token")
 const {
 	refreshTokenIsInvalidError
 } = require("../errors")
@@ -88,13 +89,7 @@ const signInUserByEmail = async (email, password) => {
 	})
 	
 	const refreshToken = await generateRefreshToken()
-	 await db.query(
-		`UPDATE users
-		SET "refreshToken" = $1 
-		WHERE id = $2 `,
-		[refreshToken , user.id]
-	
-	)
+	await updateRefreshToken(refreshToken , user.id)
 
 	return { accessToken, refreshToken, userId: user.id }
 }
@@ -140,13 +135,12 @@ const getNewTokens = async (email, currentRefreshToken) => {
 		`,
 		[email, currentRefreshToken]
 	)
-	const userProfile = result.rows[0]
+	const user = result.rows[0]
 
-	if (!userProfile) {
+	if (!user) {
 		throw customError(refreshTokenIsInvalidError)
 	}
 
-	const user = userProfile
 
 	const body = { id: user.id, email: user.email }
 	const accessToken = await generateAccessToken({
@@ -155,14 +149,8 @@ const getNewTokens = async (email, currentRefreshToken) => {
 	})
 	
 	const refreshToken = await generateRefreshToken()
-	 await db.query(
-		`UPDATE users
-		SET "refreshToken" = $1 
-		WHERE id = $2 `,
-		[refreshToken , user.id]
+	await updateRefreshToken(refreshToken , user.id)
 	
-	)
-
 	return { accessToken, refreshToken, userId: user.id }
 }
 
