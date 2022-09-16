@@ -111,7 +111,6 @@ router.post(
 
 router.post(
 	'/token',
-	isAuthenticated(),
 	validateSchema(authTokenSchema),
 
 	catchAsync(async (req, res) => {
@@ -126,13 +125,8 @@ router.post(
 
 		res.status(200).json({
 			status: 'success',
-			data: {
-				email: userDetails.userEmail,
-				status : userDetails.status,
-				accessToken : userDetails.accessToken,
-				refreshToken : userDetails.refreshToken
-
-			}
+			data: transformUserResponse(userDetails)
+			
 		})
 	})
 )

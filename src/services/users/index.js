@@ -129,7 +129,7 @@ const inviteUser = async (email) => {
 
 const getNewTokens = async (email, currentRefreshToken) => {
 	const result = await  db.query(
-		`SELECT * FROM users 
+		`SELECT id , email FROM users 
 		WHERE email = $1 
 		AND "refreshToken" = $2
 		`,
@@ -141,10 +141,8 @@ const getNewTokens = async (email, currentRefreshToken) => {
 		throw customError(refreshTokenIsInvalidError)
 	}
 
-
-	const body = { id: user.id, email: user.email }
 	const accessToken = await generateAccessToken({
-		data: {user : body}, 
+		data: user, 
 		expiry : '15m'
 	})
 	
