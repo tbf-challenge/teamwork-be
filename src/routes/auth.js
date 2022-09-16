@@ -3,7 +3,7 @@ const userSevice = require('../services/users')
 const validateSchema = require('../middleware/validateSchema')
 const isAuthenticated = require('../middleware/isAuthenticated')
 const isAdmin = require('../middleware/isAdmin')
-const { catchAsync } = require('../lib')
+const { catchAsync , AppError} = require('../lib')
 const {
 	refreshTokenIsInvalidError
 } = require("../services/errors")
@@ -134,11 +134,10 @@ router.post(
 
 router
 	.use((err, req, res, next)=> {
-		// eslint-disable-next-line no-param-reassign
-		err.success = false
-		if(ERROR_MAP[err.name] ){
-			// eslint-disable-next-line no-param-reassign
-			err.statusCode = ERROR_MAP[err.name]
+		const error = err
+		error.success = false
+		if(ERROR_MAP[error.name] ){
+			next(new AppError( error.message ,ERROR_MAP[error.name] ))
 			
 		} 
 		next(err)
