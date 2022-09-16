@@ -1,5 +1,10 @@
 const jwt = require("jsonwebtoken")
-const { genPasswordHash, verifyPassword, emailLib } = require("../../lib")
+const { 
+	genPasswordHash, 
+	verifyPassword, 
+	emailLib ,
+	verifyRefreshToken 
+} = require("../../lib")
 const config = require("../../config")
 const db = require("../../db")
 const { AppError } = require("../../lib")
@@ -7,6 +12,7 @@ const generateAccessToken = require("./generate-access-token")
 const generateRefreshToken = require("./generate-refresh-token")
 
 const invalidEmailAndPassword = "Invalid email or password."
+const unauthorized = "Unauthorized to perform this operation."
 const createNewUser = async (user) => {
 	const [
 		firstName,
@@ -123,10 +129,39 @@ const inviteUser = async (email) => {
 	return signupInfo
 }
 
+const getNewTokens = async (email, oldRefreshToken) => {
+	const user = await getUserByEmail(email)
+
+	const isrefreshTokenSame = await verifyRefreshToken (
+		oldRefreshToken, 
+		user.refreshToken)
+	if (!isrefreshTokenSame) {
+		throw new AppError(unauthorized , 401)
+	}
+	
+	const body = { id: user.id, email: user.email }
+	const accessToken = await generateAccessToken({
+		data: {user : body}, 
+		expiry : '15m'
+	})
+	
+	const refreshToken = await generateRefreshToken()
+	 await db.query(
+		`UPDATE users
+		SET "refreshToken" = $1 
+		WHERE id = $2 `,
+		[refreshToken , user.id]
+	
+	)
+
+	return { accessToken, refreshToken, userId: user.id }
+}
+
 
 module.exports = {
 	createNewUser,
 	getUserByEmail,
 	signInUserByEmail,
-	inviteUser
+	inviteUser,
+	getNewTokens
 }

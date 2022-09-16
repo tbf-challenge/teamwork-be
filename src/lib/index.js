@@ -2,6 +2,7 @@ const {
 	genPasswordHash,
 	verifyPassword
 } = require('./passwordlib')
+const {verifyRefreshToken} = require('./refreshTokenlib')
 const passportjwt = require('./passport-jwt')
 const passportlocal = require('./passport-local')
 const logger = require('./logger')
@@ -19,5 +20,6 @@ module.exports = {
 	AppError,
 	statusCode,
 	catchAsync,
-	emailLib
+	emailLib,
+	verifyRefreshToken
 }
