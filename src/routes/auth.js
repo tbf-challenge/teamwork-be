@@ -114,7 +114,8 @@ router.post(
 	validateSchema(authTokenSchema),
 
 	catchAsync(async (req, res) => {
-		const { email ,  
+		const { 
+			email ,  
 			refreshToken : currentRefreshToken 
 		 } = req.body
 

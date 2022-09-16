@@ -47,7 +47,7 @@ const createNewUser = async (user) => {
 	)
 	const userProfile = rows[0]
 	const body = { id: userProfile.id, email: userProfile.email }
-	const accessToken = await generateAccessToken({
+	const accessToken =  generateAccessToken({
 		data: {user : body}, 
 		expiry : '15m'
 	})
@@ -83,7 +83,7 @@ const signInUserByEmail = async (email, password) => {
 	}
 	
 	const body = { id: user.id, email: user.email }
-	const accessToken = await generateAccessToken({
+	const accessToken =  generateAccessToken({
 		data: {user : body}, 
 		expiry : '15m'
 	})
@@ -141,7 +141,7 @@ const getNewTokens = async (email, currentRefreshToken) => {
 		throw customError(refreshTokenIsInvalidError)
 	}
 
-	const accessToken = await generateAccessToken({
+	const accessToken =  generateAccessToken({
 		data: user, 
 		expiry : '15m'
 	})
