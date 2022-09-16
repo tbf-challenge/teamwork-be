@@ -11,7 +11,8 @@ const generateAccessToken = require("./generate-access-token")
 const generateRefreshToken = require("./generate-refresh-token")
 const updateRefreshToken = require("./update-refresh-token")
 const {
-	refreshTokenIsInvalidError
+	refreshTokenIsInvalidError,
+	inviteIsAlreadyActiveError
 } = require("../errors")
 const customError = require("../../lib/custom-error")
 
@@ -152,11 +153,33 @@ const getNewTokens = async (email, currentRefreshToken) => {
 	return { accessToken, refreshToken, userId: user.id }
 }
 
+const getInvitedUserDetail = async (email) => {
+	const result = await  db.query(
+		`SELECT * FROM users 
+		WHERE email = $1 
+		`,
+		[email]
+	)
+	const user = result.rows[0]
+	if (!user) {
+		throw customError(inviteIsAlreadyActiveError)
+	}
+
+	const accessToken =  generateAccessToken({
+		data: user, 
+		expiry : '24h'
+	})
+	
+	
+	return { accessToken, email : user.email, userId: user.id }
+}
+
 
 module.exports = {
 	createNewUser,
 	getUserByEmail,
 	signInUserByEmail,
 	inviteUser,
-	getNewTokens
+	getNewTokens,
+	getInvitedUserDetail
 }
