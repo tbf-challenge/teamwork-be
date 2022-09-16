@@ -1,26 +1,16 @@
 const nodemailer = require("nodemailer")
 const config = require('../config')
 
-let transportConfig
 
-if (config("NODE_ENV") === "production"){
-	transportConfig = {
-		service: config('MAIL_SERVICE'),
-		auth: {
-			user: config('MAIL_SERVICE_USERNAME'),
-			pass: config('MAIL_SERVICE_PASSWORD')
-		}
-	}
-} else {
-	transportConfig = {
-		host: config('EMAIL_HOST'),
-		port: config('EMAIL_PORT'),
-		auth: {
-			user: config('EMAIL_USERNAME'),
-			pass: config('EMAIL_PASSWORD')
-		}
+const transportConfig = {
+	host: config('EMAIL_SERVICE_HOST'),
+	port: config('EMAIL_SERVICE_PORT'),
+	auth: {
+		user: config('EMAIL_SERVICE_USERNAME'),
+		pass: config('EMAIL_SERVICE_PASSWORD')
 	}
 }
+
 
 const transporter = nodemailer.createTransport(transportConfig)
 
