@@ -7,6 +7,7 @@ const updateRefreshToken = async(refreshToken , id) => {
    WHERE id = $2 `,
 		[refreshToken , id]
 	)
+	return db.query
 }
 
 module.exports = updateRefreshToken
