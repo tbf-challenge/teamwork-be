@@ -110,16 +110,18 @@ router.post(
 	validateSchema(authTokenSchema),
 
 	catchAsync(async (req, res) => {
-		const { email , oldRefreshToken : refreshToken } = req.body
+		const { email ,  oldRefreshToken : refreshToken } = req.body
 
-		const { email:userEmail, status } = await userSevice.inviteUser(email)
+		const userDetails = await userSevice.inviteUser(email, refreshToken)
 
 		res.status(200).json({
 			status: 'success',
 			data: {
-				email: userEmail,
-				status,
-				refreshToken
+				email: userDetails.userEmail,
+				status : userDetails.status,
+				accessToken : userDetails.accessToken,
+				refreshToken : userDetails.refreshToken
+
 			}
 		})
 	})
