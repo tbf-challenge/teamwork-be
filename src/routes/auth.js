@@ -5,7 +5,8 @@ const isAuthenticated = require('../middleware/isAuthenticated')
 const isAdmin = require('../middleware/isAdmin')
 const { catchAsync } = require('../lib')
 const {
-	UnauthorizedError
+	refreshTokenIsInvalidError,
+	emailAndRefreshTokenDoesNotExistError
 } = require("../services/errors")
 
 
@@ -18,7 +19,8 @@ const {
 
 const router = express.Router()
 const ERROR_MAP = {
-	[ UnauthorizedError.name ] : 401
+	[ refreshTokenIsInvalidError.name ] : 401,
+	[ emailAndRefreshTokenDoesNotExistError.name] : 404
 }
 
 const transformUserResponse = (userDetails) => ({
@@ -115,9 +117,14 @@ router.post(
 	validateSchema(authTokenSchema),
 
 	catchAsync(async (req, res) => {
-		const { email ,  oldRefreshToken : refreshToken } = req.body
+		const { email ,  
+			refreshToken : currentRefreshToken 
+		 } = req.body
 
-		const userDetails = await userSevice.getNewTokens(email, refreshToken)
+		const userDetails = await userSevice.getNewTokens(
+			email,
+			currentRefreshToken
+		)
 
 		res.status(200).json({
 			status: 'success',

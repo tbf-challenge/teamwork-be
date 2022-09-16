@@ -19,8 +19,12 @@ module.exports= {
 		name: 'TagAlreadyAssignedToPostError',
 		message: 'Tag is already assigned to post '
 	},
-	UnauthorizedError : {
-		name : 'UnauthorizedError',
-		message : "Unauthorized to perform this operation."
+	refreshTokenIsInvalidError : {
+		name : 'refreshTokenIsInvalidError',
+		message : "Refresh token is invalid."
+	},
+	emailAndRefreshTokenDoesNotExistError : {
+		name : "emailAndRefreshTokenDoesNotExistError",
+		message : "Email and refresh token does not exist."
 	}
 }
