@@ -155,7 +155,7 @@ const getNewTokens = async (email, currentRefreshToken) => {
 
 const getInvitedUserDetail = async (email) => {
 	const result = await  db.query(
-		`SELECT * FROM users 
+		`SELECT * FROM user_invites
 		WHERE email = $1 
 		`,
 		[email]
@@ -165,10 +165,9 @@ const getInvitedUserDetail = async (email) => {
 		throw customError(inviteIsAlreadyActiveError)
 	}
 
-	const accessToken =  generateAccessToken({
-		data: user, 
-		expiry : '24h'
-	})
+	const accessToken = jwt.sign({email}, 
+		config("TOKEN_SECRET"),
+		 {expiresIn: "24h"})
 	
 	
 	return { accessToken, email : user.email, userId: user.id }
