@@ -140,11 +140,10 @@ router.get(
 		const {
 			email
 		} = req.user
-
 		const userDetails = 
-		await userSevice.getInvitedUserDetail([
+		await userSevice.getInvitedUserDetail(
 			email
-		])
+		)
 
 		return res.status(201).json({
 			status: 'success',

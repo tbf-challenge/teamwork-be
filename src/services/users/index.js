@@ -161,7 +161,7 @@ const getInvitedUserDetail = async (email) => {
 		[email]
 	)
 	const user = result.rows[0]
-	if (!user) {
+	if (!user || user.status === "active") {
 		throw customError(inviteIsAlreadyActiveError)
 	}
 
