@@ -5,8 +5,11 @@ const isAuthenticated = require('../middleware/isAuthenticated')
 const isAdmin = require('../middleware/isAdmin')
 const { catchAsync , AppError} = require('../lib')
 const {
-	refreshTokenIsInvalidError
+	refreshTokenIsInvalidError,
+	inviteEmailDoesNotExistError,
+	userAlreadyActivatedError
 } = require("../services/errors")
+const verifyCreateToken = require('../middleware/verifyInviteToken')
 
 
 const {
@@ -18,7 +21,9 @@ const {
 
 const router = express.Router()
 const ERROR_MAP = {
-	[ refreshTokenIsInvalidError.name ] : 401
+	[ refreshTokenIsInvalidError.name ] : 401,
+	[ inviteEmailDoesNotExistError.name ] : 403,
+	[ userAlreadyActivatedError.name ] : 400
 }
 
 const transformUserResponse = (userDetails) => ({
@@ -70,19 +75,14 @@ router.post(
 
 router.post(
 	'/create-user',
-	isAuthenticated(),
-	isAdmin,
 	validateSchema(authSchema),
+	verifyCreateToken,
 	catchAsync(async (req, res) => {
 		const {
 			firstName,
 			lastName,
 			email,
-			password,
-			gender,
-			jobRole,
-			department,
-			address
+			password
 		} = req.body
 
 
@@ -91,11 +91,7 @@ router.post(
 			firstName,
 			lastName,
 			email,
-			password,
-			gender,
-			jobRole,
-			department,
-			address
+			password
 		])
 
 
