@@ -22,5 +22,13 @@ module.exports= {
 	refreshTokenIsInvalidError : {
 		name : 'refreshTokenIsInvalidError',
 		message : "Refresh token is invalid."
+	},
+	inviteEmailDoesNotExistError : {
+		name: 'inviteEmailDoesNotExistError',
+		message: 'Email is not present in invites list'
+	},
+	userAlreadyActivatedError : {
+		name: 'userAlreadyActivatedError',
+		message: 'User is already activated'
 	}
 }
