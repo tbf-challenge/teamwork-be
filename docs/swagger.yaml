@@ -108,15 +108,13 @@ paths:
                         type: integer
                         description: user id
                         example: 10
- /auth/invites:
+  /auth/invites:
     get:
       tags: 
         - user
-      operationId: invites
-      summary: status of invites
-      description: status of invites
-      requestBody:
-        description: Invite status of a potential new user in Teamwork
+      operationId: inviteStatusOfUser
+      summary: Invite status of a potential user
+      description: Invite status of a potential user
       responses:
         '200':
           description: A successful Operation
@@ -137,11 +135,14 @@ paths:
                         type: string
                         description: message
                         example: success
-                      token:
+                      accessToken:
                         type: string
-                        description: access token
+                        description: user token
                         example: eyajhjdla2jkqh489q83hquirpq
-    
+                      email:
+                        type: string
+                        description: email
+                        example: example@gmail.com
   /articles:
     post:
       tags:
