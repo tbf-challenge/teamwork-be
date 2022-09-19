@@ -11,37 +11,59 @@ const generateAccessToken = require("./generate-access-token")
 const generateRefreshToken = require("./generate-refresh-token")
 const updateRefreshToken = require("./update-refresh-token")
 const {
-	refreshTokenIsInvalidError
+	refreshTokenIsInvalidError, 
+	inviteEmailDoesNotExistError,
+	userAlreadyActivatedError
 } = require("../errors")
 const customError = require("../../lib/custom-error")
 
+
+/**
+ * 
+ * @param {string} email - email from request body
+ * @returns 
+ */
+const checkUserInvite = async (email) => {
+
+	const { rows } = await db.query(
+		`SELECT * FROM user_invites WHERE email = $1`, [email]
+	)
+	const userInvite = rows[0]
+	if (!userInvite) {
+		throw customError(inviteEmailDoesNotExistError)
+	}
+	if (userInvite.status === "active") {
+		throw customError(userAlreadyActivatedError)
+	}
+
+	return rows[0]
+}
+
 const invalidEmailAndPassword = "Invalid email or password."
+
 const createNewUser = async (user) => {
 	const [
 		firstName,
 		lastName,
 		email,
-		password,
-		gender,
-		jobRole,
-		department,
-		address
+		password
 	] = user
+
+	
+	await checkUserInvite(email)
+
+
 	const passwordHash = await genPasswordHash(password)
 	const refreshToken =  await generateRefreshToken()
 	const { rows } = await db.query(
 		`INSERT INTO users ("firstName", "lastName", "email", "passwordHash"
-		, "gender","jobRole", "department", "address", "refreshToken") 
-		 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`,
+		, "refreshToken") 
+		 VALUES ($1, $2, $3, $4, $5) RETURNING *`,
 		[
 			firstName,
 			lastName,
 			email,
 			passwordHash,
-			gender,
-			jobRole,
-			department,
-			address,
 			refreshToken
 		]
 	)
@@ -51,6 +73,15 @@ const createNewUser = async (user) => {
 		data: {user : body}, 
 		expiry : '15m'
 	})
+
+	await db.query(
+		`UPDATE user_invites 
+		SET status = $1 
+		WHERE email = $2 
+		RETURNING *`, 
+		["active", email]
+	)
+
 	return { accessToken, refreshToken, userId: userProfile.id }
 }
 
