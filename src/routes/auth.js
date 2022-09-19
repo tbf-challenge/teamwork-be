@@ -5,7 +5,7 @@ const isAuthenticated = require('../middleware/isAuthenticated')
 const isAdmin = require('../middleware/isAdmin')
 const { catchAsync , AppError} = require('../lib')
 const {
-	refreshTokenIsInvalidError, inviteIsAlreadyActiveError
+	RefreshTokenIsInvalidError, InvalidInviteError
 } = require("../services/errors")
 
 
@@ -18,8 +18,8 @@ const {
 
 const router = express.Router()
 const ERROR_MAP = {
-	[ refreshTokenIsInvalidError.name ] : 401,
-	[ inviteIsAlreadyActiveError.name ]  : 409
+	[ RefreshTokenIsInvalidError.name ] : 401,
+	[ InvalidInviteError.name ]  : 409
 }
 
 const transformUserResponse = (userDetails) => ({
@@ -134,15 +134,14 @@ router.post(
 )
 
 router.get(
-	'/invites',
-	isAuthenticated(),
+	'/invites/:token',
 	catchAsync(async (req, res) => {
 		const {
-			email
-		} = req.user
+			token 
+		} = req.params
 		const userDetails = 
 		await userSevice.getInvitedUserDetail(
-			email
+			token
 		)
 
 		return res.status(200).json({

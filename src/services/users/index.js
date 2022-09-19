@@ -11,8 +11,8 @@ const generateAccessToken = require("./generate-access-token")
 const generateRefreshToken = require("./generate-refresh-token")
 const updateRefreshToken = require("./update-refresh-token")
 const {
-	refreshTokenIsInvalidError,
-	inviteIsAlreadyActiveError
+	RefreshTokenIsInvalidError,
+	InvalidInviteError
 } = require("../errors")
 const customError = require("../../lib/custom-error")
 
@@ -50,7 +50,7 @@ const createNewUser = async (user) => {
 	const body = { id: userProfile.id, email: userProfile.email }
 	const accessToken =  generateAccessToken({
 		data: {user : body}, 
-		expiry : '15m'
+		expiry : '1m'
 	})
 	return { accessToken, refreshToken, userId: userProfile.id }
 }
@@ -139,7 +139,7 @@ const getNewTokens = async (email, currentRefreshToken) => {
 	const user = result.rows[0]
 
 	if (!user) {
-		throw customError(refreshTokenIsInvalidError)
+		throw customError(RefreshTokenIsInvalidError)
 	}
 
 	const accessToken =  generateAccessToken({
@@ -153,24 +153,30 @@ const getNewTokens = async (email, currentRefreshToken) => {
 	return { accessToken, refreshToken, userId: user.id }
 }
 
-const getInvitedUserDetail = async (email) => {
-	const result = await  db.query(
-		`SELECT * FROM user_invites
+const getInvitedUserDetail = async (token) => {
+	try {
+		const decoded = jwt.verify(token, config('TOKEN_SECRET'))
+		const {email} = decoded.user
+		const result = await  db.query(
+			`SELECT * FROM user_invites
 		WHERE email = $1 
 		`,
-		[email]
-	)
-	const user = result.rows[0]
-	if (!user || user.status === "active") {
-		throw customError(inviteIsAlreadyActiveError)
-	}
-
-	const accessToken = jwt.sign({email}, 
-		config("TOKEN_SECRET"),
-		 {expiresIn: "24h"})
+			[email]
+		)
+		const user = result.rows[0]
+		const accessToken = jwt.sign({email}, 
+			config("TOKEN_SECRET"),
+					 {expiresIn: "24h"})
+		return { accessToken, email : user.email, userId: user.id }
+	} catch(error) {
+	 if(error.name === 'TokenExpiredError' ){
+	 	throw customError(InvalidInviteError)
+		}
+		else{
+	 	throw error
+	 }
+	 }
 	
-	
-	return { accessToken, email : user.email, userId: user.id }
 }
 
 

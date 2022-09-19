@@ -19,12 +19,12 @@ module.exports= {
 		name: 'TagAlreadyAssignedToPostError',
 		message: 'Tag is already assigned to post '
 	},
-	refreshTokenIsInvalidError : {
-		name : 'refreshTokenIsInvalidError',
+	RefreshTokenIsInvalidError : {
+		name : 'RefreshTokenIsInvalidError',
 		message : "Refresh token is invalid."
 	},
-	inviteIsAlreadyActiveError : {
-		name : "inviteIsAlreadyActiveError",
-		message: "Invite is already active/used"
+	InvalidInviteError : {
+		name : "InvalidInviteError",
+		message: "Invite is invalid/expired"
 	}
 }
