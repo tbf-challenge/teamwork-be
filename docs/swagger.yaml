@@ -108,6 +108,40 @@ paths:
                         type: integer
                         description: user id
                         example: 10
+ /auth/invites:
+    get:
+      tags: 
+        - user
+      operationId: invites
+      summary: status of invites
+      description: status of invites
+      requestBody:
+        description: Invite status of a potential new user in Teamwork
+      responses:
+        '200':
+          description: A successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: success
+                    example: success
+                  data:
+                    type: object
+                    description: data
+                    properties:
+                      message: 
+                        type: string
+                        description: message
+                        example: success
+                      token:
+                        type: string
+                        description: access token
+                        example: eyajhjdla2jkqh489q83hquirpq
+    
   /articles:
     post:
       tags:
