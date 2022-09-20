@@ -12,14 +12,14 @@ const verify = (req, res, next) => {
 
 	return jwt.verify(token, config('TOKEN_SECRET'), (err, user) => {
 
-		if (err) return next(new AppError('Invalid token', 401))
+		if (err) return next(new AppError('Invalid token', 403))
 
         
 		if (req.body.email !== user.email) 
-			return next(new AppError('Invalid request email', 401))
+			return next(new AppError('Invalid request email', 403))
         
 		req.user = user
-		
+
 		return next()
 	})
 
