@@ -10,10 +10,9 @@ const options = {
 
 module.exports = (passport) => {
 	const verifyCallBack = async (jwtPayload, done) => {
-		
 		const { email } = jwtPayload.user
 		const user = await getUserByEmail(email)
-		
+
 		if (user) {
 			return done(null, user)
 		}
