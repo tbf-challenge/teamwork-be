@@ -5,11 +5,11 @@ const isAuthenticated = require('../middleware/isAuthenticated')
 const isAdmin = require('../middleware/isAdmin')
 const { catchAsync , AppError} = require('../lib')
 const {
-	refreshTokenIsInvalidError,
-	inviteEmailDoesNotExistError,
-	userAlreadyActivatedError
+	RefreshTokenIsInvalidError,
+	InviteEmailDoesNotExistError,
+	UserAlreadyExistsError
 } = require("../services/errors")
-const verifyCreateToken = require('../middleware/verifyInviteToken')
+const isValidInvite = require('../middleware/isValidInvite')
 
 
 const {
@@ -21,9 +21,9 @@ const {
 
 const router = express.Router()
 const ERROR_MAP = {
-	[ refreshTokenIsInvalidError.name ] : 401,
-	[ inviteEmailDoesNotExistError.name ] : 403,
-	[ userAlreadyActivatedError.name ] : 400
+	[ RefreshTokenIsInvalidError.name ] : 401,
+	[ InviteEmailDoesNotExistError.name ] : 403,
+	[ UserAlreadyExistsError.name ] : 422
 }
 
 const transformUserResponse = (userDetails) => ({
@@ -76,7 +76,7 @@ router.post(
 router.post(
 	'/create-user',
 	validateSchema(authSchema),
-	verifyCreateToken,
+	isValidInvite,
 	catchAsync(async (req, res) => {
 		const {
 			firstName,

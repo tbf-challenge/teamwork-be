@@ -11,9 +11,9 @@ const generateAccessToken = require("./generate-access-token")
 const generateRefreshToken = require("./generate-refresh-token")
 const updateRefreshToken = require("./update-refresh-token")
 const {
-	refreshTokenIsInvalidError, 
-	inviteEmailDoesNotExistError,
-	userAlreadyActivatedError
+	RefreshTokenIsInvalidError, 
+	InviteEmailDoesNotExistError,
+	UserAlreadyExistsError
 } = require("../errors")
 const customError = require("../../lib/custom-error")
 
@@ -30,13 +30,13 @@ const checkUserInvite = async (email) => {
 	)
 	const userInvite = rows[0]
 	if (!userInvite) {
-		throw customError(inviteEmailDoesNotExistError)
+		throw customError(InviteEmailDoesNotExistError)
 	}
 	if (userInvite.status === "active") {
-		throw customError(userAlreadyActivatedError)
+		throw customError(UserAlreadyExistsError)
 	}
 
-	return rows[0]
+	return userInvite
 }
 
 const invalidEmailAndPassword = "Invalid email or password."
@@ -77,8 +77,7 @@ const createNewUser = async (user) => {
 	await db.query(
 		`UPDATE user_invites 
 		SET status = $1 
-		WHERE email = $2 
-		RETURNING *`, 
+		WHERE email = $2`, 
 		["active", email]
 	)
 
@@ -169,7 +168,7 @@ const getNewTokens = async (email, currentRefreshToken) => {
 	const user = result.rows[0]
 
 	if (!user) {
-		throw customError(refreshTokenIsInvalidError)
+		throw customError(RefreshTokenIsInvalidError)
 	}
 
 	const accessToken =  generateAccessToken({

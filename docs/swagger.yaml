@@ -26,7 +26,25 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: user email
+                  format: email
+                  example: jones@gmail.com
+                password:
+                  type: string
+                  description: user password
+                  example: Modestrighteous1$
+                firstName:
+                  type: string
+                  description: user first name
+                  example: Jones
+                lastName:
+                  type: string
+                  description: user last name
+                  example: Doe
       responses:
         '201':
           description: A successful operation
@@ -47,9 +65,13 @@ paths:
                         type: string
                         description: message
                         example: User account successfully created
-                      token:
+                      accessToken:
                         type: string
-                        description: user token
+                        description: user access token
+                        example: eyajhjdla2jkqh489q83hquirpq
+                      refreshToken:
+                        type: string
+                        description: user refresh token
                         example: eyajhjdla2jkqh489q83hquirpq
                       userId:
                         type: integer

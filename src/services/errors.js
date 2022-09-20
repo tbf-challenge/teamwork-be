@@ -19,16 +19,16 @@ module.exports= {
 		name: 'TagAlreadyAssignedToPostError',
 		message: 'Tag is already assigned to post '
 	},
-	refreshTokenIsInvalidError : {
-		name : 'refreshTokenIsInvalidError',
+	RefreshTokenIsInvalidError : {
+		name : 'RefreshTokenIsInvalidError',
 		message : "Refresh token is invalid."
 	},
-	inviteEmailDoesNotExistError : {
-		name: 'inviteEmailDoesNotExistError',
+	InviteEmailDoesNotExistError : {
+		name: 'InviteEmailDoesNotExistError',
 		message: 'Email is not present in invites list'
 	},
-	userAlreadyActivatedError : {
-		name: 'userAlreadyActivatedError',
-		message: 'User is already activated'
+	UserAlreadyExistsError : {
+		name: 'UserAlreadyExistsError',
+		message: 'User already exists'
 	}
 }
