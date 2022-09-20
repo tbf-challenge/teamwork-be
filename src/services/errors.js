@@ -26,5 +26,9 @@ module.exports= {
 	InvalidInviteError : {
 		name : "InvalidInviteError",
 		message: "Invite is invalid/expired"
+	},
+	InviteStatusActiveError : {
+		name : "InviteStatusActiveError",
+		message: "Invite status is active"
 	}
 }

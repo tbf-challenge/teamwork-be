@@ -12,7 +12,8 @@ const generateRefreshToken = require("./generate-refresh-token")
 const updateRefreshToken = require("./update-refresh-token")
 const {
 	RefreshTokenIsInvalidError,
-	InvalidInviteError
+	InvalidInviteError,
+	InviteStatusActiveError
 } = require("../errors")
 const customError = require("../../lib/custom-error")
 
@@ -164,6 +165,12 @@ const getInvitedUserDetail = async (token) => {
 			[email]
 		)
 		const user = result.rows[0]
+		if (!user) {
+			throw customError(RefreshTokenIsInvalidError)
+		}
+		else if(user.status === "active"){
+			throw customError(InviteStatusActiveError)
+		}
 		const accessToken = jwt.sign({email}, 
 			config("TOKEN_SECRET"),
 					 {expiresIn: "24h"})
