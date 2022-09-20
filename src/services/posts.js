@@ -7,7 +7,7 @@ const customError = require("../lib/custom-error")
 
 const uniqueErrorCode = '23505'
 
-const createPost = async({userId,title,image,content, published}) => {
+const createPost = async({userId, title, image, content, published}) => {
 	const newPost = await db.query(
 		`INSERT INTO posts
 		 ("userId", title , image , content , published )

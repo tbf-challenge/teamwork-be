@@ -50,7 +50,7 @@ const createNewUser = async (user) => {
 	const body = { id: userProfile.id, email: userProfile.email }
 	const accessToken =  generateAccessToken({
 		data: {user : body}, 
-		expiry : '1m'
+		expiry : '15m'
 	})
 	return { accessToken, refreshToken, userId: userProfile.id }
 }
@@ -156,7 +156,7 @@ const getNewTokens = async (email, currentRefreshToken) => {
 const getInvitedUserDetail = async (token) => {
 	try {
 		const decoded = jwt.verify(token, config('TOKEN_SECRET'))
-		const {email} = decoded.user
+		const {email} = decoded
 		const result = await  db.query(
 			`SELECT * FROM user_invites
 		WHERE email = $1 
