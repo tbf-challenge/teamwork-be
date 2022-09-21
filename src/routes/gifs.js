@@ -5,7 +5,8 @@ const validateSchema = require('../middleware/validateSchema')
 const { catchAsync } = require('../lib')
 
 const {
-	createGifSchema
+	createGifSchema,
+	getGifByIdSchema
 	
 } = require('../schema')
 
@@ -38,9 +39,33 @@ const createGif = catchAsync( async(req, res) => {
 	})
 })
 
+const getGif = async (req, res) => {
+	const { id } = req.params
+
+	const gif = await postService.getPost({
+		id
+	})
+	return res.status(200).json({
+		status: 'success',
+		data: {
+			...transformGifResponse(gif),
+			comments: gif.comments
+				.filter((comment) => comment)
+				.map((comment) => ({
+					commentId: comment.id,
+					comment: comment.content,
+					userId: comment.userId
+				}))
+		}
+	})
+	
+}
 router.use(isAuthenticated())
 router
 	.route('/')
 	.post( validateSchema(createGifSchema), createGif)
+router
+	.route('/:id')
+	.get(validateSchema(getGifByIdSchema), getGif)
 
 module.exports = router
