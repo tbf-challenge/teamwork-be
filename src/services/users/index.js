@@ -243,7 +243,7 @@ const sendResetLink = async ({ email, url }) => {
 	\n${url}\n\nIf you did not request this, please ignore this email.\n`
 
 	await emailLib({ to: email,
-		 subject: `Reset your ${config("ORGANIZATION_NAME")}`, text })
+		 subject: `Reset your ${config("ORGANIZATION_NAME")} password`, text })
 
 }
 
