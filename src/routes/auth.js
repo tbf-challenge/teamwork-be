@@ -5,7 +5,8 @@ const isAuthenticated = require('../middleware/isAuthenticated')
 const isAdmin = require('../middleware/isAdmin')
 const { catchAsync , AppError} = require('../lib')
 const {
-	RefreshTokenIsInvalidError, InvalidInviteError, InviteStatusActiveError
+	RefreshTokenIsInvalidError,
+	InvalidInviteError
 } = require("../services/errors")
 
 
@@ -19,8 +20,7 @@ const {
 const router = express.Router()
 const ERROR_MAP = {
 	[ RefreshTokenIsInvalidError.name ] : 401,
-	[ InvalidInviteError.name ]  : 401,
-	[InviteStatusActiveError.name] : 401
+	[ InvalidInviteError.name ]  : 401
 }
 
 const transformUserResponse = (userDetails) => ({
