@@ -45,7 +45,7 @@ const createGif = catchAsync( async(req, res) => {
 	})
 })
 
-const getGif = async (req, res) => {
+const getGif = catchAsync( async(req, res) => {
 	const { id } = req.params
 
 	const gif = await postService.getPost({
@@ -66,7 +66,7 @@ const getGif = async (req, res) => {
 		}
 	})
 	
-}
+})
 router.use(isAuthenticated())
 router
 	.route('/')
