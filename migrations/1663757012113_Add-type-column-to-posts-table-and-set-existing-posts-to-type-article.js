@@ -12,4 +12,5 @@ exports.up = (pgm) => {
 	pgm.alterColumn('posts', 'type', { notNull: true })
 }
 
+
 exports.down = false
