@@ -112,9 +112,9 @@ paths:
     get:
       tags: 
         - user
-      operationId: inviteStatusOfUser
-      summary: Invite status of a potential user
-      description: Invite status of a potential user
+      operationId: validityOfAccessToken
+      summary: Checking the validity of access token of a potential user
+      description: Checking the validity of the access token for invites before being allowed to sign up
       responses:
         '200':
           description: A successful Operation
