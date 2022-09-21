@@ -161,9 +161,7 @@ router.post('/password',
 	catchAsync(async (req, res) => {
 		const { email } = req.body
 
-		const url = await userSevice.generatePasswordResetLink(email)
-
-		await userSevice.sendPasswordResetLink({ email, url })
+		await userSevice.sendPasswordResetLink(email)
 
 		return res.status(200).json({
 			status: 'success',

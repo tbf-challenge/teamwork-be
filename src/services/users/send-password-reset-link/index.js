@@ -5,10 +5,12 @@ const config = require("../../../config")
 
 /**
  * Sends a password reset link to the user
- * @param {object} { email, url } - email of the user and password reset link
+ * @param {string} - email of the user
  * @returns {Promise}
  */
-const sendPasswordResetLink = async ({ email, url }) => {
+const sendPasswordResetLink = async (email) => {
+
+	const url = await generatePasswordResetLink(email)
 
 	const text = `Hi,
 	\n\nPlease click on the following link to reset your password:
@@ -19,7 +21,4 @@ const sendPasswordResetLink = async ({ email, url }) => {
 
 }
 
-module.exports = {
-	generatePasswordResetLink,
-	sendPasswordResetLink
-}
+module.exports = sendPasswordResetLink
