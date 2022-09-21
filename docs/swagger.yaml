@@ -165,6 +165,45 @@ paths:
                         type: string
                         description: email
                         example: example@gmail.com
+  /auth/password:
+    post:
+      tags: 
+        - user
+      operationId: forgotPassword
+      summary: Send a request to reset password
+      description: Send a request to reset password to the user's email with a token
+      requestBody:
+        description: Send a request to reset password
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: user email
+                  format: email
+                  example: codegako@gmail.com
+      responses:
+        '200':
+          description: A successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: success
+                    example: success
+                  data:
+                    type: object
+                    description: data
+                    properties:
+                      message: 
+                        type: string
+                        description: message
+                        example: Password reset email sent
   /articles:
     post:
       tags:

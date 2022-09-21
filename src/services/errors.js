@@ -34,5 +34,9 @@ module.exports= {
 	UserAlreadyExistsError : {
 		name: 'UserAlreadyExistsError',
 		message: 'User already exists'
+	},
+	InvalidResetEmail :{
+		name: 'InvalidResetEmail',
+		message: 'Email is not valid for this operation'
 	}
 }
