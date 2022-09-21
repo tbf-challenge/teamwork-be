@@ -11,10 +11,10 @@ const validateSchema = require('../middleware/validateSchema')
 
 const {
 	createArticleSchema,
-	updateArticleSchema ,
+	updatePostSchema ,
 	 createCommentSchema ,
-	 getArticleByIdSchema,
-	 deleteArticleSchema,
+	 getPostByIdSchema,
+	 deletePostSchema,
 	 assignTagToArticleSchema,
 	 deleteArticleTagsSchema,
 	 queryArticleTagsSchema
@@ -233,9 +233,9 @@ router
 	.get(validateSchema(queryArticleTagsSchema), queryArticleTags)
 router
 	.route('/:id')
-	.get(validateSchema(getArticleByIdSchema), getArticle)
-	.delete(validateSchema(deleteArticleSchema), deleteArticle)
-	.patch(validateSchema(updateArticleSchema), updateArticle)
+	.get(validateSchema(getPostByIdSchema), getArticle)
+	.delete(validateSchema(deletePostSchema), deleteArticle)
+	.patch(validateSchema(updatePostSchema), updateArticle)
 
 router
 	.route('/:id/comment')

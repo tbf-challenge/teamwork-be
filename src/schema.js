@@ -67,7 +67,7 @@ const createArticleSchema = Joi.object({
 	}
 })
 
-const updateArticleSchema = Joi.object({
+const updatePostSchema = Joi.object({
 	params: {
 		id :Joi.number()
 			.required()
@@ -98,14 +98,14 @@ const createCommentSchema = Joi.object({
 	}
 })
 
-const getArticleByIdSchema = Joi.object({
+const getPostByIdSchema = Joi.object({
 	params: {
 		id :Joi.number()
 			.required()
 	}
 })
 
-const deleteArticleSchema = Joi.object({
+const deletePostSchema = Joi.object({
 	params: {
 		id :Joi.number()
 			.required()
@@ -204,10 +204,10 @@ module.exports = {
 	authSchema,
 	signinSchema,
 	createArticleSchema,
-	updateArticleSchema,
+	updatePostSchema,
 	createCommentSchema,
-	getArticleByIdSchema,
-	deleteArticleSchema,
+	getPostByIdSchema,
+	deletePostSchema,
 	createTagSchema,
 	updateTagSchema,
 	deleteTagSchema,
