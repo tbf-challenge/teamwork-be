@@ -184,7 +184,7 @@ const authTokenSchema = Joi.object({
 })
 
 
-const createGifsSchema = Joi.object({
+const createGifSchema = Joi.object({
 	body:{
 		userId: Joi.number()
 			.required(),
@@ -216,5 +216,5 @@ module.exports = {
 	queryArticleTagsSchema,
 	inviteUserSchema,
 	authTokenSchema,
-	createGifsSchema
+	createGifSchema
 }
