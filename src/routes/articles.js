@@ -13,7 +13,7 @@ const {
 	createArticleSchema,
 	updatePostSchema ,
 	 createCommentSchema ,
-	 getArticleByIdSchema,
+	 getPostByIdSchema,
 	 deletePostSchema,
 	 assignTagToArticleSchema,
 	 deleteArticleTagsSchema,
@@ -233,7 +233,7 @@ router
 	.get(validateSchema(queryArticleTagsSchema), queryArticleTags)
 router
 	.route('/:id')
-	.get(validateSchema(getArticleByIdSchema), getArticle)
+	.get(validateSchema(getPostByIdSchema), getArticle)
 	.delete(validateSchema(deletePostSchema), deleteArticle)
 	.patch(validateSchema(updatePostSchema), updateArticle)
 

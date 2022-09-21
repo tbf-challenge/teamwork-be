@@ -98,7 +98,7 @@ const createCommentSchema = Joi.object({
 	}
 })
 
-const getArticleByIdSchema = Joi.object({
+const getPostByIdSchema = Joi.object({
 	params: {
 		id :Joi.number()
 			.required()
@@ -199,12 +199,6 @@ const createGifSchema = Joi.object({
 		published: Joi.boolean()
 	}
 })
-const getGifByIdSchema = Joi.object({
-	params: {
-		id :Joi.number()
-			.required()
-	}
-})
 
 module.exports = {
 	authSchema,
@@ -212,7 +206,7 @@ module.exports = {
 	createArticleSchema,
 	updatePostSchema,
 	createCommentSchema,
-	getArticleByIdSchema,
+	getPostByIdSchema,
 	deletePostSchema,
 	createTagSchema,
 	updateTagSchema,
@@ -222,6 +216,5 @@ module.exports = {
 	queryArticleTagsSchema,
 	inviteUserSchema,
 	authTokenSchema,
-	createGifSchema,
-	getGifByIdSchema
+	createGifSchema
 }

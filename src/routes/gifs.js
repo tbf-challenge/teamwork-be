@@ -10,7 +10,7 @@ const {
 
 const {
 	createGifSchema,
-	getGifByIdSchema
+	getPostByIdSchema
 	
 } = require('../schema')
 
@@ -73,7 +73,7 @@ router
 	.post( validateSchema(createGifSchema), createGif)
 router
 	.route('/:id')
-	.get(validateSchema(getGifByIdSchema), getGif)
+	.get(validateSchema(getPostByIdSchema), getGif)
 router
 	.use((err, req, res, next)=> {
 		const error = err
