@@ -473,6 +473,10 @@ paths:
                         type: string
                         description: Message for gif created
                         example: GIF successfully posted
+                      userId:
+                        type: integer
+                        description: user id
+                        example: 10
                       gifId:
                         type: integer
                         description: Gif id
@@ -486,6 +490,14 @@ paths:
                         type: string
                         description: Title of gif
                         example: How to become a 10x software developer
+                      published:
+                        type: boolean
+                        description: Published or not
+                        example: True
+                      imageUrl:
+                        type: string
+                        description: image/gif content
+                        example: /https://imgbb.com/
       security:
         - access_token: []
   /feed:

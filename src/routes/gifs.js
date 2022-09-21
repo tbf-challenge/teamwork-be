@@ -14,10 +14,10 @@ const router = express.Router()
 const transformGifResponse = (gif) => ({
 	userId: gif.userId,
 	title: gif.title,
-	image: gif.content,
-	published: gif.published,
+	imageUrl: gif.content,
 	createdOn: gif.createdAt,
-	gifId: gif.id
+	gifId: gif.id,
+	published : gif.published
 	
 })
 
