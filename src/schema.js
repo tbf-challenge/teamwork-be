@@ -50,7 +50,7 @@ const signinSchema = Joi.object({
 	}
 })
 
-const createPostSchema = Joi.object({
+const createArticleSchema = Joi.object({
 	body:{
 		userId: Joi.number()
 			.required(),
@@ -67,7 +67,7 @@ const createPostSchema = Joi.object({
 	}
 })
 
-const updatePostSchema = Joi.object({
+const updateArticleSchema = Joi.object({
 	params: {
 		id :Joi.number()
 			.required()
@@ -98,14 +98,14 @@ const createCommentSchema = Joi.object({
 	}
 })
 
-const getPostByIdSchema = Joi.object({
+const getArticleByIdSchema = Joi.object({
 	params: {
 		id :Joi.number()
 			.required()
 	}
 })
 
-const deletePostSchema = Joi.object({
+const deleteArticleSchema = Joi.object({
 	params: {
 		id :Joi.number()
 			.required()
@@ -183,14 +183,31 @@ const authTokenSchema = Joi.object({
 	}
 })
 
+
+const createGifsSchema = Joi.object({
+	body:{
+		userId: Joi.number()
+			.required(),
+		title: Joi.string()
+			.alphanum()
+			.min(3)
+			.max(30)
+			.required(),
+		image: Joi.string()
+			.uri()
+			.required(),
+		published: Joi.boolean()
+	}
+})
+
 module.exports = {
 	authSchema,
 	signinSchema,
-	createPostSchema,
-	updatePostSchema,
+	createArticleSchema,
+	updateArticleSchema,
 	createCommentSchema,
-	getPostByIdSchema,
-	deletePostSchema,
+	getArticleByIdSchema,
+	deleteArticleSchema,
 	createTagSchema,
 	updateTagSchema,
 	deleteTagSchema,
@@ -198,5 +215,6 @@ module.exports = {
 	deleteArticleTagsSchema,
 	queryArticleTagsSchema,
 	inviteUserSchema,
-	authTokenSchema
+	authTokenSchema,
+	createGifsSchema
 }

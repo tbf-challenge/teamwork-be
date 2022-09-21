@@ -10,11 +10,11 @@ const {
 const validateSchema = require('../middleware/validateSchema')
 
 const {
-	createPostSchema,
-	updatePostSchema ,
+	createArticleSchema,
+	updateArticleSchema ,
 	 createCommentSchema ,
-	 getPostByIdSchema,
-	 deletePostSchema,
+	 getArticleByIdSchema,
+	 deleteArticleSchema,
 	 assignTagToArticleSchema,
 	 deleteArticleTagsSchema,
 	 queryArticleTagsSchema
@@ -37,7 +37,8 @@ const transformArticleResponse = (article) => ({
 	published: article.published,
 	createdOn: article.createdAt,
 	articleId: article.id,
-	tagId : article.tagId
+	tagId : article.tagId,
+	type : article.type
 })
 
 const createArticle = async (req, res, next) => {
@@ -49,7 +50,9 @@ const createArticle = async (req, res, next) => {
 			title, 
 			image, 
 			content : article,
-			published})
+			published,
+		    type : 'article'
+		})
 		res.status(201).json({
 			status: 'success',
 			data: {
@@ -224,15 +227,15 @@ const assignTagToArticle = async (req, res, next) => {
 router.use(isAuthenticated())
 router
 	.route('/')
-	.post( validateSchema(createPostSchema), createArticle)
+	.post( validateSchema(createArticleSchema), createArticle)
 router
 	.route('/query')
 	.get(validateSchema(queryArticleTagsSchema), queryArticleTags)
 router
 	.route('/:id')
-	.get(validateSchema(getPostByIdSchema), getArticle)
-	.delete(validateSchema(deletePostSchema), deleteArticle)
-	.patch(validateSchema(updatePostSchema), updateArticle)
+	.get(validateSchema(getArticleByIdSchema), getArticle)
+	.delete(validateSchema(deleteArticleSchema), deleteArticle)
+	.patch(validateSchema(updateArticleSchema), updateArticle)
 
 router
 	.route('/:id/comment')

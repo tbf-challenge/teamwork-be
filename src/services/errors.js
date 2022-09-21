@@ -34,5 +34,9 @@ module.exports= {
 	UserAlreadyExistsError : {
 		name: 'UserAlreadyExistsError',
 		message: 'User already exists'
+	},
+	GifDoesNotExistError : { 
+		name : 'GifDoesNotExistError', 
+		message : 'Gif does not exist'
 	}
 }
