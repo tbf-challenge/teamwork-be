@@ -213,6 +213,39 @@ const getInvitedUserDetail = async (token) => {
 	
 }
 
+/**
+ * Generates a new password reset link
+ * @param {string} email - email of the user
+ * @returns {string} - password reset link
+ */
+const generateResetLink = async (email) => {
+	await getUserByEmail(email)
+
+	
+	const resetToken = await generateAccessToken(
+		{ data: { email }, 
+			expiry: '1h' })
+
+	const url =
+	 `${config("FRONTEND_BASE_URL")}/reset-password?token=${resetToken}`
+	return url
+}
+
+/**
+ * Sends a password reset link to the user
+ * @param {object} { email, url } - email of the user and password reset link
+ * @returns {Promise}
+ */
+const sendResetLink = async ({ email, url }) => {
+
+	const text = `Hi,
+	\n\nPlease click on the following link to reset your password:
+	\n${url}\n\nIf you did not request this, please ignore this email.\n`
+
+	await emailLib({ to: email,
+		 subject: `Reset your ${config("ORGANIZATION_NAME")}`, text })
+
+}
 
 module.exports = {
 	createNewUser,
@@ -220,5 +253,7 @@ module.exports = {
 	signInUserByEmail,
 	inviteUser,
 	getNewTokens,
-	getInvitedUserDetail
+	getInvitedUserDetail,
+	generateResetLink,
+	sendResetLink
 }
