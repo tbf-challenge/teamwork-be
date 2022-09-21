@@ -10,7 +10,7 @@ const {
 const validateSchema = require('../middleware/validateSchema')
 
 const {
-	createPostSchema,
+	createArticleSchema,
 	updatePostSchema ,
 	 createCommentSchema ,
 	 getPostByIdSchema,
@@ -49,7 +49,9 @@ const createArticle = async (req, res, next) => {
 			title, 
 			image, 
 			content : article,
-			published})
+			published,
+		    type : 'article'
+		})
 		res.status(201).json({
 			status: 'success',
 			data: {
@@ -224,7 +226,7 @@ const assignTagToArticle = async (req, res, next) => {
 router.use(isAuthenticated())
 router
 	.route('/')
-	.post( validateSchema(createPostSchema), createArticle)
+	.post( validateSchema(createArticleSchema), createArticle)
 router
 	.route('/query')
 	.get(validateSchema(queryArticleTagsSchema), queryArticleTags)

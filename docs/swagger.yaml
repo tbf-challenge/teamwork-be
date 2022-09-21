@@ -467,6 +467,78 @@ paths:
                         example: This post articulates all there is to be a 10x software developer
       security:
         - access_token: []
+  /gifs:
+    post:
+      tags:
+        - gif
+      operationId: createGif
+      summary: Create a new gif
+      description: Create a new gif
+      requestBody:
+        description: Create a new gif
+        content:
+          application/json:
+            schema: 
+              type: object
+              required:
+                - title
+                - image
+              properties:
+                title:
+                  type: string
+                  description: Title of gif
+                  example: How to become a 10x software developer
+                image:
+                  type: string
+                  description: image/gif content
+                  example: /https://imgbb.com/
+      responses:
+        '201':
+          description: A successful operation
+          content: 
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: successful
+                    example: success
+                  data:
+                    type: object
+                    description: Data for new gif created
+                    properties:
+                      message:
+                        type: string
+                        description: Message for gif created
+                        example: GIF successfully posted
+                      userId:
+                        type: integer
+                        description: user id
+                        example: 10
+                      gifId:
+                        type: integer
+                        description: Gif id
+                        example: 10
+                      createdOn: 
+                        type: string
+                        description: Created date of a new gif
+                        pattern: /([0-9]{4})-(?:[0-9]{2})-([0-9]{2})/
+                        example: "2019-05-17"
+                      title: 
+                        type: string
+                        description: Title of gif
+                        example: How to become a 10x software developer
+                      published:
+                        type: boolean
+                        description: Published or not
+                        example: True
+                      imageUrl:
+                        type: string
+                        description: image/gif content
+                        example: /https://imgbb.com/
+      security:
+        - access_token: []
   /feed:
     get:
       tags:
@@ -551,5 +623,6 @@ components:
           type: string
           example: jones@gmail.com
           format: email
+  
         
       

@@ -50,7 +50,7 @@ const signinSchema = Joi.object({
 	}
 })
 
-const createPostSchema = Joi.object({
+const createArticleSchema = Joi.object({
 	body:{
 		userId: Joi.number()
 			.required(),
@@ -183,10 +183,27 @@ const authTokenSchema = Joi.object({
 	}
 })
 
+
+const createGifSchema = Joi.object({
+	body:{
+		userId: Joi.number()
+			.required(),
+		title: Joi.string()
+			.alphanum()
+			.min(3)
+			.max(30)
+			.required(),
+		image: Joi.string()
+			.uri()
+			.required(),
+		published: Joi.boolean()
+	}
+})
+
 module.exports = {
 	authSchema,
 	signinSchema,
-	createPostSchema,
+	createArticleSchema,
 	updatePostSchema,
 	createCommentSchema,
 	getPostByIdSchema,
@@ -198,5 +215,6 @@ module.exports = {
 	deleteArticleTagsSchema,
 	queryArticleTagsSchema,
 	inviteUserSchema,
-	authTokenSchema
+	authTokenSchema,
+	createGifSchema
 }
