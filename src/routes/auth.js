@@ -152,6 +152,22 @@ router.get(
 	})
 )
 
+router.post('/password',
+	catchAsync(async (req, res) => {
+		const { email } = req.body
+
+		const url = await userSevice.generateResetLink(email)
+
+		await userSevice.sendResetLink({ email, url })
+
+		res.status(200).json({
+			status: 'success',
+			data: {
+				message: 'Password reset email sent'
+			}
+		})
+	})
+)
 
 router
 	.use((err, req, res, next)=> {
