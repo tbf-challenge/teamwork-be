@@ -31,34 +31,8 @@ const authSchema = Joi.object({
 					allow: ['com', 'net']
 				}
 			})
-			.required(),
-		gender: Joi.string().valid(
-			'female',
-			'male',
-			'non-binary',
-			'transgender',
-			'intersex',
-			'none'
-		)
-			.lowercase(),
-		jobRole: Joi.string()
-			.lowercase(),
-		department: Joi.string()
-			.valid(
-				'sales',
-				'human resource',
-				'product development',
-				'infrastructure',
-				'security',
-				'research and development',
-				'customer support',
-				'software developers'
-			)
-			.lowercase(),
-		address: Joi.string()
-			.min(3)
-			.max(100)
-	}
+			.required()
+	}	
 })
 
 const signinSchema = Joi.object({

@@ -26,5 +26,13 @@ module.exports= {
 	InvalidInviteError : {
 		name : "InvalidInviteError",
 		message: "Invite is invalid/expired"
+	},
+	InviteEmailDoesNotExistError : {
+		name: 'InviteEmailDoesNotExistError',
+		message: 'Email is not present in invites list'
+	},
+	UserAlreadyExistsError : {
+		name: 'UserAlreadyExistsError',
+		message: 'User already exists'
 	}
 }
