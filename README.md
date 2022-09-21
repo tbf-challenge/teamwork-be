@@ -31,8 +31,10 @@ An in-depth paragraph about your project and overview of use.
         TOKEN_SECRET= <SECRET>
         ```
 
-5.  Create a .env.test file `.env.test.local` and update with env variables (check the .env.sample).
-    The file: .env.test.local contains the env variables for the test environment
+5.  To run the test locally for the project, create a file called `.env.test` and update it with test env variables (check the .env.sample).
+    PS.
+    i. The .env.test contains the env variables for the test environment
+    ii. Ensure that you use a database name different from that in your local environment. This is because in the test environment the data in the database will always be teared down each time the tests run in the project.
 
             ```
             DATABASE_URL= <DB_CONNECTION_STRING>
