@@ -130,6 +130,41 @@ paths:
                         type: integer
                         description: user id
                         example: 10
+  /auth/invites:
+    get:
+      tags: 
+        - user
+      operationId: validityOfAccessToken
+      summary: Checking the validity of access token of a potential user
+      description: Checking the validity of the access token for invites before being allowed to sign up
+      responses:
+        '200':
+          description: A successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: success
+                    example: success
+                  data:
+                    type: object
+                    description: data
+                    properties:
+                      message: 
+                        type: string
+                        description: message
+                        example: success
+                      accessToken:
+                        type: string
+                        description: user token
+                        example: eyajhjdla2jkqh489q83hquirpq
+                      email:
+                        type: string
+                        description: email
+                        example: example@gmail.com
   /articles:
     post:
       tags:

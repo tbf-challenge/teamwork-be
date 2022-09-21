@@ -11,7 +11,8 @@ const generateAccessToken = require("./generate-access-token")
 const generateRefreshToken = require("./generate-refresh-token")
 const updateRefreshToken = require("./update-refresh-token")
 const {
-	RefreshTokenIsInvalidError, 
+	RefreshTokenIsInvalidError,
+	InvalidInviteError, 
 	InviteEmailDoesNotExistError,
 	UserAlreadyExistsError
 } = require("../errors")
@@ -182,11 +183,42 @@ const getNewTokens = async (email, currentRefreshToken) => {
 	return { accessToken, refreshToken, userId: user.id }
 }
 
+const getInvitedUserDetail = async (token) => {
+	try {
+		const decoded = jwt.verify(token, config('TOKEN_SECRET'))
+		const {email} = decoded
+		const result = await  db.query(
+			`SELECT * FROM user_invites
+		WHERE email = $1 
+		`,
+			[email]
+		)
+		const user = result.rows[0]
+		if (!user || user.status === "active") {
+			throw customError(InvalidInviteError)
+		}
+		const accessToken =  generateAccessToken({
+			data: user, 
+			expiry : '24h'
+		})
+		return { accessToken, email : user.email, userId: user.id }
+	} catch(error) {
+	 if(error.name === 'TokenExpiredError' ){
+	 	throw customError(InvalidInviteError)
+		}
+		else{
+	 	throw error
+	 }
+	 }
+	
+}
+
 
 module.exports = {
 	createNewUser,
 	getUserByEmail,
 	signInUserByEmail,
 	inviteUser,
-	getNewTokens
+	getNewTokens,
+	getInvitedUserDetail
 }

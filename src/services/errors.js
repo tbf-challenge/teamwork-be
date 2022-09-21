@@ -23,6 +23,10 @@ module.exports= {
 		name : 'RefreshTokenIsInvalidError',
 		message : "Refresh token is invalid."
 	},
+	InvalidInviteError : {
+		name : "InvalidInviteError",
+		message: "Invite is invalid/expired"
+	},
 	InviteEmailDoesNotExistError : {
 		name: 'InviteEmailDoesNotExistError',
 		message: 'Email is not present in invites list'
