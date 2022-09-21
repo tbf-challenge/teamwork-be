@@ -539,6 +539,68 @@ paths:
                         example: /https://imgbb.com/
       security:
         - access_token: []
+  /gifs/{gifId}:
+    get:
+      tags:
+        - gif
+      operationId: getGif
+      summary: Get a gif
+      description: Get a gif with a gif id
+      responses:
+        '200':
+          description: A successfully Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: success
+                    example: success
+                  data:
+                    type: object
+                    description: Gif was gotten successfuly
+                    properties:
+                      gifId:
+                        type: integer
+                        description: Gif id
+                        example: 10
+                      createdOn: 
+                        type: string
+                        description: Created date of a new gif
+                        pattern: /([0-9]{4})-(?:[0-9]{2})-([0-9]{2})/
+                        example: "2019-05-17"
+                      title: 
+                        type: string
+                        description: Title of gif
+                        example: How to become a 10x software developer
+                      imageUrl: 
+                        type: string
+                        description: url for image/gif
+                        example: /https://imgbb.com/
+                      published:
+                        type: boolean
+                        description: Published or not
+                        example: True
+                      comments:
+                        type: array
+                        items:
+                          properties:
+                            commentId:
+                              type: integer
+                              description: Comment Id
+                              example: 10
+                            comment:
+                              type: string
+                              description: New comment to be created
+                              example: This post articulates all there is to be a 10x software developer
+                            authorId:
+                              type: integer
+                              description: Comment Id
+                              example: 10
+      security:
+          - access_token: []
   /feed:
     get:
       tags:

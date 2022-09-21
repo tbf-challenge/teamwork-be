@@ -94,7 +94,8 @@ const getArticle = async (req, res, next) => {
 	const { id } = req.params
 	try {
 		const article = await postService.getPost({
-			id
+			id,
+			type : 'article'
 		})
 		return res.status(200).json({
 			status: 'success',

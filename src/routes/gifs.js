@@ -2,7 +2,11 @@ const express = require('express')
 const postService = require('../services/posts')
 const isAuthenticated = require('../middleware/isAuthenticated')
 const validateSchema = require('../middleware/validateSchema')
-const { catchAsync } = require('../lib')
+const { catchAsync, AppError } = require('../lib')
+const {
+	GifDoesNotExistError
+	
+} = require("../services/errors")
 
 const {
 	createGifSchema,
@@ -11,7 +15,9 @@ const {
 } = require('../schema')
 
 const router = express.Router()
-
+const ERROR_MAP = {
+	[GifDoesNotExistError.name] : 404
+}
 const transformGifResponse = (gif) => ({
 	userId: gif.userId,
 	title: gif.title,
@@ -43,7 +49,8 @@ const getGif = async (req, res) => {
 	const { id } = req.params
 
 	const gif = await postService.getPost({
-		id
+		id,
+		type : 'gif'
 	})
 	return res.status(200).json({
 		status: 'success',
@@ -67,5 +74,15 @@ router
 router
 	.route('/:id')
 	.get(validateSchema(getGifByIdSchema), getGif)
+router
+	.use((err, req, res, next)=> {
+		const error = err
+		error.success = false
+		if(ERROR_MAP[error.name] ){
+			next(new AppError( error.message ,ERROR_MAP[error.name] ))
+			
+		} 
+		next(err)
+	})
 
 module.exports = router
