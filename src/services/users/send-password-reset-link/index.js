@@ -1,5 +1,6 @@
-const {  emailLib } = require("../../lib")
-const config = require("../../config")
+const generatePasswordResetLink = require('./generate-password-reset-link')
+const {  emailLib } = require("../../../lib")
+const config = require("../../../config")
 
 
 /**
@@ -7,7 +8,7 @@ const config = require("../../config")
  * @param {object} { email, url } - email of the user and password reset link
  * @returns {Promise}
  */
-const sendResetLink = async ({ email, url }) => {
+const sendPasswordResetLink = async ({ email, url }) => {
 
 	const text = `Hi,
 	\n\nPlease click on the following link to reset your password:
@@ -18,4 +19,7 @@ const sendResetLink = async ({ email, url }) => {
 
 }
 
-module.exports = sendResetLink
+module.exports = {
+	generatePasswordResetLink,
+	sendPasswordResetLink
+}

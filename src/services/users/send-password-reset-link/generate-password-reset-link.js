@@ -1,8 +1,8 @@
-const db = require("../../db")
-const config = require("../../config")
-const generateAccessToken = require("../users/generate-access-token")
-const customError = require("../../lib/custom-error")
-const { InvalidResetEmail } = require("../errors")
+const db = require("../../../db")
+const config = require("../../../config")
+const generateAccessToken = require("../generate-access-token")
+const customError = require("../../../lib/custom-error")
+const { InvalidResetEmail } = require("../../errors")
 
 /**
  * Generates a new password reset link
@@ -21,6 +21,7 @@ const generateResetLink = async (email) => {
 	if (!userProfile) {
 		throw customError(InvalidResetEmail)
 	}
+	
 	
 	const resetToken = generateAccessToken(
 		{ data: { email }, 

@@ -4,9 +4,7 @@ const validateSchema = require('../middleware/validateSchema')
 const isAuthenticated = require('../middleware/isAuthenticated')
 const isAdmin = require('../middleware/isAdmin')
 const { catchAsync , AppError} = require('../lib')
-const { generatePasswordResetLink 
-	, sendPasswordResetLink 
-} = require('../services/send-password-reset-link')
+
 
 const {
 	RefreshTokenIsInvalidError,
@@ -163,11 +161,11 @@ router.post('/password',
 	catchAsync(async (req, res) => {
 		const { email } = req.body
 
-		const url = await generatePasswordResetLink(email)
+		const url = await userSevice.generatePasswordResetLink(email)
 
-		await sendPasswordResetLink({ email, url })
+		await userSevice.sendPasswordResetLink({ email, url })
 
-		res.status(200).json({
+		return res.status(200).json({
 			status: 'success',
 			data: {
 				message: 'Password reset email sent'
