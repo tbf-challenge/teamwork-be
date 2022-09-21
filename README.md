@@ -25,22 +25,10 @@ An in-depth paragraph about your project and overview of use.
     ```
 4.  Create a .env file `.env` and update with env variables (check the .env.sample)
 
-        ```
-        DATABASE_URL= <DB_CONNECTION_STRING>
-        PORT= <PORT>
-        TOKEN_SECRET= <SECRET>
-        ```
-
 5.  To run the test locally for the project, create a file called `.env.test` and update it with test env variables (check the .env.sample).
     PS.
     i. The .env.test contains the env variables for the test environment
-    ii. Ensure that you use a database name different from that in your local environment. This is because in the test environment the data in the database will always be teared down each time the tests run in the project.
-
-            ```
-            DATABASE_URL= <DB_CONNECTION_STRING>
-            PORT= <PORT>
-            TOKEN_SECRET= <SECRET>
-            ```
+    ii. Ensure that you use a different database name in the .env.test. This is because in the test environment the database will always be dropped.
 
         <p align="right">(<a href="#top">back to top</a>)</p>
 
