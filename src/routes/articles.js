@@ -37,8 +37,7 @@ const transformArticleResponse = (article) => ({
 	published: article.published,
 	createdOn: article.createdAt,
 	articleId: article.id,
-	tagId : article.tagId,
-	type : article.type
+	tagId : article.tagId
 })
 
 const createArticle = async (req, res, next) => {
