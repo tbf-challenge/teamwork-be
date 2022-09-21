@@ -4,13 +4,18 @@ const validateSchema = require('../middleware/validateSchema')
 const isAuthenticated = require('../middleware/isAuthenticated')
 const isAdmin = require('../middleware/isAdmin')
 const { catchAsync , AppError} = require('../lib')
+const { generatePasswordResetLink 
+	, sendPasswordResetLink 
+} = require('../services/send-password-reset-link')
+
 const {
 	RefreshTokenIsInvalidError,
 	InvalidInviteError,
 	InviteEmailDoesNotExistError,
-	UserAlreadyExistsError
-
+	UserAlreadyExistsError,
+	InvalidResetEmail
 } = require("../services/errors")
+
 const isValidInvite = require('../middleware/isValidInvite')
 
 
@@ -26,7 +31,8 @@ const ERROR_MAP = {
 	[ RefreshTokenIsInvalidError.name ] : 401,
 	[ InvalidInviteError.name ]  : 401,
 	[ InviteEmailDoesNotExistError.name ] : 403,
-	[ UserAlreadyExistsError.name ] : 422
+	[ UserAlreadyExistsError.name ] : 422,
+	[ InvalidResetEmail.name ] : 401
 }
 
 const transformUserResponse = (userDetails) => ({
@@ -153,12 +159,13 @@ router.get(
 )
 
 router.post('/password',
+
 	catchAsync(async (req, res) => {
 		const { email } = req.body
 
-		const url = await userSevice.generateResetLink(email)
+		const url = await generatePasswordResetLink(email)
 
-		await userSevice.sendResetLink({ email, url })
+		await sendPasswordResetLink({ email, url })
 
 		res.status(200).json({
 			status: 'success',

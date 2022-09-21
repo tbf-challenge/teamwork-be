@@ -10,8 +10,6 @@ const { AppError } = require("../../lib")
 const generateAccessToken = require("./generate-access-token")
 const generateRefreshToken = require("./generate-refresh-token")
 const updateRefreshToken = require("./update-refresh-token")
-const sendResetLink = require('./send-password-reset-link')
-const generateResetLink = require('./generate-password-reset-link')
 
 const {
 	RefreshTokenIsInvalidError,
@@ -223,7 +221,5 @@ module.exports = {
 	signInUserByEmail,
 	inviteUser,
 	getNewTokens,
-	getInvitedUserDetail,
-	generateResetLink,
-	sendResetLink
+	getInvitedUserDetail
 }
