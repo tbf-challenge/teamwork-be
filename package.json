@@ -9,7 +9,7 @@
     "migrate": "node-pg-migrate",
     "prestart": "node-pg-migrate --reject-unauthorized=false up",
     "predev": "npm run migrate up",
-    "test": "mocha \"./{,!(node_modules)/**/}*.test.js\"",
+    "test":  "NODE_ENV=test mocha \"./{,!(node_modules)/**/}*.test.js\"",
     "prepare": "husky install",
     "lint": "eslint --fix src",
     "seeddb": "node src/scripts/seeddb.js",
