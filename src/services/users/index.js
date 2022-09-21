@@ -171,9 +171,9 @@ const getNewTokens = async (email, currentRefreshToken) => {
 	if (!user) {
 		throw customError(RefreshTokenIsInvalidError)
 	}
-
+	const body = { id: user.id, email: user.email }
 	const accessToken =  generateAccessToken({
-		data: user, 
+		data: {user : body},
 		expiry : '15m'
 	})
 	
