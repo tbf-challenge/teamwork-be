@@ -6,6 +6,8 @@ const config = require('../src/config')
 const { 
 	genPasswordHash
 } = require("../src/lib/passwordlib")
+const generateRefreshToken = 
+require("../src/services/users/generate-refresh-token")
 
 const tearDown = () => 
 	db.query("DROP SCHEMA public CASCADE;CREATE SCHEMA public;")
@@ -33,18 +35,23 @@ const fixtures = {
 				'marketting', 'finance', 'sales', 'technology']),
 			address : faker.address.city(),
 			jobRole : faker.random.word(),
-			accessToken : faker.internet.password()
+			refreshToken : faker.internet.password()
+			
 		}
 		const newData = {...userData, ...overrides}
 		const passwordHash = await genPasswordHash(newData.password)
+		const newRefreshToken =  await generateRefreshToken(
+			newData.refreshToken 
+		)
 		const newUser = await db.query(
 			`INSERT INTO users
 			("firstName", "lastName", email, "passwordHash",
-				 gender, role, department, address, "jobRole")
-			 VALUES ($1 , $2 , $3 , $4, $5, $6, $7, $8, $9 ) RETURNING *
+				 gender, role, department, address, "jobRole", "refreshToken")
+			 VALUES ($1 , $2 , $3 , $4, $5, $6, $7, $8, $9 , $10) RETURNING *
 			`, [newData.firstName , newData.lastName , newData.email, 
 				passwordHash, newData.gender, newData.role ,
-				newData.department, newData.address, newData.jobRole 
+				newData.department, newData.address, newData.jobRole,
+				newRefreshToken
 			]
 		)
 		return newUser.rows[0]
