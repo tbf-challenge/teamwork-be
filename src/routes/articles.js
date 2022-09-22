@@ -72,7 +72,9 @@ const createComment = async (req, res, next) => {
 		const {post, insertedComment} = await postService.createComment({
 			userId, 
 			id, 
-			comment})
+			comment,
+			type : 'article'
+		})
 		
 		return res.status(201).json({
 			status: 'success',

@@ -42,5 +42,10 @@ module.exports= {
 	GifDoesNotExistError : { 
 		name : 'GifDoesNotExistError', 
 		message : 'Gif does not exist'
+	},
+	GifDoesNotExistForCommentError : { 
+		name : 'GifDoesNotExistForCommentError', 
+		message : 'Gif does not exist'
 	}
+
 }

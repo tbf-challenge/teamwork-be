@@ -11,7 +11,8 @@ const {
 const {
 	createGifSchema,
 	getPostByIdSchema,
-	deletePostSchema
+	deletePostSchema,
+	createCommentSchema
 	
 } = require('../schema')
 
@@ -87,6 +88,30 @@ const deleteGif = catchAsync( async (req, res) => {
 	
 })
 
+const createComment = catchAsync( async (req, res) => {
+
+	const { id } = req.params
+	const { userId, comment } = req.body
+	const {post, insertedComment} = await postService.createComment({
+		userId, 
+		id, 
+		comment,
+		type : 'gif'
+	})
+	
+	return res.status(201).json({
+		status: 'success',
+		data: {
+			message: 'Comment successfully created',
+			createdOn: insertedComment.createdAt,
+			title: post.title,
+			gif: post.content,
+			comment: insertedComment.content
+		}
+	})
+
+})
+
 router.use(isAuthenticated())
 router
 	.route('/')
@@ -95,6 +120,9 @@ router
 	.route('/:id')
 	.get(validateSchema(getPostByIdSchema), getGif)
 	.delete(validateSchema(deletePostSchema), deleteGif)
+router
+	.route('/:id/comment')
+	.post(validateSchema(createCommentSchema), createComment)
 router
 	.use((err, req, res, next)=> {
 		const error = err
