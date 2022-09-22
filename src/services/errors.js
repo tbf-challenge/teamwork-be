@@ -38,5 +38,9 @@ module.exports= {
 	InvalidResetEmail :{
 		name: 'InvalidResetEmail',
 		message: 'Email is not valid for this operation'
+	},
+	GifDoesNotExistError : { 
+		name : 'GifDoesNotExistError', 
+		message : 'Gif does not exist'
 	}
 }
