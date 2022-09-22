@@ -11,7 +11,10 @@ describe('DELETE gif', () => {
 	})
 	it('should delete a gif', async () => {
 		
-	    const post = await fixtures.insertPost({userId : user.id})
+	    const post = await fixtures.insertPost({
+			userId : user.id , 
+			type : 'gif'
+		})
 		await deletePost({id: post.id,type: 'gif'})
 		const queryPost = await db.query(
 			`SELECT * FROM posts
