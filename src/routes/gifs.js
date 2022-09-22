@@ -73,7 +73,10 @@ const deleteGif = catchAsync( async (req, res) => {
 	const { id } = req.params
 
 
-	await postService.deletePost({id})
+	await postService.deletePost({
+		id,
+		type : 'gif'
+	})
 
 	return res.status(200).json({
 		status: 'success',
