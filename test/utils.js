@@ -52,9 +52,8 @@ const fixtures = {
 		return newUser.rows[0]
 		
 	},
-	async insertPost(user,overrides = {}){
+	async insertPost(overrides = {}){
 		const postData = {
-			userId : user.id,
 			title : faker.random.words(),
 			image : faker.internet.url(),
 			content : faker.internet.url(),
