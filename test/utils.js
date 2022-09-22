@@ -34,15 +34,12 @@ const fixtures = {
 			department : faker.helpers.arrayElement([
 				'marketting', 'finance', 'sales', 'technology']),
 			address : faker.address.city(),
-			jobRole : faker.random.word(),
-			refreshToken : faker.internet.password()
+			jobRole : faker.random.word()
 			
 		}
 		const newData = {...userData, ...overrides}
 		const passwordHash = await genPasswordHash(newData.password)
-		const newRefreshToken =  await generateRefreshToken(
-			newData.refreshToken 
-		)
+		const newRefreshToken =  await generateRefreshToken()
 		const newUser = await db.query(
 			`INSERT INTO users
 			("firstName", "lastName", email, "passwordHash",
@@ -55,6 +52,7 @@ const fixtures = {
 			]
 		)
 		return newUser.rows[0]
+		
 	},
 	async insertPost(user,overrides = {}){
 		const postData = {
