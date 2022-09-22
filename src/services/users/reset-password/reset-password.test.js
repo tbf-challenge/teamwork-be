@@ -2,7 +2,6 @@ const chai = require('chai')
 const verifyResetToken = require('./verifyPasswordResetToken')
 const generateAccessToken = require('../generate-access-token')
 
-
 const testEmail = 'testemail@gmail.com'
 
         
@@ -15,7 +14,7 @@ describe('verifyPasswordResetToken', () => {
 	})
 })
 describe('verifyPasswordResetToken', () => { 
-	it('should return the decoded token if the token is valid', () => {
+	it('should return the decoded email if the token is valid', () => {
 		const token = generateAccessToken(
 			{ data: { email: testEmail }, 
 				expiry: '1h' })
