@@ -1,11 +1,12 @@
-const db = require("../db")
+const db = require("../../db")
 const {
 	ArticleDoesNotExistError,
 	GifDoesNotExistError,
 	ArticleDoesNotExistForCommentError,
 	TagAlreadyAssignedToPostError
-} = require("./errors")
-const customError = require("../lib/custom-error")
+} = require("../errors")
+const customError = require("../../lib/custom-error")
+const deletePost = require("./delete-post")
 
 const uniqueErrorCode = '23505'
 
@@ -56,10 +57,6 @@ const getPost = async({id, type}) => {
 	return post
 }
 
-const deletePost = async({id}) => {
-	const result = await db.query('DELETE FROM posts WHERE id = $1', [id])
-	return result
-}
 
 const updatePost = async({title, content, image, published, id}) => {
 	const result = await db.query(

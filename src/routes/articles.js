@@ -120,7 +120,10 @@ const deleteArticle = async (req, res, next) => {
 	const { id } = req.params
 
 	try {
-		await postService.deletePost({id})
+		await postService.deletePost({
+			id,
+			type : 'article'
+		})
 
 		return res.status(200).json({
 			status: 'success',
