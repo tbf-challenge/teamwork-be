@@ -57,7 +57,10 @@ const getPost = async({id, type}) => {
 }
 
 const deletePost = async({id}) => {
-	const result = await db.query('DELETE FROM posts WHERE id = $1', [id])
+	const result = await db.query(
+		`DELETE FROM posts 
+		WHERE id = $1 `,
+		 [id])
 	return result
 }
 

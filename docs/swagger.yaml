@@ -549,11 +549,10 @@ paths:
       parameters:
       - in : path
         name : gifId
+        schema:
+          type: integer
         required: true
         description : Numeric ID of the gif to get
-      schema :
-        type : integer
-        minimum : 1
       responses:
         '200':
           description: A successfully Operation
@@ -609,6 +608,39 @@ paths:
                               example: 10
       security:
           - access_token: []
+    delete:
+      tags:
+        - gif
+      operationId: deleteGif
+      summary: delete a gif
+      description: Delete a gif with a gif id
+      parameters:
+      - in : path
+        name : gifId
+        schema:
+          type: integer
+        required: true
+        description : Numeric ID of the gif to get
+      responses:
+        '200':
+          description: A successfully Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: success
+                    example: success
+                  data:
+                    type: object
+                    description: GIF image deleted successfuly
+                    properties:
+                      message:
+                        type: string
+                        description: Message to indicate successful delete
+                        example: GIF image successfully deleted 
   /feed:
     get:
       tags:
