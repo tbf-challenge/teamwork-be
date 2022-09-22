@@ -546,6 +546,14 @@ paths:
       operationId: getGif
       summary: Get a gif
       description: Get a gif with a gif id
+      parameters:
+      - in : path
+        name : gifId
+        required: true
+        description : Numeric ID of the gif to get
+      schema :
+        type : integer
+        minimum : 1
       responses:
         '200':
           description: A successfully Operation
