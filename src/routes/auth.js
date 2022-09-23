@@ -11,7 +11,8 @@ const {
 	InvalidInviteError,
 	InviteEmailDoesNotExistError,
 	UserAlreadyExistsError,
-	InvalidResetEmail
+	InvalidResetEmail,
+	InvalidResetTokenError
 } = require("../services/errors")
 
 const isValidInvite = require('../middleware/isValidInvite')
@@ -21,7 +22,8 @@ const {
 	authSchema,
 	signinSchema,
 	inviteUserSchema,
-	authTokenSchema
+	authTokenSchema,
+	updatePasswordSchema
 } = require('../schema')
 
 const router = express.Router()
@@ -30,7 +32,8 @@ const ERROR_MAP = {
 	[ InvalidInviteError.name ]  : 401,
 	[ InviteEmailDoesNotExistError.name ] : 403,
 	[ UserAlreadyExistsError.name ] : 422,
-	[ InvalidResetEmail.name ] : 401
+	[ InvalidResetEmail.name ] : 401,
+	[ InvalidResetTokenError.name ] : 401
 }
 
 const transformUserResponse = (userDetails) => ({
@@ -167,6 +170,24 @@ router.post('/password',
 			status: 'success',
 			data: {
 				message: 'Password reset email sent'
+			}
+		})
+	})
+)
+
+router.patch(
+	'/password/:token',
+	validateSchema(updatePasswordSchema),
+	catchAsync(async (req, res) => {
+		const { token } = req.params
+		const { newPassword } = req.body
+		
+		await userSevice.resetPassword({ token, newPassword })
+		
+		return res.status(200).json({
+			status: "success",
+			data: {
+				message: "Password has been reset"
 			}
 		})
 	})

@@ -204,6 +204,51 @@ paths:
                         type: string
                         description: message
                         example: Password reset email sent
+  /auth/password/{token}:
+    patch:
+      tags: 
+        - user
+      operationId: resetPassword
+      summary: Reset password with token
+      description: Reset password with token as a parameter
+      parameters:
+      - in : path
+        name : token
+        schema:
+          type: string
+        required: true
+        description : token generated for password reset
+      requestBody:
+        description: Reset password with token
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                newPassword:
+                  type: string
+                  description: user password
+                  example: NonModestrighteous123*&
+      responses:
+        '200':
+          description: A successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: success
+                    example: success
+                  data:
+                    type: object
+                    description: data
+                    properties:
+                      message: 
+                        type: string
+                        description: message
+                        example: Password has been reset
   /articles:
     post:
       tags:

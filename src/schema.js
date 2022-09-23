@@ -197,6 +197,25 @@ const createGifSchema = Joi.object({
 			.uri()
 			.required(),
 		published: Joi.boolean()
+	},
+	params: {
+		token: Joi.string()
+			.required()
+	}
+})
+
+const updatePasswordSchema = Joi.object({
+	body:{
+		newPassword : Joi.string()
+			.min(8)
+			.pattern(/[-!$%^&*()_+|~=`{}[\]:/;<>?,.@#]/)
+			.message('Password should contain special characters')
+			.pattern(/(?=.*?\d)(?=.*?[a-zA-Z])[a-zA-Z\d]+/)
+			.message('Password should contain alphanumeric characters')
+			.pattern(/(?=.*?[a-z])(?=.*?[A-Z])[a-zA-Z]+/)
+			.message(`Password should contain 
+					uppercase and lowercase characters`)
+			.required()
 	}
 })
 
@@ -216,5 +235,6 @@ module.exports = {
 	queryArticleTagsSchema,
 	inviteUserSchema,
 	authTokenSchema,
-	createGifSchema
+	createGifSchema,
+	updatePasswordSchema
 }

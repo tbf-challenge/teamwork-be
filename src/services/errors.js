@@ -43,9 +43,9 @@ module.exports= {
 		name : 'GifDoesNotExistError', 
 		message : 'Gif does not exist'
 	},
-	GifDoesNotExistForCommentError : { 
-		name : 'GifDoesNotExistForCommentError', 
-		message : 'Gif does not exist'
+	InvalidResetTokenError: {
+		name: "InvalidResetTokenError",
+		message: "Token is expired/invalid."
 	}
 
 }
