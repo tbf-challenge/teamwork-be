@@ -14,6 +14,13 @@ describe('Reset user password and verify token', () => {
 		 user = await fixtures.insertUser() 
 	})
 
+	it('should throw an error if the token is invalid', async () => 
+		expect(resetPassword({
+			token: faker.datatype.uuid(), 
+			newPassword: faker.internet.password()}))
+			.to.be.rejectedWith('Token is expired/invalid.')
+	)
+    
 	it("should reset a user's password", async () => {
 		const token = generateAccessToken(
 			{data: {email: user.email}, 
@@ -34,10 +41,5 @@ describe('Reset user password and verify token', () => {
 		return expect(isValidPassword).to.be.true
 	})
         
-	it('should throw an error if the token is invalid', async () => 
-		expect(resetPassword({
-			token: faker.datatype.uuid(), 
-			newPassword: faker.internet.password()}))
-			.to.be.rejectedWith('Token is expired/invalid.')
-	)
+	
 })
