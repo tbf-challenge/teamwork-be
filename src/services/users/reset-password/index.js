@@ -2,7 +2,7 @@ const {
 	genPasswordHash
 } = require("../../../lib")
 const db = require("../../../db")
-const verifyResetToken = require("./verify-password-reset-token")
+const verifyResetToken = require("./verify-password-reset-token.js")
 
 const resetPassword = async({ token, newPassword }) => {
 	const { email } = verifyResetToken(token)

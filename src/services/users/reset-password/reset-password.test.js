@@ -4,6 +4,7 @@ const generateAccessToken = require('../generate-access-token')
 const {fixtures} = require('../../../../test/utils')
 const resetPassword = require('./index')
 const db = require('../../../db')
+const { verifyPassword } = require('../../../lib')
 
 
 describe('Reset user password and verify token', () => {
@@ -17,23 +18,26 @@ describe('Reset user password and verify token', () => {
 		const token = generateAccessToken(
 			{data: {email: user.email}, 
 				expiry: '1h'})
+		const newPassword = faker.internet.password()
 
-		await resetPassword({token, newPassword: faker.internet.password()})
+		await resetPassword({token, newPassword }) 
+
 		const {rows} = await db.query(
 			`SELECT * FROM users
-             WHERE email = $1`,[user.email])
+             WHERE email = $1`,[user.email] )
+
 		const updatedUser = rows[0]
-		expect(updatedUser.passwordHash).to.not.equal(user.passwordHash)
-	})
 
-	it('should throw an error if the token is invalid', async () => {
-		try{
-			await resetPassword(
-				{token: faker.datatype.uuid(), 
-					newPassword: faker.internet.password()})
-		}catch(e){
-			expect(e.message).to.equal('Token is expired/invalid.')
-		}
+		const isValidPassword = await verifyPassword(
+			newPassword, updatedUser.passwordHash)
+            
+		return expect(isValidPassword).to.be.true
 	})
-
+        
+	it('should throw an error if the token is invalid', async () => 
+		expect(resetPassword({
+			token: faker.datatype.uuid(), 
+			newPassword: faker.internet.password()}))
+			.to.be.rejectedWith('Token is expired/invalid.')
+	)
 })
