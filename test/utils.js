@@ -58,8 +58,7 @@ const fixtures = {
 			image : faker.internet.url(),
 			content : faker.internet.url(),
 			published : faker.datatype.boolean(),
-			type : 'gif',
-			comment : faker.random.words()
+			type : 'gif'
 
 		}
 		const newData = {...postData, ...overrides}

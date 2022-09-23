@@ -1,34 +1,110 @@
-// const {expect} = require('chai')
-// const db = require("../../db")
+const {expect} = require('chai')
+const { faker } = require('@faker-js/faker')
+const db = require("../../db")
 const createComment = require("./create-comment")
+
 const {fixtures} = require('../../../test/utils')
 
 
-describe('CREATE COMMENT on a gif', () => {
+describe('CREATE COMMENT', () => {
 	let user
-	let postData
+	let comment 
 	before(async ()=>{
-		 user = await fixtures.insertUser()
-		postData = await fixtures.insertPost()  
+		 user = await fixtures.insertUser() 
 	})
-	it('should comment on a gif', async () => {
-		
-	    const post = await fixtures.insertPost({
-			userId : user.id , 
-			type : 'gif'
-
-		})
-
-		await createComment({
-			id: post.id,
-			type: 'gif',
-			userId : user.id, 
-			comment: postData.comment})
-		// const queryPost = await db.query(
-		// 	`SELECT * FROM posts
-		//      WHERE id = $1`,[post.id])
+	beforeEach(async ()=>{
+		comment = faker.random.words()
+	})
+	describe('Gif', () => {
+		let post
 	
-		// expect(queryPost.rowCount).to.equal(0)
+		before(async ()=>{
+		 post = await fixtures.insertPost({
+				userId : user.id , 
+				type : 'gif'
+
+			})
+		
+		})
+		it('should insert a comment on a gif', async () => {
+
+    
+			const commentData =	await createComment({
+				id: post.id,
+				type: 'gif',
+				userId : user.id, 
+				comment})
+    
+			const result = await db.query(
+				`SELECT * FROM comments
+                WHERE id = $1
+                `,[commentData.insertedComment.id ])
+			expect(result.rowCount).to.equal(1)
+    
+		})
+		it('should return right data', async () => {
+    
+			const commentData =	await createComment({
+				id: post.id,
+				type: 'gif',
+				userId : user.id, 
+				comment})
+    
+			const result = await db.query(
+				`SELECT * FROM comments
+                WHERE id = $1
+                `,[commentData.insertedComment.id ])
+    
+			expect(commentData).to.eql({
+				post,
+				insertedComment: result.rows[0]
+			})
+		})
+	})
+	describe('Article', () => {
+		let post
+	
+		before(async ()=>{
+		 post = await fixtures.insertPost({
+				userId : user.id , 
+				type : 'article'
+
+			})
+		
+		})
+		it('should insert a comment on a article', async () => {
+    
+			const commentData =	await createComment({
+				id: post.id,
+				type: 'article',
+				userId : user.id, 
+				comment})
+    
+			const result = await db.query(
+				`SELECT * FROM comments
+                WHERE id = $1
+                `,[commentData.insertedComment.id ])
+			expect(result.rowCount).to.equal(1)
+    
+		})
+		it('should return right data', async () => {
+    
+			const commentData =	await createComment({
+				id: post.id,
+				type: 'article',
+				userId : user.id, 
+				comment})
+    
+			const result = await db.query(
+				`SELECT * FROM comments
+                WHERE id = $1
+                `,[commentData.insertedComment.id ])
+    
+			expect(commentData).to.eql({
+				post,
+				insertedComment: result.rows[0]
+			})
+		})	
 
 	})
 
