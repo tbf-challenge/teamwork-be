@@ -6,13 +6,13 @@ const resetPassword = require('./index')
 const db = require('../../../db')
 
 
-describe('verifyPasswordResetToken', () => {
+describe('Reset user password and verify token', () => {
 	let user
 
 	before(async ()=>{
 		 user = await fixtures.insertUser() 
 	})
-    
+
 	it("should reset a user's password", async () => {
 		const token = generateAccessToken(
 			{data: {email: user.email}, 
