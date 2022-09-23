@@ -1,24 +1,39 @@
-const chai = require('chai')
-const verifyResetToken = require('./verifyPasswordResetToken')
+const { expect } = require('chai')
+const { faker } = require('@faker-js/faker')
 const generateAccessToken = require('../generate-access-token')
+const {fixtures} = require('../../../../test/utils')
+const resetPassword = require('./index')
+const db = require('../../../db')
 
-const testEmail = 'testemail@gmail.com'
-
-        
-const { expect } = chai
 
 describe('verifyPasswordResetToken', () => {
-	it('should throw an error if the token is invalid', () => {
-		const token = 'invalid-token'
-		expect(() => verifyResetToken(token)).to.throw()
+	let user
+
+	before(async ()=>{
+		 user = await fixtures.insertUser() 
 	})
-})
-describe('verifyPasswordResetToken', () => { 
-	it('should return the decoded email if the token is valid', () => {
+    
+	it("should reset a user's password", async () => {
 		const token = generateAccessToken(
-			{ data: { email: testEmail }, 
-				expiry: '1h' })
-		const decodedEmail = 'testemail@gmail.com'
-		expect(verifyResetToken(token).email).to.deep.equal(decodedEmail)
+			{data: {email: user.email}, 
+				expiry: '1h'})
+
+		await resetPassword({token, newPassword: faker.internet.password()})
+		const {rows} = await db.query(
+			`SELECT * FROM users
+             WHERE email = $1`,[user.email])
+		const updatedUser = rows[0]
+		expect(updatedUser.passwordHash).to.not.equal(user.passwordHash)
 	})
+
+	it('should throw an error if the token is invalid', async () => {
+		try{
+			await resetPassword(
+				{token: faker.datatype.uuid(), 
+					newPassword: faker.internet.password()})
+		}catch(e){
+			expect(e.message).to.equal('Token is expired/invalid.')
+		}
+	})
+
 })
