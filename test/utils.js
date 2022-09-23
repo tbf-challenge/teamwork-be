@@ -72,6 +72,7 @@ const fixtures = {
 		)
 		return newPost.rows[0]
 	}
+	
 }
 
 module.exports = {

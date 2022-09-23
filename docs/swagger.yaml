@@ -679,6 +679,74 @@ paths:
                         type: string
                         description: Message to indicate successful delete
                         example: GIF image successfully deleted 
+  /gifs/{gifId}/comment:
+    post:
+      tags:
+        - gif
+      operationId: Create a comment for an gif
+      summary: Create a comment for an gif
+      description: Create a comment for an gif
+      parameters:
+      - in : path
+        name : gifId
+        schema:
+          type: integer
+        required: true
+        description : Numeric ID of the gif to get
+      requestBody:
+        description: Create a new comment for a gif
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId: 
+                  type: integer
+                  description: user id
+                  example: 10
+                comment:
+                  type: string
+                  description: New comment to be created
+                  example: This post articulates all there is to be a 10x software developer
+      responses:
+        '201':
+          description: Successful creation of comment for gif
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: successful creation of comment
+                    example: success
+                  data:
+                    type: object
+                    description: Data for new comment created on gif
+                    properties:
+                      message:
+                        type: string
+                        description: Message for comment created on gif
+                        example: Comment successfully created
+                      createdOn: 
+                        type: string
+                        description: Created date of a new gif
+                        pattern: /([0-9]{4})-(?:[0-9]{2})-([0-9]{2})/
+                        example: "2019-05-17"
+                      gifTitle: 
+                        type: string
+                        description: Title of gif
+                        example: How to become a 10x software developer
+                      image: 
+                        type: string
+                        description: url for image/gif
+                        example: /https://imgbb.com/
+                      comment:
+                        type: string
+                        description: New comment to be created
+                        example: This post articulates all there is to be a 10x software developer
+      security:
+        - access_token: []
   /feed:
     get:
       tags:

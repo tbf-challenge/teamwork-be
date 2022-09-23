@@ -47,4 +47,5 @@ module.exports= {
 		name: "InvalidResetTokenError",
 		message: "Token is expired/invalid."
 	}
+
 }
