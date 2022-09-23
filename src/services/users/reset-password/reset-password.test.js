@@ -35,10 +35,10 @@ describe('Reset user password and verify token', () => {
 
 		const updatedUser = rows[0]
 
-		const isValidPassword = await verifyPassword(
+		const isSamePassword = await verifyPassword(
 			newPassword, updatedUser.passwordHash)
             
-		return expect(isValidPassword).to.be.true
+		return expect(isSamePassword).to.be.true
 	})
         
 	
