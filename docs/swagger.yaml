@@ -211,14 +211,21 @@ paths:
       operationId: resetPassword
       summary: Reset password with token
       description: Reset password with token as a parameter
+      parameters:
+      - in : path
+        name : token
+        schema:
+          type: string
+        required: true
+        description : token generated for password reset
       requestBody:
-        description: Reset password
+        description: Reset password with token
         content:
           application/json:
             schema:
               type: object
               properties:
-                password:
+                newPassword:
                   type: string
                   description: user password
                   example: NonModestrighteous123*&
