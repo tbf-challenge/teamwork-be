@@ -58,7 +58,8 @@ const fixtures = {
 			image : faker.internet.url(),
 			content : faker.internet.url(),
 			published : faker.datatype.boolean(),
-			type : 'gif'
+			type : 'gif',
+			comment : faker.random.words()
 
 		}
 		const newData = {...postData, ...overrides}
@@ -71,23 +72,8 @@ const fixtures = {
 				newData.content, newData.published, newData.type]
 		)
 		return newPost.rows[0]
-	},
-	async createComment(overrides = {}){
-		const commentData = {
-			comment : faker.random.words(),
-			type : 'gif'
-
-		}
-		const newData = {...commentData, ...overrides}
-		console.log(newData)
-		const newPost = await db.query(
-			`INSERT INTO comments 
-		("userId" , "postId" , content)
-	 	VALUES ($1 , $2 ,$3) RETURNING *`,
-			[newData.userId, newData.id, newData.comment]
-		)
-		return newPost.rows[0]
 	}
+	
 }
 
 module.exports = {
