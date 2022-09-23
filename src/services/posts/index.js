@@ -2,11 +2,11 @@ const db = require("../../db")
 const {
 	ArticleDoesNotExistError,
 	GifDoesNotExistError,
-	ArticleDoesNotExistForCommentError,
 	TagAlreadyAssignedToPostError
 } = require("../errors")
 const customError = require("../../lib/custom-error")
 const deletePost = require("./delete-post")
+const createComment = require("./create-comment")
 
 const uniqueErrorCode = '23505'
 
@@ -19,24 +19,6 @@ const createPost = async({userId, title, image, content, published, type}) => {
 		[userId, title, image, content, published, type]
 	)
 	return newPost.rows[0]
-}
-
-
-const createComment = async({id, userId, comment}) => {
-	const result = await db.query('SELECT * FROM posts WHERE id = $1', [id])
-	const post = result.rows[0]
-	if (!post) {
-		throw customError(ArticleDoesNotExistForCommentError)
-	}
-	
-	const queryResult = await db.query(
-		`INSERT INTO comments 
-		("userId" , "postId" , content)
-	 	VALUES ($1 , $2 ,$3) RETURNING *`,
-		[userId, id, comment]
-	)
-	const insertedComment = queryResult.rows[0]
-	return {post , insertedComment}
 }
 
 const getPost = async({id, type}) => {
