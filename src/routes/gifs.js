@@ -10,7 +10,8 @@ const {
 
 const {
 	createGifSchema,
-	getPostByIdSchema
+	getPostByIdSchema,
+	deletePostSchema
 	
 } = require('../schema')
 
@@ -67,6 +68,25 @@ const getGif = catchAsync( async(req, res) => {
 	})
 	
 })
+
+const deleteGif = catchAsync( async (req, res) => {
+	const { id } = req.params
+
+
+	await postService.deletePost({
+		id,
+		type : 'gif'
+	})
+
+	return res.status(200).json({
+		status: 'success',
+		data: {
+			message: 'GIF image was successfully deleted'
+		}
+	})
+	
+})
+
 router.use(isAuthenticated())
 router
 	.route('/')
@@ -74,6 +94,7 @@ router
 router
 	.route('/:id')
 	.get(validateSchema(getPostByIdSchema), getGif)
+	.delete(validateSchema(deletePostSchema), deleteGif)
 router
 	.use((err, req, res, next)=> {
 		const error = err
