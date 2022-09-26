@@ -22,7 +22,7 @@ const fetchPosts = async (req, res, next) => {
 				if(post.type === 'article')
 					return {
 						id: post.id,
-						userId: post.userId,
+						authorId: post.userId,
 						title: post.title,
 						article: post.content,
 						image: post.image,
@@ -31,9 +31,9 @@ const fetchPosts = async (req, res, next) => {
 					}
 				return {
 					id: post.id,
-					userId: post.userId,
+					authorId: post.userId,
 					title: post.title,
-					gif: post.content,
+					url: post.content,
 					published: post.published,
 					createdOn: post.createdAt
 				}})
