@@ -18,15 +18,25 @@ const fetchPosts = async (req, res, next) => {
 
 		res.status(200).json({
 			status: 'success',
-			data: feed.map((article) => ({
-				id: article.id,
-				userId: article.userId,
-				title: article.title,
-				content: article.content,
-				image: article.image,
-				published: article.published,
-				createdOn: article.createdAt
-			}))
+			data: feed.map((post) => {
+				if(post.type === 'article')
+					return {
+						id: post.id,
+						userId: post.userId,
+						title: post.title,
+						article: post.content,
+						image: post.image,
+						published: post.published,
+						createdOn: post.createdAt
+					}
+				return {
+					id: post.id,
+					userId: post.userId,
+					title: post.title,
+					gif: post.content,
+					published: post.published,
+					createdOn: post.createdAt
+				}})
 		})
 	} catch (err) {
 		log.error(err.message)
