@@ -2,12 +2,12 @@ const db = require("../../db")
 const {
 	ArticleDoesNotExistError,
 	GifDoesNotExistError,
-	TagAlreadyAssignedToPostError,
-	GifHasAlreadyBeenLikedError
+	TagAlreadyAssignedToPostError
 } = require("../errors")
 const customError = require("../../lib/custom-error")
 const deletePost = require("./delete-post")
 const createComment = require("./create-comment")
+const recordPostLikes = require("./record-likes")
 
 const uniqueErrorCode = '23505'
 
@@ -97,23 +97,7 @@ const fetchPosts = async() => {
 
 	return feed.rows
 }
-const recordPostLikes = async({userId, id}) => {
-	const newLike = await db.query(
-		`INSERT INTO post_likes
-		 ("userId", "postId")
-		  VALUES ($1 , $2 ) 
-		  RETURNING *`,
-		[userId, id]
-	).catch(error => {
-		if(error.code === uniqueErrorCode ){
-			throw customError(GifHasAlreadyBeenLikedError)
-		}
-		else{
-			throw error
-		}
-	})
-	return newLike.rows[0]
-}
+
 
 module.exports = {
 	createPost,
