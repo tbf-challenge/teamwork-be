@@ -11,7 +11,7 @@ const generateRefreshToken = require("./generate-refresh-token")
 const updateRefreshToken = require("./update-refresh-token")
 const sendPasswordResetLink  = require('./send-password-reset-link')
 const resetPassword = require('./reset-password')
-const createNewUser = require('./create-new-user/create-new-user')
+const createNewUser = require('./create-new-user')
 
 const {
 	RefreshTokenIsInvalidError,
