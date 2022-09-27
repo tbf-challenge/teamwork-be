@@ -20,15 +20,7 @@ const router = express.Router()
 const ERROR_MAP = {
 	[GifDoesNotExistError.name] : 404
 }
-const transformGifResponse = (gif) => ({
-	userId: gif.userId,
-	title: gif.title,
-	imageUrl: gif.content,
-	createdOn: gif.createdAt,
-	gifId: gif.id,
-	published : gif.published
-	
-})
+const {transformGifResponse} = require('./common/transformers')
 
 const createGif = catchAsync( async(req, res) => {
 	const userId = req.user.id

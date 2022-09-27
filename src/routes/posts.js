@@ -3,6 +3,10 @@ const { logger } = require('../lib')
 const isAuthenticated = require('../middleware/isAuthenticated')
 
 const postService = require('../services/posts')
+const {
+	transformArticleResponse ,
+	transformGifResponse
+} = require('./common/transformers')
 
 const log = logger()
 const router = express.Router()
@@ -21,21 +25,10 @@ const fetchPosts = async (req, res, next) => {
 			data: feed.map((post) => {
 				if(post.type === 'article')
 					return {
-						id: post.id,
-						authorId: post.userId,
-						title: post.title,
-						article: post.content,
-						image: post.image,
-						published: post.published,
-						createdOn: post.createdAt
+						...transformArticleResponse(post)
 					}
 				return {
-					id: post.id,
-					authorId: post.userId,
-					title: post.title,
-					url: post.content,
-					published: post.published,
-					createdOn: post.createdAt
+					...transformGifResponse(post)
 				}})
 		})
 	} catch (err) {
