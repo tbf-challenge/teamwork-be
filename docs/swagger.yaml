@@ -779,7 +779,7 @@ paths:
                       properties:
                         id:
                           type: integer
-                          description: Article id
+                          description: Article/Gif id
                           example: 10
                         createdOn: 
                           type: string
@@ -792,15 +792,19 @@ paths:
                           example: How to become a 10x software developer
                         article/url: 
                           type: string
-                          description: Article comment was created for
+                          description: Article created / url of image created
                           example: /You are expected to create a set of ​ API endpoints​ listed under the ​ API Endpoints Specification\
                             section and ensure you persist your data using a PostgreSQL database.\
                             You are to write SQL queries that will help you write to and read from your database. The
-                            endpoints are to be secured with JSON Web Token (JWT)
-                        authorId:
+                            endpoints are to be secured with JSON Web Token (JWT)/ /https://imgbb.com/
+                        userId:
                           type: integer
                           description: Article id
                           example: 10
+                        published:
+                          type: boolean
+                          description: Published or not
+                          example: True
                         
       security:
         - access_token: []
