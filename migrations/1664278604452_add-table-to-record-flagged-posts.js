@@ -6,13 +6,13 @@ exports.up = (pgm) => {
 		userId: {
 			type: 'integer',
 			notNull: true,
-			references: "users",
+			references: 'users',
 			onDelete: 'cascade'
 		},
 		postId: {
 			type: 'integer',
 			notNull: true,
-			references: "posts",
+			references: 'posts',
 			onDelete: 'cascade'
 		},
 		reason: { type: 'text' },
