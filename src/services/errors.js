@@ -46,6 +46,10 @@ module.exports= {
 	InvalidResetTokenError: {
 		name: "InvalidResetTokenError",
 		message: "Token is expired/invalid."
+	},
+	GifHasAlreadyBeenLikedError : {
+		name : "GifHasAlreadyBeenLikedError",
+		message : "Gif has already been liked"
 	}
 
 }

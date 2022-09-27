@@ -12,7 +12,8 @@ const {
 	createGifSchema,
 	getPostByIdSchema,
 	deletePostSchema,
-	createCommentSchema
+	createCommentSchema,
+	recordLikesOnPostSchema
 	
 } = require('../schema')
 
@@ -104,10 +105,29 @@ const createComment = catchAsync( async (req, res) => {
 
 })
 
+const recordLikesOnGif = catchAsync( async(req, res) => {
+	const {id} = req.params
+	const { userId } = req.body
+	const newLike = await postService.recordPostLikes({
+		userId,
+		id
+		 })
+	res.status(201).json({
+		status: 'success',
+		data: {
+			message: 'GIF image successfully liked',
+			...transformGifResponse(newLike)
+		}
+	})
+})
+
 router.use(isAuthenticated())
 router
 	.route('/')
 	.post( validateSchema(createGifSchema), createGif)
+router
+	.route('/:id/likes')
+	.post(validateSchema(recordLikesOnPostSchema), recordLikesOnGif )
 router
 	.route('/:id')
 	.get(validateSchema(getPostByIdSchema), getGif)
@@ -115,6 +135,7 @@ router
 router
 	.route('/:id/comment')
 	.post(validateSchema(createCommentSchema), createComment)
+
 router
 	.use((err, req, res, next)=> {
 		const error = err
