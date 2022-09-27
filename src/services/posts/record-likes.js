@@ -6,7 +6,7 @@ const customError = require("../../lib/custom-error")
 
 const uniqueErrorCode = '23505'
 
-const recordPostLikes = async({userId, id}) => {
+const likePost = async({userId, id}) => {
 	const newLike = await db.query(
 		`INSERT INTO post_likes
 		 ("userId", "postId")
@@ -24,4 +24,4 @@ const recordPostLikes = async({userId, id}) => {
 	return newLike.rows[0]
 }
 
-module.exports = recordPostLikes
+module.exports = likePost
