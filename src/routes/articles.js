@@ -28,17 +28,7 @@ const ERROR_MAP = {
 	[TagAlreadyAssignedToPostError.name] : 422
 	
 }
-
-const transformArticleResponse = (article) => ({
-	userId: article.userId,
-	title: article.title,
-	image: article.image,
-	article: article.content,
-	published: article.published,
-	createdOn: article.createdAt,
-	articleId: article.id,
-	tagId : article.tagId
-})
+const {transformArticleResponse} = require('./common/transformers')
 
 const createArticle = async (req, res, next) => {
 	try {
