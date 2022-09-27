@@ -1,14 +1,17 @@
 const express = require('express')
-const { logger } = require('../lib')
 const isAuthenticated = require('../middleware/isAuthenticated')
-
+const { catchAsync} = require('../lib')
 const postService = require('../services/posts')
 const {
 	transformArticleResponse ,
 	transformGifResponse
 } = require('./common/transformers')
 
-const log = logger()
+const typeTransformMap = {
+	article : transformArticleResponse,
+	gif : transformGifResponse
+}
+
 const router = express.Router()
 
 
@@ -16,26 +19,18 @@ const router = express.Router()
 
 // GET ALL ARTICLES
 
-const fetchPosts = async (req, res, next) => {
-	try {
-		const feed = await postService.fetchPosts()
+const fetchPosts = catchAsync( async(req, res) => {
 
-		res.status(200).json({
-			status: 'success',
-			data: feed.map((post) => {
-				if(post.type === 'article')
-					return {
-						...transformArticleResponse(post)
-					}
-				return {
-					...transformGifResponse(post)
-				}})
-		})
-	} catch (err) {
-		log.error(err.message)
-		next(err)
-	}
-}
+	const feed = await postService.fetchPosts()
+
+	res.status(200).json({
+		status: 'success',
+		data: feed.map((post) => ({
+			...typeTransformMap[post.type](post)
+		}))
+	})
+	
+})
 
 // Routes
 
