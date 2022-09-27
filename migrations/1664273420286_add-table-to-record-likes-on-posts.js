@@ -4,18 +4,19 @@ exports.shorthands = undefined
 
 exports.up = (pgm) => {
 	pgm.createTable('post_likes', {
-		id: 'id',
 		userId: {
 			type: 'integer',
 			notNull: true,
 			references: '"users"',
-			onDelete: 'cascade'
+			onDelete: 'cascade',
+			primaryKey: true
 		},
 		postId: {
 			type: 'integer',
 			notNull: true,
 			references: '"posts"',
-			onDelete: 'cascade'
+			onDelete: 'cascade',
+			primaryKey: true
 		},
 		createdAt: 'createdAt'
 	})
