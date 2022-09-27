@@ -1,5 +1,3 @@
-
-
 exports.shorthands = undefined
 
 exports.up = (pgm) => {
@@ -8,18 +6,21 @@ exports.up = (pgm) => {
 			type: 'integer',
 			notNull: true,
 			references: '"users"',
-			onDelete: 'cascade',
-			primaryKey: true
+			onDelete: 'cascade'
 		},
 		postId: {
 			type: 'integer',
 			notNull: true,
 			references: '"posts"',
-			onDelete: 'cascade',
-			primaryKey: true
+			onDelete: 'cascade'
 		},
 		createdAt: 'createdAt'
+	}, {
+		constraints: {
+			primaryKey: ['userId', 'postId']
+		}
 	})
 }
+    
 
 exports.down = false
