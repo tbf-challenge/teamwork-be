@@ -20,9 +20,7 @@ const transformGifResponse = (gif) => ({
 	
 })
 
-
 module.exports = {
 	transformArticleResponse,
 	transformGifResponse
-
 }
