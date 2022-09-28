@@ -50,6 +50,10 @@ module.exports= {
 	GifHasAlreadyBeenLikedError : {
 		name : "GifHasAlreadyBeenLikedError",
 		message : "Gif has already been liked"
+	},
+	ArticleHasAlreadyBeenLikedError : {
+		name : "ArticleHasAlreadyBeenLikedError",
+		message : "Article has already been liked"
 	}
 
 }

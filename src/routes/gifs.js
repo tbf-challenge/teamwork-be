@@ -113,7 +113,8 @@ const likeGif = catchAsync( async(req, res) => {
 	const { userId } = req.body
 	const newLike = await postService.likePost({
 		userId,
-		postId : id
+		postId : id,
+		type : 'gif'
 		 })
 	res.status(201).json({
 		status: 'success',

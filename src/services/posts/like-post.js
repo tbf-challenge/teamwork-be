@@ -1,12 +1,13 @@
 const db = require("../../db")
 const {
-	GifHasAlreadyBeenLikedError
+	GifHasAlreadyBeenLikedError,
+	ArticleHasAlreadyBeenLikedError
 } = require("../errors")
 const customError = require("../../lib/custom-error")
 
 const uniqueErrorCode = '23505'
 
-const likePost = async({userId, postId}) => {
+const likePost = async({userId, postId, type}) => {
 	const newLike = await db.query(
 		`INSERT INTO post_likes
 		 ("userId", "postId")
@@ -15,7 +16,10 @@ const likePost = async({userId, postId}) => {
 		[userId, postId]
 	).catch(error => {
 		if(error.code === uniqueErrorCode ){
-			throw customError(GifHasAlreadyBeenLikedError)
+			throw customError(
+				type === "gif" ?
+					GifHasAlreadyBeenLikedError :
+					ArticleHasAlreadyBeenLikedError)
 		}
 		else{
 			throw error
