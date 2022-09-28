@@ -74,7 +74,7 @@ const fixtures = {
 	},
 	async insertPostLike(overrides = {}){
 		const likeData = {
-			type : 'gif'
+			type : faker.helpers.arrayElement(['gif', 'post'])
 
 		}
 		const newData = {...likeData, ...overrides}
