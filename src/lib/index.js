@@ -2,7 +2,6 @@ const {
 	genPasswordHash,
 	verifyPassword
 } = require('./passwordlib')
-const passportjwt = require('./passport-jwt')
 const passportlocal = require('./passport-local')
 const logger = require('./logger')
 const AppError = require('./app-error')
@@ -13,7 +12,6 @@ const emailLib = require('./email-lib')
 module.exports = {
 	genPasswordHash,
 	verifyPassword,
-	passportjwt,
 	passportlocal,
 	logger,
 	AppError,

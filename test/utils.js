@@ -71,7 +71,25 @@ const fixtures = {
 				newData.content, newData.published, newData.type]
 		)
 		return newPost.rows[0]
-	}
+	},
+	async insertUserInvite( overrides = {} ){
+		const inviteData = {
+			email : faker.internet.email()
+		}
+		const newData = {...inviteData, ...overrides}
+
+		const { rows:inviteRows }=  await db.query(
+			`INSERT INTO user_invites 
+			("email") VALUES ($1) RETURNING *`, [newData.email])
+			
+		return inviteRows[0]
+	},
+	async updateInviteStatus ({email, status="active"}){
+
+		await db.query(
+			`UPDATE user_invites 
+			SET status = $1 WHERE email = $2`, [status, email] 
+		)}
 	
 }
 
