@@ -1,5 +1,7 @@
 const { expect } = require('chai')
 const { faker } = require('@faker-js/faker')
+const jwt = require('jsonwebtoken')
+const config = require('../../config')
 const db = require('../../db')
 const {fixtures} = require('../../../test/utils')
 const createNewUser = require('./create-new-user')
@@ -53,8 +55,7 @@ describe('Create a New User', () => {
 
 		const createdUser = rows[0]
 		
-		return expect(createdUser).to.exist	&& 
-			expect(createdUser.firstName).to.equal(userInfo.firstName)
+		return expect(createdUser).to.exist
 
 	})
 
@@ -66,12 +67,22 @@ describe('Create a New User', () => {
 			lastName:userInfo.lastName, email, 
 			password:userInfo.password})
 
-		expect(newUser).to.have
-			.property('userId')
-		expect(newUser).to.have
-			.property('accessToken')
-		expect(newUser).to.have
-			.property('refreshToken')
+		const {rows} = await db.query(
+			`SELECT * FROM users
+				 WHERE email = $1`,[email] )
+	
+		const createdUser = rows[0]
+		const body = { id: createdUser.id, email: createdUser.email }
+		const data =  { user : body } 
+		const expiry = '15m'
+
+		const accessToken = jwt.sign( data , config("TOKEN_SECRET"),
+			{expiresIn: expiry}) 
+
+		return expect(newUser).to.eql({
+			accessToken,
+			userId: createdUser.id, 
+			refreshToken: createdUser.refreshToken})
 	})
 	
 
