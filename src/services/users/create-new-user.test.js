@@ -52,9 +52,27 @@ describe('Create a New User', () => {
              WHERE email = $1`,[email] )
 
 		const createdUser = rows[0]
-	
-		return expect(createdUser.firstName).to.equal(userInfo.firstName)
+		
+		return expect(createdUser).to.exist	&& 
+			expect(createdUser.firstName).to.equal(userInfo.firstName)
 
 	})
+
+	it('should return the right data', async () => {
+		const { email } = signupInfo
+		
+		const newUser = await createNewUser({
+			firstName:userInfo.firstName, 
+			lastName:userInfo.lastName, email, 
+			password:userInfo.password})
+
+		expect(newUser).to.have
+			.property('userId')
+		expect(newUser).to.have
+			.property('accessToken')
+		expect(newUser).to.have
+			.property('refreshToken')
+	})
+	
 
 })
