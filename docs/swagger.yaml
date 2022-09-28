@@ -799,14 +799,13 @@ paths:
                         type: string
                         description: Message for like created on gif
                         example: Gif  successfully liked
-                      createdOn: 
-                        type: string
-                        description: Created date of a new gif
-                        pattern: /([0-9]{4})-(?:[0-9]{2})-([0-9]{2})/
-                        example: "2019-05-17"
                       userId: 
                         type: integer
                         description: user id
+                        example: 10
+                      gifId: 
+                        type: integer
+                        description: gif id
                         example: 10
       security:
         - access_token: []
