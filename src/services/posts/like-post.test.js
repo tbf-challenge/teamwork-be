@@ -13,7 +13,6 @@ describe('RECORD LIKES ', () => {
 		
 		let post
 		before(async ()=>{
-			user = await fixtures.insertUser() 
 			post = await fixtures.insertPost({
 				userId : user.id , 
 				type : 'gif'
