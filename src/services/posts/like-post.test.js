@@ -32,11 +32,15 @@ describe('RECORD LIKES on gif', () => {
 			userId : user.id , 
 			type : 'gif'
 		})
-		await likePost({ userId: user.id, postId: newPost.id })
+		const likedPost = await likePost({ 
+			userId: user.id, 
+			postId: newPost.id
+		 })
 		const result = await db.query(
 			`SELECT * FROM post_likes
              WHERE "userId" = $1
-             AND "postId" = $2`,[ user.id, post.id ])
+             AND "postId" = $2`,[ user.id, newPost.id ])
+		expect(likedPost).to.eql(result.rows[0])	 
 		expect(result.rowCount).to.equal(1)
 
 	})
