@@ -690,9 +690,9 @@ paths:
     post:
       tags:
         - gif
-      operationId: Create a comment for an gif
-      summary: Create a comment for an gif
-      description: Create a comment for an gif
+      operationId: Create a comment for a gif
+      summary: Create a comment for a gif
+      description: Create a comment for a gif
       parameters:
       - in : path
         name : gifId
@@ -752,6 +752,61 @@ paths:
                         type: string
                         description: New comment to be created
                         example: This post articulates all there is to be a 10x software developer
+      security:
+        - access_token: []
+  /gifs/{gifId}/likes:
+    post:
+      tags:
+        - gif
+      operationId: Record a like for a gif
+      summary: Record a like for a gif
+      description: Record a like for a gif
+      parameters:
+      - in : path
+        name : gifId
+        schema:
+          type: integer
+        required: true
+        description : Numeric ID of the gif to get
+      requestBody:
+        description: Create a new like for a gif
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId: 
+                  type: integer
+                  description: user id
+                  example: 10
+      responses:
+        '201':
+          description: Successful recording a like for a gif
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: successful liking a gif
+                    example: success
+                  data:
+                    type: object
+                    description: Data for new like created on gif
+                    properties:
+                      message:
+                        type: string
+                        description: Message for like created on gif
+                        example: Gif  successfully liked
+                      userId: 
+                        type: integer
+                        description: user id
+                        example: 10
+                      gifId: 
+                        type: integer
+                        description: gif id
+                        example: 10
       security:
         - access_token: []
   /feed:

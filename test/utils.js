@@ -72,6 +72,21 @@ const fixtures = {
 		)
 		return newPost.rows[0]
 	},
+	async insertPostLike(overrides = {}){
+		const likeData = {
+			type : faker.helpers.arrayElement(['gif', 'post'])
+
+		}
+		const newData = {...likeData, ...overrides}
+		const newLike = await db.query(
+			`INSERT INTO post_likes
+		 ("userId", "postId")
+		  VALUES ($1 , $2 ) 
+		  RETURNING *`, [
+				newData.userId, newData.postId]
+		)
+		return newLike.rows[0]
+	},
 	async insertUserInvite( overrides = {} ){
 		const inviteData = {
 			email : faker.internet.email()

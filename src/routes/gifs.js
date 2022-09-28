@@ -4,7 +4,7 @@ const isAuthenticated = require('../middleware/isAuthenticated')
 const validateSchema = require('../middleware/validateSchema')
 const { catchAsync, AppError } = require('../lib')
 const {
-	GifDoesNotExistError
+	GifDoesNotExistError, GifHasAlreadyBeenLikedError
 	
 } = require("../services/errors")
 
@@ -12,15 +12,19 @@ const {
 	createGifSchema,
 	getPostByIdSchema,
 	deletePostSchema,
-	createCommentSchema
+	createCommentSchema,
+	recordLikesOnPostSchema
 	
 } = require('../schema')
 
 const router = express.Router()
 const ERROR_MAP = {
-	[GifDoesNotExistError.name] : 404
+	[GifDoesNotExistError.name] : 404,
+	[GifHasAlreadyBeenLikedError.name] : 422
 }
-const {transformGifResponse} = require('./common/transformers')
+const {
+	transformGifResponse	
+} = require('./common/transformers')
 
 const createGif = catchAsync( async(req, res) => {
 	const userId = req.user.id
@@ -104,10 +108,30 @@ const createComment = catchAsync( async (req, res) => {
 
 })
 
+const likeGif = catchAsync( async(req, res) => {
+	const {id} = req.params
+	const { userId } = req.body
+	const newLike = await postService.likePost({
+		userId,
+		postId : id
+		 })
+	res.status(201).json({
+		status: 'success',
+		data: {
+			message: 'GIF image successfully liked',
+			userId : newLike.userId,
+			gifId : newLike.postId
+		}
+	})
+})
+
 router.use(isAuthenticated())
 router
 	.route('/')
 	.post( validateSchema(createGifSchema), createGif)
+router
+	.route('/:id/likes')
+	.post(validateSchema(recordLikesOnPostSchema), likeGif )
 router
 	.route('/:id')
 	.get(validateSchema(getPostByIdSchema), getGif)
@@ -115,6 +139,7 @@ router
 router
 	.route('/:id/comment')
 	.post(validateSchema(createCommentSchema), createComment)
+
 router
 	.use((err, req, res, next)=> {
 		const error = err

@@ -7,6 +7,7 @@ const {
 const customError = require("../../lib/custom-error")
 const deletePost = require("./delete-post")
 const createComment = require("./create-comment")
+const likePost = require("./like-post")
 
 const uniqueErrorCode = '23505'
 
@@ -97,6 +98,7 @@ const fetchPosts = async() => {
 	return feed.rows
 }
 
+
 module.exports = {
 	createPost,
 	getPost,
@@ -106,5 +108,6 @@ module.exports = {
 	deletePostTags,
 	queryPostTags,
 	assignTagToPost,
-	fetchPosts
+	fetchPosts,
+	likePost
 }

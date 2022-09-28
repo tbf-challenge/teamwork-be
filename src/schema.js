@@ -218,6 +218,16 @@ const updatePasswordSchema = Joi.object({
 			.required()
 	}
 })
+const recordLikesOnPostSchema = Joi.object({
+	params: {
+		id :Joi.number()
+			.required()
+	},
+	body: {
+		userId: Joi.number()
+			.required()
+	}
+})
 
 module.exports = {
 	authSchema,
@@ -236,5 +246,6 @@ module.exports = {
 	inviteUserSchema,
 	authTokenSchema,
 	createGifSchema,
-	updatePasswordSchema
+	updatePasswordSchema,
+	recordLikesOnPostSchema
 }
