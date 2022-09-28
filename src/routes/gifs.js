@@ -119,7 +119,8 @@ const likeGif = catchAsync( async(req, res) => {
 		status: 'success',
 		data: {
 			message: 'GIF image successfully liked',
-			userId : newLike.userId
+			userId : newLike.userId,
+			postId : newLike.postId
 		}
 	})
 })
