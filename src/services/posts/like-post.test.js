@@ -41,8 +41,6 @@ describe('RECORD LIKES on gif', () => {
              WHERE "userId" = $1
              AND "postId" = $2`,[ user.id, newPost.id ])
 		expect(likedPost).to.eql(result.rows[0])	 
-		expect(result.rowCount).to.equal(1)
-
 	})
 
 })
