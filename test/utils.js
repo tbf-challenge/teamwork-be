@@ -71,7 +71,23 @@ const fixtures = {
 				newData.content, newData.published, newData.type]
 		)
 		return newPost.rows[0]
+	},
+	async insertPostLike(overrides = {}){
+		const likeData = {
+			type : 'gif'
+
+		}
+		const newData = {...likeData, ...overrides}
+		const newLike = await db.query(
+			`INSERT INTO post_likes
+		 ("userId", "postId")
+		  VALUES ($1 , $2 ) 
+		  RETURNING *`, [
+				newData.userId, newData.postId]
+		)
+		return newLike.rows[0]
 	}
+	
 	
 }
 

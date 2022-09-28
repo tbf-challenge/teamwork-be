@@ -7,7 +7,7 @@ const {
 const customError = require("../../lib/custom-error")
 const deletePost = require("./delete-post")
 const createComment = require("./create-comment")
-const likePost = require("./record-likes")
+const likePost = require("./like-post")
 
 const uniqueErrorCode = '23505'
 
