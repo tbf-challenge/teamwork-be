@@ -13,7 +13,7 @@ const {
 	getPostByIdSchema,
 	deletePostSchema,
 	createCommentSchema,
-	recordLikesOnPostSchema
+	likePostSchema
 	
 } = require('../schema')
 
@@ -132,7 +132,7 @@ router
 	.post( validateSchema(createGifSchema), createGif)
 router
 	.route('/:id/likes')
-	.post(validateSchema(recordLikesOnPostSchema), likeGif )
+	.post(validateSchema(likePostSchema), likeGif )
 router
 	.route('/:id')
 	.get(validateSchema(getPostByIdSchema), getGif)

@@ -19,7 +19,7 @@ const {
 	 assignTagToArticleSchema,
 	 deleteArticleTagsSchema,
 	 queryArticleTagsSchema,
-	 recordLikesOnPostSchema
+	 likePostSchema
 } = require('../schema')
 const { catchAsync} = require('../lib')
 
@@ -258,7 +258,7 @@ router
 	.post(validateSchema(createCommentSchema), createComment)
 router
 	.route('/:id/likes')
-	.post(validateSchema(recordLikesOnPostSchema), likeArticle )
+	.post(validateSchema(likePostSchema), likeArticle )
 router
 	.route('/:articleId/tags')
 	.post(validateSchema(assignTagToArticleSchema), assignTagToArticle)
