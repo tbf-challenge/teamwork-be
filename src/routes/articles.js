@@ -5,7 +5,8 @@ const isAuthenticated = require('../middleware/isAuthenticated')
 const {
 	ArticleDoesNotExistForCommentError,
 	ArticleDoesNotExistError,
-	TagAlreadyAssignedToPostError
+	TagAlreadyAssignedToPostError,
+	ArticleHasAlreadyBeenLikedError
 } = require("../services/errors")
 const validateSchema = require('../middleware/validateSchema')
 
@@ -17,15 +18,18 @@ const {
 	 deletePostSchema,
 	 assignTagToArticleSchema,
 	 deleteArticleTagsSchema,
-	 queryArticleTagsSchema
+	 queryArticleTagsSchema,
+	 likePostSchema
 } = require('../schema')
+const { catchAsync} = require('../lib')
 
 const log = logger()
 const router = express.Router()
 const ERROR_MAP = {
 	[ArticleDoesNotExistForCommentError.name] : 422 ,
 	[ArticleDoesNotExistError.name] : 404,
-	[TagAlreadyAssignedToPostError.name] : 422
+	[TagAlreadyAssignedToPostError.name] : 422,
+	[ArticleHasAlreadyBeenLikedError.name] : 422
 	
 }
 const {transformArticleResponse} = require('./common/transformers')
@@ -218,6 +222,23 @@ const assignTagToArticle = async (req, res, next) => {
 	}
 }
 
+const likeArticle = catchAsync( async(req, res) => {
+	const {id} = req.params
+	const { userId } = req.body
+	const newLike = await postService.likePost({
+		userId,
+		postId : id,
+		type : 'article'
+		 })
+	res.status(201).json({
+		status: 'success',
+		data: {
+			message: 'Article successfully liked',
+			userId : newLike.userId,
+			articleId : newLike.postId
+		}
+	})
+})
 // ROUTES
 router.use(isAuthenticated())
 router
@@ -235,6 +256,9 @@ router
 router
 	.route('/:id/comment')
 	.post(validateSchema(createCommentSchema), createComment)
+router
+	.route('/:id/likes')
+	.post(validateSchema(likePostSchema), likeArticle )
 router
 	.route('/:articleId/tags')
 	.post(validateSchema(assignTagToArticleSchema), assignTagToArticle)
