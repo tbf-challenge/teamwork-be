@@ -20,13 +20,9 @@ const transformGifResponse = (gif) => ({
 	
 })
 
-const transformGifLikeResponse = (gifLike) => ({
-	userId: gifLike.userId
-	
-})
 
 module.exports = {
 	transformArticleResponse,
-	transformGifResponse,
-	transformGifLikeResponse
+	transformGifResponse
+
 }

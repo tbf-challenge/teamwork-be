@@ -19,10 +19,10 @@ describe('RECORD LIKES on gif', () => {
 			userId : user.id,
 			postId: post.id
 		})
-		expect(likePost({
+		return expect(likePost({
 			userId: user.id, 
 			postId: post.id}))
-			.to.be.rejectedWith('Gif has already been liked.')
+			.to.be.rejectedWith('Gif has already been liked')
 
 	})
 

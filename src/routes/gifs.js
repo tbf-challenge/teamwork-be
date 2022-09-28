@@ -23,7 +23,6 @@ const ERROR_MAP = {
 	[GifHasAlreadyBeenLikedError.name] : 422
 }
 const {
-	transformGifLikeResponse,
 	transformGifResponse	
 } = require('./common/transformers')
 
@@ -120,7 +119,7 @@ const likeGif = catchAsync( async(req, res) => {
 		status: 'success',
 		data: {
 			message: 'GIF image successfully liked',
-			...transformGifLikeResponse(newLike)
+			userId : newLike.userId
 		}
 	})
 })
