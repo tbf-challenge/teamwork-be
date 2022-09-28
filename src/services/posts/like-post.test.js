@@ -28,7 +28,11 @@ describe('RECORD LIKES on gif', () => {
 
 
 	it('should record likes on a gif', async () => {
-		
+		const newPost = await fixtures.insertPost({
+			userId : user.id , 
+			type : 'gif'
+		})
+		await likePost({ userId: user.id, postId: newPost.id })
 		const result = await db.query(
 			`SELECT * FROM post_likes
              WHERE "userId" = $1
