@@ -1,12 +1,12 @@
 const express = require('express')
-const postService = require('../services/posts')
-const isAuthenticated = require('../middleware/isAuthenticated')
-const validateSchema = require('../middleware/validateSchema')
-const { catchAsync, AppError } = require('../lib')
+const postService = require('../../services/posts')
+const isAuthenticated = require('../../middleware/isAuthenticated')
+const validateSchema = require('../../middleware/validateSchema')
+const { catchAsync, AppError } = require('../../lib')
 const {
 	GifDoesNotExistError, GifHasAlreadyBeenLikedError
 	
-} = require("../services/errors")
+} = require("../../services/errors")
 
 const {
 	createGifSchema,
@@ -16,7 +16,7 @@ const {
 	likePostSchema,
 	unlikePostSchema
 	
-} = require('../schema')
+} = require('../../schema')
 
 const router = express.Router()
 const ERROR_MAP = {
@@ -25,7 +25,7 @@ const ERROR_MAP = {
 }
 const {
 	transformGifResponse	
-} = require('./common/transformers')
+} = require('../common/transformers')
 
 const createGif = catchAsync( async(req, res) => {
 	const userId = req.user.id

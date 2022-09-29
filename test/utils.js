@@ -1,6 +1,7 @@
 const { default: pgMigrate} = require('node-pg-migrate')
 const path = require('path')
 const { faker } = require('@faker-js/faker')
+const jwt = require("jsonwebtoken")
 const db = require('../src/db')
 const config = require('../src/config')
 const { 
@@ -104,7 +105,13 @@ const fixtures = {
 		await db.query(
 			`UPDATE user_invites 
 			SET status = $1 WHERE email = $2`, [status, email] 
-		)}
+		)
+	},
+	async generateAccessToken ({data}){
+		const accessToken = jwt.sign( data , config("TOKEN_SECRET"),
+			{expiresIn: '24h'})
+		return accessToken
+	}
 	
 }
 
