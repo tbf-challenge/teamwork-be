@@ -133,7 +133,7 @@ const unlikeGif = catchAsync( async(req, res) => {
 		postId : id,
 		type : 'gif'
 		 })
-	res.status(201).json({
+	res.status(200).json({
 		status: 'success',
 		data: {
 			message: 'GIF image successfully unliked'
