@@ -1,7 +1,7 @@
 const {expect} = require('chai')
 const db = require("../../db")
 const {fixtures} = require('../../../test/utils')
-const deleteArticleLike = require("./delete-article-like")
+const unlikePost = require("./unlike-post")
 
 
 describe('Delete article like', () => {
@@ -22,7 +22,7 @@ describe('Delete article like', () => {
 			postId: post.id,
 			type: 'article'
 		})
-		await deleteArticleLike({userId: user.id, postId: post.id})
+		await unlikePost({userId: user.id, postId: post.id})
 		const queryPost = await db.query(
 			`SELECT * FROM post_likes
              WHERE "userId" = $1
