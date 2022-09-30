@@ -16,7 +16,7 @@ describe('UNLIKE a gif', () => {
 		})
 	})
 	
-	it('should unlike a gif', async () => {
+	it('should delete like in the database', async () => {
 		 await fixtures.insertPost({
 			userId : user.id , 
 			type : 'gif'

@@ -2,7 +2,7 @@ const {expect} = require('chai')
 const {fixtures} = require('../../../test/utils')
 
 
-describe('DELETE /gifs/:id/:userId', () => {
+describe('DELETE /gifs/:id/likes/:userId', () => {
 	let user
 	let accessToken
 	before(async ()=>{
