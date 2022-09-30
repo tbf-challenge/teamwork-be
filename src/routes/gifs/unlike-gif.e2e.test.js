@@ -60,10 +60,9 @@ describe('UNLIKE /gif', () => {
 			await fixtures.insertPostLike({
 				userId : user.id , 
 				postId : post.id}) 
-			const expectedError = {}
 			return request(app)
 				.delete(`/api/v1/gifs/${post.id}/likes/${user.id}`)
-				.expect(401, expectedError)
+				.expect(401)
 
 		})
 	})

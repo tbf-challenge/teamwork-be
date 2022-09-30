@@ -107,7 +107,7 @@ const fixtures = {
 			SET status = $1 WHERE email = $2`, [status, email] 
 		)
 	},
-	async generateAccessToken ({data}){
+	 generateAccessToken (data){
 		const accessToken = jwt.sign( data , config("TOKEN_SECRET"),
 			{expiresIn: '24h'})
 		return accessToken
