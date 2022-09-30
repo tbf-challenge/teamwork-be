@@ -1,21 +1,22 @@
 const express = require('express')
-const postService = require('../services/posts')
-const isAuthenticated = require('../middleware/isAuthenticated')
-const validateSchema = require('../middleware/validateSchema')
-const { catchAsync, AppError } = require('../lib')
+const postService = require('../../services/posts')
+const isAuthenticated = require('../../middleware/isAuthenticated')
+const validateSchema = require('../../middleware/validateSchema')
+const { catchAsync, AppError } = require('../../lib')
 const {
 	GifDoesNotExistError, GifHasAlreadyBeenLikedError
 	
-} = require("../services/errors")
+} = require("../../services/errors")
 
 const {
 	createGifSchema,
 	getPostByIdSchema,
 	deletePostSchema,
 	createCommentSchema,
-	likePostSchema
+	likePostSchema,
+	unlikePostSchema
 	
-} = require('../schema')
+} = require('../../schema')
 
 const router = express.Router()
 const ERROR_MAP = {
@@ -24,7 +25,7 @@ const ERROR_MAP = {
 }
 const {
 	transformGifResponse	
-} = require('./common/transformers')
+} = require('../common/transformers')
 
 const createGif = catchAsync( async(req, res) => {
 	const userId = req.user.id
@@ -125,14 +126,31 @@ const likeGif = catchAsync( async(req, res) => {
 		}
 	})
 })
-
+const unlikeGif = catchAsync( async(req, res) => {
+	const {id , userId} = req.params
+	await postService.unlikePost({
+		userId,
+		postId : id,
+		type : 'gif'
+		 })
+	res.status(200).json({
+		status: 'success',
+		data: {
+			message: 'GIF image successfully unliked'
+		}
+	})
+})
 router.use(isAuthenticated())
 router
 	.route('/')
 	.post( validateSchema(createGifSchema), createGif)
 router
+	.route('/:id/likes/:userId')
+	.delete(validateSchema(unlikePostSchema), unlikeGif )
+router
 	.route('/:id/likes')
 	.post(validateSchema(likePostSchema), likeGif )
+
 router
 	.route('/:id')
 	.get(validateSchema(getPostByIdSchema), getGif)

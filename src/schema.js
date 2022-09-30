@@ -228,6 +228,15 @@ const likePostSchema = Joi.object({
 			.required()
 	}
 })
+const unlikePostSchema = Joi.object({
+	params: {
+		id :Joi.number()
+			.required(),
+		userId: Joi.number()
+			.required()
+	}
+})
+
 
 module.exports = {
 	authSchema,
@@ -247,5 +256,6 @@ module.exports = {
 	authTokenSchema,
 	createGifSchema,
 	updatePasswordSchema,
-	likePostSchema
+	likePostSchema,
+	unlikePostSchema
 }

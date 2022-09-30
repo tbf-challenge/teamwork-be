@@ -1,11 +1,16 @@
 const { default: pgMigrate} = require('node-pg-migrate')
+const request = require('supertest')
 const path = require('path')
 const { faker } = require('@faker-js/faker')
+const jwt = require("jsonwebtoken")
 const db = require('../src/db')
 const config = require('../src/config')
+const app = require('../src/app')
+
 const { 
 	genPasswordHash
 } = require("../src/lib/passwordlib")
+
 
 const tearDown = () => 
 	db.query("DROP SCHEMA public CASCADE;CREATE SCHEMA public;")
@@ -104,7 +109,15 @@ const fixtures = {
 		await db.query(
 			`UPDATE user_invites 
 			SET status = $1 WHERE email = $2`, [status, email] 
-		)}
+		)
+	},
+	 generateAccessToken (data){
+		const accessToken = jwt.sign( data , config("TOKEN_SECRET"),
+			{expiresIn: '24h'})
+		return accessToken
+	}, api(){
+		return request(app)
+	}
 	
 }
 
