@@ -1,30 +1,27 @@
-const request = require('supertest')
 const {expect} = require('chai')
 const {fixtures} = require('../../../test/utils')
-const app = require('../../app')
 
-describe('UNLIKE /gif', () => {
+
+describe('DELETE /gifs/:id/:userId', () => {
 	let user
-
+	let accessToken
 	before(async ()=>{
 		 user = await fixtures.insertUser() 
+		const body = { id: user.id, email: user.email }
+		accessToken = fixtures.generateAccessToken(
+			{user : body}
+		)
 	})
 	describe('Failure', () => {
-		let accessToken
-		before(async ()=>{
-			const body = { id: user.id, email: user.email }
-			accessToken = await fixtures.generateAccessToken(
-				{data : {user : body}}
-			)
-		})
+		
 		it('should return 400 if postId is not a number', async () => {
 			const expectedError = {
 				"error": {
-			  "message": "postId must be a number"
+			  "message": "id must be a number"
 				},
 		   "status": "failed"
 		  }
-			request(app)
+			return	fixtures.api()
 				.delete(`/api/v1/gifs/sdsdsd/likes/${user.id}`)
 				.set('Authorization', `Bearer ${accessToken}`)
 				.expect(400, expectedError)
@@ -35,17 +32,13 @@ describe('UNLIKE /gif', () => {
 				userId : user.id , 
 				type : 'gif'
 			})
-			await fixtures.insertPostLike({
-				userId : user.id , 
-				postId : post.id
-			}) 
 			const expectedError = {
 				"error": {
 				  "message": "userId must be a number"
 				},
 			   "status": "failed"
 			  }
-			return request(app)
+			return fixtures.api()
 				.delete(`/api/v1/gifs/${post.id}/likes/sdsdsd`)
 				.set('Authorization', `Bearer ${accessToken}`)
 				.expect(400, expectedError)
@@ -56,11 +49,8 @@ describe('UNLIKE /gif', () => {
 			const post = await fixtures.insertPost({
 				userId : user.id , 
 				type : 'gif'
-			})
-			await fixtures.insertPostLike({
-				userId : user.id , 
-				postId : post.id}) 
-			return request(app)
+			}) 
+			return fixtures.api()
 				.delete(`/api/v1/gifs/${post.id}/likes/${user.id}`)
 				.expect(401)
 
@@ -77,11 +67,7 @@ describe('UNLIKE /gif', () => {
 			await fixtures.insertPostLike({
 				userId : user.id , 
 				postId : post.id}) 
-			const body = { id: user.id, email: user.email }
-			const accessToken = await fixtures.generateAccessToken(
-				{data : {user : body}}
-			)
-			return request(app)
+			return fixtures.api()
 				.delete(`/api/v1/gifs/${post.id}/likes/${user.id}`)
 				.set('Authorization', `Bearer ${accessToken}`)
 				.expect(200)
@@ -94,11 +80,8 @@ describe('UNLIKE /gif', () => {
 			await fixtures.insertPostLike({
 				userId : user.id , 
 				postId : post.id}) 
-			const body = { id: user.id, email: user.email }
-			const accessToken = await fixtures.generateAccessToken(
-				{data : {user : body}}
-			)
-			return request(app)
+			
+			return fixtures.api()
 				.delete(`/api/v1/gifs/${post.id}/likes/${user.id}`)
 				.set('Authorization', `Bearer ${accessToken}`)
 				.expect(200)
