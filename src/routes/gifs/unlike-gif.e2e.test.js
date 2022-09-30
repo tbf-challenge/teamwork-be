@@ -10,32 +10,80 @@ describe('UNLIKE /gif', () => {
 	before(async ()=>{
 		 user = await fixtures.insertUser() 
 	})
-		 
-	it('should unlike a gif image', async() => {
-		const post = await fixtures.insertPost({
-			userId : user.id , 
-			type : 'gif'
+	describe('Failure', () => {
+		let accessToken
+		before(async ()=>{
+			const body = { id: user.id, email: user.email }
+			accessToken = await fixtures.generateAccessToken(
+				{data : {user : body}}
+			)
 		})
-		    
-		await fixtures.insertPostLike({userId : user.id , postId : post.id})
-		// const result = await db.query(
-		// 	`SELECT * FROM post_likes
-		//      WHERE "userId" = $1
-		//      AND "postId" = $2`,[ user.id, post.id ])
-		// expect(result.rowCount).to.eql(0)	 
-		const accessToken = await fixtures.generateAccessToken({data : user})
-		return request(app)
-			.delete(`/api/v1/gifs/${post.id}/likes/${user.id}`)
-			.set('Authorization', `Bearer ${accessToken}`)
-			.set('Accept', 'application/json')
-			// .expect('Content-Type', /json/)
-			.expect(200)
-			// eslint-disable-next-line consistent-return
-			// .end((err) => {
-			// 	if (err) 
-			// 		return err
-			// })
-		
+		it('should return 400 if postId is not a number', async () => {
+			const post = await fixtures.insertPost({
+				userId : user.id , 
+				type : 'gif'
+			})
+			await fixtures.insertPostLike({
+				userId : user.id , 
+				postId : post.id}) 
+			return request(app)
+				.delete(`/api/v1/gifs/sdsdsd/likes/${user.id}`)
+				.set('Authorization', `Bearer ${accessToken}`)
+				.expect(400)
+
+		})
+
+
+		it('should return 400 if userId is not a number', async () => {
+			const post = await fixtures.insertPost({
+				userId : user.id , 
+				type : 'gif'
+			})
+			await fixtures.insertPostLike({
+				userId : user.id , 
+				postId : post.id
+			}) 
+			return request(app)
+				.delete(`/api/v1/gifs/${post.id}/likes/sdsdsd`)
+				.set('Authorization', `Bearer ${accessToken}`)
+				.expect(400)
+				 
+		})
+
+		it('should return 401 if request is not authenticated', async () => {
+			const post = await fixtures.insertPost({
+				userId : user.id , 
+				type : 'gif'
+			})
+			await fixtures.insertPostLike({
+				userId : user.id , 
+				postId : post.id}) 
+			return request(app)
+				.delete(`/api/v1/gifs/${post.id}/likes/${user.id}`)
+				.expect(401)
+
+		})
+	})
+
+	describe('Success', () => {
+
+		it('should return 200', async () => {
+			const newPost = await fixtures.insertPost({
+				userId : user.id , 
+				type : 'gif'
+			})
+			await fixtures.insertPostLike({
+				userId : user.id , 
+				postId : newPost.id}) 
+			const body = { id: user.id, email: user.email }
+			const accessToken = await fixtures.generateAccessToken(
+				{data : {user : body}}
+			)
+			return request(app)
+				.delete(`/api/v1/gifs/${newPost.id}/likes/${user.id}`)
+				.set('Authorization', `Bearer ${accessToken}`)
+				.expect(200)
+		})
 	})
 
 })
