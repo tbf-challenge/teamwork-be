@@ -241,7 +241,7 @@ const likeArticle = catchAsync( async(req, res) => {
 	})
 })
 
-const deleteArticleLike = catchAsync( async(req, res) => {
+const unlikeArticle = catchAsync( async(req, res) => {
 	const {id, userId} = req.params
 
 	await postService.deleteArticleLike({
@@ -253,7 +253,7 @@ const deleteArticleLike = catchAsync( async(req, res) => {
 	res.status(200).json({
 		status: 'success',
 		data: {
-			message: 'like successfully deleted'
+			message: 'Article successfully unliked'
 		}
 	})
 })
@@ -285,7 +285,7 @@ router
 	.delete(validateSchema(deleteArticleTagsSchema), deleteArticleTags)
 router
 	.route('/:id/likes/:userId')
-	.delete(validateSchema(unlikePostSchema), deleteArticleLike)
+	.delete(validateSchema(unlikePostSchema), unlikeArticle)
 router
 	.use((err, req, res, next)=> {
 		// eslint-disable-next-line no-param-reassign
