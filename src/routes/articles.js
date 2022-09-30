@@ -19,7 +19,8 @@ const {
 	 assignTagToArticleSchema,
 	 deleteArticleTagsSchema,
 	 queryArticleTagsSchema,
-	 likePostSchema
+	 likePostSchema,
+	 unlikePostSchema
 } = require('../schema')
 const { catchAsync} = require('../lib')
 
@@ -239,6 +240,23 @@ const likeArticle = catchAsync( async(req, res) => {
 		}
 	})
 })
+
+const deleteArticleLike = catchAsync( async(req, res) => {
+	const {id, userId} = req.params
+
+	await postService.deleteArticleLike({
+		userId,
+		postId : id,
+		type : 'article'
+		 })
+
+	res.status(200).json({
+		status: 'success',
+		data: {
+			message: 'like successfully deleted'
+		}
+	})
+})
 // ROUTES
 router.use(isAuthenticated())
 router
@@ -265,6 +283,9 @@ router
 router
 	.route('/:articleId/tags/:tagId')
 	.delete(validateSchema(deleteArticleTagsSchema), deleteArticleTags)
+router
+	.route('/:id/likes/:userId')
+	.delete(validateSchema(unlikePostSchema), deleteArticleLike)
 router
 	.use((err, req, res, next)=> {
 		// eslint-disable-next-line no-param-reassign

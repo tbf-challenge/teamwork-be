@@ -8,6 +8,7 @@ const customError = require("../../lib/custom-error")
 const deletePost = require("./delete-post")
 const createComment = require("./create-comment")
 const likePost = require("./like-post")
+const deleteArticleLike = require("./delete-article-like")
 
 const uniqueErrorCode = '23505'
 
@@ -109,5 +110,6 @@ module.exports = {
 	queryPostTags,
 	assignTagToPost,
 	fetchPosts,
-	likePost
+	likePost,
+	deleteArticleLike
 }
