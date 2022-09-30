@@ -52,8 +52,6 @@ const signinSchema = Joi.object({
 
 const createArticleSchema = Joi.object({
 	body:{
-		userId: Joi.number()
-			.required(),
 		title: Joi.string()
 			.alphanum()
 			.min(3)
@@ -229,6 +227,16 @@ const likePostSchema = Joi.object({
 	}
 })
 
+const unlikePostSchema = Joi.object({
+	params: {
+		id :Joi.number()
+			.required(),
+		userId: Joi.number()
+			.required()
+	}
+})
+
+
 module.exports = {
 	authSchema,
 	signinSchema,
@@ -247,5 +255,6 @@ module.exports = {
 	authTokenSchema,
 	createGifSchema,
 	updatePasswordSchema,
-	likePostSchema
+	likePostSchema,
+	unlikePostSchema
 }
