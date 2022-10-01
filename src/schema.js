@@ -52,6 +52,7 @@ const signinSchema = Joi.object({
 
 const createArticleSchema = Joi.object({
 	body:{
+		userId: Joi.number(),
 		title: Joi.string()
 			.alphanum()
 			.min(3)
