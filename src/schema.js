@@ -226,6 +226,15 @@ const likePostSchema = Joi.object({
 			.required()
 	}
 })
+const unlikePostSchema = Joi.object({
+	params: {
+		id :Joi.number()
+			.required(),
+		userId: Joi.number()
+			.required()
+	}
+})
+
 
 const unlikePostSchema = Joi.object({
 	params: {
