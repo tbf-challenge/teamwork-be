@@ -52,7 +52,8 @@ const signinSchema = Joi.object({
 
 const createArticleSchema = Joi.object({
 	body:{
-		userId: Joi.number(),
+		userId: Joi.number()
+			.required(),
 		title: Joi.string()
 			.alphanum()
 			.min(3)
@@ -235,6 +236,7 @@ const unlikePostSchema = Joi.object({
 			.required()
 	}
 })
+
 
 module.exports = {
 	authSchema,
