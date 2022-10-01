@@ -11,7 +11,7 @@ So you want to write code and get it landed in the repository? Then first fork o
 
 ## How to set up the project locally
 
-Read the [README.md](README.md) on how to set up the project locally.
+Read the [README.md](README.md#getting-started) on how to set up the project locally.
 
 ## Submitting Patches
 
