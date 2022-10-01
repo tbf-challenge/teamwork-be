@@ -1,14 +1,14 @@
 const express = require('express')
-const postService = require('../services/posts')
-const { logger } = require('../lib')
-const isAuthenticated = require('../middleware/isAuthenticated')
+const postService = require('../../services/posts')
+const { logger } = require('../../lib')
+const isAuthenticated = require('../../middleware/isAuthenticated')
 const {
 	ArticleDoesNotExistForCommentError,
 	ArticleDoesNotExistError,
 	TagAlreadyAssignedToPostError,
 	ArticleHasAlreadyBeenLikedError
-} = require("../services/errors")
-const validateSchema = require('../middleware/validateSchema')
+} = require("../../services/errors")
+const validateSchema = require('../../middleware/validateSchema')
 
 const {
 	createArticleSchema,
@@ -19,9 +19,10 @@ const {
 	 assignTagToArticleSchema,
 	 deleteArticleTagsSchema,
 	 queryArticleTagsSchema,
-	 likePostSchema
-} = require('../schema')
-const { catchAsync} = require('../lib')
+	 likePostSchema,
+	 unlikePostSchema
+} = require('../../schema')
+const { catchAsync} = require('../../lib')
 
 const log = logger()
 const router = express.Router()
@@ -32,7 +33,7 @@ const ERROR_MAP = {
 	[ArticleHasAlreadyBeenLikedError.name] : 422
 	
 }
-const {transformArticleResponse} = require('./common/transformers')
+const {transformArticleResponse} = require('../common/transformers')
 
 const createArticle = async (req, res, next) => {
 	try {
@@ -239,6 +240,23 @@ const likeArticle = catchAsync( async(req, res) => {
 		}
 	})
 })
+
+const unlikeArticle = catchAsync( async(req, res) => {
+	const {id, userId} = req.params
+
+	await postService.unlikePost({
+		userId,
+		postId : id,
+		type : 'article'
+		 })
+
+	res.status(200).json({
+		status: 'success',
+		data: {
+			message: 'Article successfully unliked'
+		}
+	})
+})
 // ROUTES
 router.use(isAuthenticated())
 router
@@ -265,6 +283,9 @@ router
 router
 	.route('/:articleId/tags/:tagId')
 	.delete(validateSchema(deleteArticleTagsSchema), deleteArticleTags)
+router
+	.route('/:id/likes/:userId')
+	.delete(validateSchema(unlikePostSchema), unlikeArticle)
 router
 	.use((err, req, res, next)=> {
 		// eslint-disable-next-line no-param-reassign
