@@ -7,7 +7,7 @@ Please note we have a code of conduct, please follow it in all your interactions
 
 ## How to contribute
 
-So you want to write code and get it landed in the repository? Then first fork our repository into your own Github account, and create a local clone of it. The latter will be used to get new features implemented or bugs fixed. Once done and you have the code locally on the disk, you can get started. We advice to not work directly on the master branch, but to create a separate branch for each issue you are working on. That way you can easily switch between different work, and you can update each one for latest changes on upstream master individually. Check also our best practices for Git.
+So you want to write code and get it landed in the repository? Then first fork our repository into your own Github account, and create a local clone of it. The latter will be used to get new features implemented or bugs fixed. Once done and you have the code locally on the disk, you can get started. We advice to not work directly on the master branch, but to create a separate branch for each issue you are working on. That way you can easily switch between different work, and you can update each one for latest changes on upstream master individually. Check also [conventions](https://github.com/andela/bestpractices/wiki/Git-naming-conventions-and-best-practices) we are following for naming branches, etc.
 
 ## How to set up the project locally
 
