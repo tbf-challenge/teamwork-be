@@ -588,7 +588,7 @@ paths:
         required: true
         description : User id
       responses:
-        '201':
+        '200':
           description: Successfully unliking an article
           content:
             application/json:
@@ -927,7 +927,7 @@ paths:
         required: true
         description : User id
       responses:
-        '201':
+        '200':
           description: Successfully unliking a gif
           content:
             application/json:
