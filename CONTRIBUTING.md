@@ -25,4 +25,4 @@ When you think the code is ready for review a pull request should be created on 
 
 ## Code of Conduct
 
-Read the [CODE-OF-CONDUCT.md](CODE-OF-CONDUCT.md) on the code of conduct for this project.
+Read the [code of conduct](CODE-OF-CONDUCT.md) for this project.
