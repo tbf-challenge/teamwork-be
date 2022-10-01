@@ -1,14 +1,14 @@
 const express = require('express')
-const postService = require('../services/posts')
-const { logger } = require('../lib')
-const isAuthenticated = require('../middleware/isAuthenticated')
+const postService = require('../../services/posts')
+const { logger } = require('../../lib')
+const isAuthenticated = require('../../middleware/isAuthenticated')
 const {
 	ArticleDoesNotExistForCommentError,
 	ArticleDoesNotExistError,
 	TagAlreadyAssignedToPostError,
 	ArticleHasAlreadyBeenLikedError
-} = require("../services/errors")
-const validateSchema = require('../middleware/validateSchema')
+} = require("../../services/errors")
+const validateSchema = require('../../middleware/validateSchema')
 
 const {
 	createArticleSchema,
@@ -21,8 +21,8 @@ const {
 	 queryArticleTagsSchema,
 	 likePostSchema,
 	 unlikePostSchema
-} = require('../schema')
-const { catchAsync} = require('../lib')
+} = require('../../schema')
+const { catchAsync} = require('../../lib')
 
 const log = logger()
 const router = express.Router()
@@ -33,7 +33,7 @@ const ERROR_MAP = {
 	[ArticleHasAlreadyBeenLikedError.name] : 422
 	
 }
-const {transformArticleResponse} = require('./common/transformers')
+const {transformArticleResponse} = require('../common/transformers')
 
 const createArticle = async (req, res, next) => {
 	try {
@@ -244,7 +244,7 @@ const likeArticle = catchAsync( async(req, res) => {
 const unlikeArticle = catchAsync( async(req, res) => {
 	const {id, userId} = req.params
 
-	await postService.deleteArticleLike({
+	await postService.unlikePost({
 		userId,
 		postId : id,
 		type : 'article'
