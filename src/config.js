@@ -12,7 +12,7 @@ const environmentSchema = joi.object().keys({
 	EMAIL_SERVICE_PORT: joi.number().required(),
 	EMAIL_SERVICE_PASSWORD: joi.string().required(),
 	EMAIL_SERVICE_USERNAME: joi.string().required(),
-	EMAIL_FROM: joi.string().required(),
+	EMAIL_FROM: joi.string().email().required(),
 	FRONTEND_BASE_URL: joi.string().uri().required(),
 	ORGANIZATION_NAME: joi.string().required()
 }).unknown()
