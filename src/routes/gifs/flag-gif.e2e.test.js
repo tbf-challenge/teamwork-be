@@ -36,24 +36,6 @@ describe('POST /gifs/:id/flags', () => {
 				.expect(400, expectedError)
 
 		})
-		// it('should return 400 if userId is not a number', async () => {
-		// 	const post = await fixtures.insertPost({
-		// 		userId : user.id , 
-		// 		type : 'gif'
-		// 	})
-		// 	const expectedError = {
-		// 		"error": {
-		// 		  "message": "userId must be a number"
-		// 		},
-		// 	   "status": "failed"
-		// 	  }
-		// 	return fixtures.api()
-		// 		.post(`/api/v1/gifs/${post.id}/flags`)
-		// 		.set('Authorization', `Bearer ${accessToken}`)
-		// 		.send(data)
-		// 		.expect(400, expectedError)
-				 
-		// })
 
 		it('should return 401 if request is not authenticated', async () => {
 			const post = await fixtures.insertPost({
@@ -80,44 +62,30 @@ describe('POST /gifs/:id/flags', () => {
 				userId : user.id , 
 				type : 'gif'
 			})
-			await fixtures.insertPostFlag({
-				userId : user.id , 
-				postId : post.id,
-				reason : data.reason
-			}) 
 			return fixtures.api()
 				.post(`/api/v1/gifs/${post.id}/flags`)
 				.set('Authorization', `Bearer ${accessToken}`)
 				.send(data)
-				.set('Accept', 'application/json')
-				.expect('Content-Type', /json/)
 				.expect(201)
+			
 		})
 		it('should return the right response', async () => {
 			const post = await fixtures.insertPost({
 				userId : user.id , 
 				type : 'gif'
 			})
-			await fixtures.insertPostFlag({
-				userId : user.id , 
-				postId : post.id,
-				reason : data.reason
-			}) 
 			
 			return fixtures.api()
 				.post(`/api/v1/gifs/${post.id}/flags`)
 				.set('Authorization', `Bearer ${accessToken}`)
 				.send(data)
-				.set('Accept', 'application/json')
-				.expect('Content-Type', /json/)
 				.expect(201)
 				.then(res => {
-					expect(res.body).to.eql(
-						// {
-						// 	status: 'success',
-						// 	data: { message: 'GIF image successfully unliked' }
-						//   }
-					)
+					expect(res.body.data.message).to.eql(
+						`GIF image successfully flagged`)
+					expect(res.body.data.userId).to.eql(user.id)
+					expect(res.body.data.gifId).to.eql(post.id)
+					expect(res.body.data.reason).to.eql(data.reason)
 				})
 			
 		})
