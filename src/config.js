@@ -3,13 +3,8 @@
 const path = require('path')
 const joi = require('joi')
 
-const nodeEnvSchema = joi.object({
-	  NODE_ENV: joi.string()
-	    .valid('development', 'production', 'test')
-		.default('development')
-}).unknown()
 
-const environmentSchema = joi.object().keys({	
+const environmentSchema = joi.object().keys({
 	DATABASE_URL: joi.string().required(),
 	PORT: joi.number().required(),
 	TOKEN_SECRET: joi.string().required(),
@@ -22,25 +17,28 @@ const environmentSchema = joi.object().keys({
 	ORGANIZATION_NAME: joi.string().required()
 }).unknown()
 
-const validateSchema = (schema, env) => {
-	const { error, value } = schema.prefs({
-		errors: { label: 'key' }
-	}).validate(env)
-	if (error) {
-		throw new Error(`Config validation error: ${error.message}`)
-	}
-	return value
-}
+if (!process.env.NODE_ENV) { process.env.NODE_ENV = 'development' }
 
-const nodeEnv = validateSchema(nodeEnvSchema, process.env)
-
-if (nodeEnv.NODE_ENV === 'development') { require('dotenv').config() }
-if (nodeEnv.NODE_ENV === 'test') {
+if (process.env.NODE_ENV === 'development') { require('dotenv').config() }
+if (process.env.NODE_ENV === 'test') {
 	require('dotenv').config({ 
 		path: path.resolve( '.env.test') 
 	})}
 
+
+const { error, value: envVars } = environmentSchema.prefs({
+	errors: { label: 'key' }
+}).validate(process.env)
+	
+if (error) {
+	throw new Error(`Config validation error: ${error.message}`)
+}
+
 module.exports = (key) => {
-	const value = validateSchema(environmentSchema, process.env)
-	return key ? value[key] : value
+	const value = envVars[key]
+	if (value === undefined) {
+		throw new Error(`No config for env variable ${key}`)
+	} else {
+		return value
+	}
 }
