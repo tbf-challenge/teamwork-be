@@ -14,10 +14,14 @@ describe('POST /gifs/:id/flags', () => {
 		)
 	})
 	describe('Failure', () => {
-		const data = {
-			userId : user.id,
-			reason : faker.random.words()
-		}
+		
+		let data
+		before(async ()=>{
+			data = {
+				userId : user.id,
+				reason : faker.random.words()
+			}
+		})
 		it('should return 400 if postId is not a number', async () => {
 			const expectedError = {
 				"error": {
@@ -64,11 +68,14 @@ describe('POST /gifs/:id/flags', () => {
 	})
 
 	describe('Success', () => {
-		const data = {
-			userId : user.id,
-			reason : faker.random.words()
-		}
-		it('should return 200', async () => {
+		let data
+		before(async ()=>{
+			data = {
+				userId : user.id,
+				reason : faker.random.words()
+			}
+		})
+		it('should return 201', async () => {
 			const post = await fixtures.insertPost({
 				userId : user.id , 
 				type : 'gif'
@@ -82,6 +89,8 @@ describe('POST /gifs/:id/flags', () => {
 				.post(`/api/v1/gifs/${post.id}/flags`)
 				.set('Authorization', `Bearer ${accessToken}`)
 				.send(data)
+				.set('Accept', 'application/json')
+				.expect('Content-Type', /json/)
 				.expect(201)
 		})
 		it('should return the right response', async () => {
@@ -99,7 +108,9 @@ describe('POST /gifs/:id/flags', () => {
 				.post(`/api/v1/gifs/${post.id}/flags`)
 				.set('Authorization', `Bearer ${accessToken}`)
 				.send(data)
-				.expect(200)
+				.set('Accept', 'application/json')
+				.expect('Content-Type', /json/)
+				.expect(201)
 				.then(res => {
 					expect(res.body).to.eql(
 						// {
