@@ -4,7 +4,9 @@ const isAuthenticated = require('../../middleware/isAuthenticated')
 const validateSchema = require('../../middleware/validateSchema')
 const { catchAsync, AppError } = require('../../lib')
 const {
-	GifDoesNotExistError, GifHasAlreadyBeenLikedError
+	GifDoesNotExistError,
+	GifHasAlreadyBeenLikedError, 
+	GifHasAlreadyBeenFlaggedError
 	
 } = require("../../services/errors")
 
@@ -14,14 +16,16 @@ const {
 	deletePostSchema,
 	createCommentSchema,
 	likePostSchema,
-	unlikePostSchema
+	unlikePostSchema,
+	flagPostSchema
 	
 } = require('../../schema')
 
 const router = express.Router()
 const ERROR_MAP = {
 	[GifDoesNotExistError.name] : 404,
-	[GifHasAlreadyBeenLikedError.name] : 422
+	[GifHasAlreadyBeenLikedError.name] : 422,
+	[GifHasAlreadyBeenFlaggedError.name] : 422
 }
 const {
 	transformGifResponse	
@@ -140,6 +144,25 @@ const unlikeGif = catchAsync( async(req, res) => {
 		}
 	})
 })
+const flagGif = catchAsync( async(req, res) => {
+	const {id} = req.params
+	const { userId, reason } = req.body
+	const flaggedGif = await postService.flagPost({
+		userId,
+		postId : id,
+		reason,
+		type : 'gif'
+		 })
+	res.status(201).json({
+		status: 'success',
+		data: {
+			message: 'GIF image successfully flagged',
+			userId : flaggedGif.userId,
+			gifId : flaggedGif.postId,
+			reason : flaggedGif.reason
+		}
+	})
+})
 router.use(isAuthenticated())
 router
 	.route('/')
@@ -150,7 +173,9 @@ router
 router
 	.route('/:id/likes')
 	.post(validateSchema(likePostSchema), likeGif )
-
+router
+	.route('/:id/flags')
+	.post(validateSchema(flagPostSchema), flagGif )
 router
 	.route('/:id')
 	.get(validateSchema(getPostByIdSchema), getGif)

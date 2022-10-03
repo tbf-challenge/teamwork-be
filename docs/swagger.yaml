@@ -948,6 +948,65 @@ paths:
                         example: Gif successfully unliked
       security:
         - access_token: []
+  /gifs/{gifId}/flags:
+    post:
+      tags:
+        - gif
+      operationId: Record flag on a gif
+      summary: Record flag on a gif
+      description: Record flag on a gif
+      parameters:
+      - in : path
+        name : gifId
+        schema:
+          type: integer
+        required: true
+        description : Numeric ID of the gif to get
+      requestBody:
+        description: Flag a gif
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId: 
+                  type: integer
+                  description: user id
+                  example: 10
+      responses:
+        '201':
+          description: Successfully flagging a gif
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: successfully flagging a gif
+                    example: success
+                  data:
+                    type: object
+                    description: Data for flagging a gif
+                    properties:
+                      message:
+                        type: string
+                        description: Message for flagging a gif
+                        example: Gif  successfully flagged
+                      userId: 
+                        type: integer
+                        description: user id
+                        example: 10
+                      gifId: 
+                        type: integer
+                        description: gif id
+                        example: 10
+                      reason:
+                        type: string
+                        description: reason for flagging a Gif
+                        example: this gif is inappropriate
+      security:
+        - access_token: []
   /feed:
     get:
       tags:

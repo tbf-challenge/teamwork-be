@@ -236,7 +236,17 @@ const unlikePostSchema = Joi.object({
 			.required()
 	}
 })
-
+const flagPostSchema = Joi.object({
+	params: {
+		id :Joi.number()
+			.required()
+	},
+	body: {
+		userId: Joi.number()
+			.required(),
+		reason : Joi.string()
+	}
+})
 
 module.exports = {
 	authSchema,
@@ -257,5 +267,6 @@ module.exports = {
 	createGifSchema,
 	updatePasswordSchema,
 	likePostSchema,
-	unlikePostSchema
+	unlikePostSchema,
+	flagPostSchema
 }
