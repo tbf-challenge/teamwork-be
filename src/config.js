@@ -26,9 +26,7 @@ if (process.env.NODE_ENV === 'test') {
 	})}
 
 
-const { error, value: envVars } = environmentSchema.prefs({
-	errors: { label: 'key' }
-}).validate(process.env)
+const { error, value: envVars } = environmentSchema.validate(process.env)
 	
 if (error) {
 	throw new Error(`Config validation error: ${error.message}`)
