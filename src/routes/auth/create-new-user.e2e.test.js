@@ -78,12 +78,59 @@ describe('POST /auth/create-user', () => {
 					email: signupInfo.email,
 					password: validPassword
 				})
-				.set('Authorization', `Bearer invite-token`)
 				.expect(401)
 				.then(res => {
 					expect(res.body).to.eql(expectedError)
 				})
 		})
+
+		it('should throw a 401 error if token is invalid', async () => {
+			const expectedError = {
+				"error": {
+					"message": "Invalid token"
+				},
+				"status": "failed"
+			}
+
+			return fixtures.api()
+				.post('/api/v1/auth/create-user')
+				.set('Authorization', `Bearer ${faker.datatype.uuid()}`)
+				.send({
+					firstName: signupInfo.firstName,
+					lastName: signupInfo.lastName,
+					email: signupInfo.email,
+					password: validPassword
+				})
+				.expect(401)
+				.then(res => {
+					expect(res.body).to.eql(expectedError)
+				})
+		})
+
+		it('should throw a 403 error if token and body emails are different',
+		 async () => {
+			 const expectedError = {
+				 "error": {
+					 "message": 
+					 "Invalid request. Email in token and body do not match"
+				 },
+				 "status": "failed"
+			 }
+
+			 return fixtures.api()
+				 .post('/api/v1/auth/create-user')
+				 .set('Authorization', `Bearer ${inviteToken}`)
+				 .send({
+					 firstName: signupInfo.firstName,
+					 lastName: signupInfo.lastName,
+					 email: faker.internet.email(),
+					 password: validPassword
+				 })
+				 .expect(403)
+				 .then(res => {
+					 expect(res.body).to.eql(expectedError)
+				 })
+		 })
 		
 	})
 
