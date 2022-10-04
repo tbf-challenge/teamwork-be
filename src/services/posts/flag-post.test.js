@@ -43,7 +43,7 @@ describe('FLAGGED POSTS ', () => {
 				userId : user.id , 
 				type : 'gif'
 			})
-			const flaggedPost = await flagPost({ 
+			const postFlag = await flagPost({ 
 				userId: user.id, 
 				postId: newPost.id,
 				reason
@@ -52,7 +52,13 @@ describe('FLAGGED POSTS ', () => {
 				`SELECT * FROM post_flags
              WHERE "userId" = $1
              AND "postId" = $2`,[ user.id, newPost.id ])
-			expect(flaggedPost).to.eql(result.rows[0])	 
+			const expectedFlag = result.rows[0]
+			expect(postFlag).to.eql({
+				userId : expectedFlag.userId,
+				postId : expectedFlag.postId,
+				reason : expectedFlag.reason,
+				createdAt : expectedFlag.createdAt
+			})	 
 		})
 		
 

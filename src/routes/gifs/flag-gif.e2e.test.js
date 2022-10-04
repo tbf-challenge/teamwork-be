@@ -47,6 +47,26 @@ describe('POST /gifs/:id/flags', () => {
 				.expect(401)
 
 		})
+		it('should throw an error if Gif is already flagged', async () => {
+			const post = await fixtures.insertPost({
+				userId : user.id , 
+				type : 'gif'
+			}) 
+			await fixtures.insertPostFlag({
+				userId : user.id,
+				postId: post.id,
+				type: 'gif',
+				reason: data.reason
+			})
+			
+			return fixtures.api()
+				.post(`/api/v1/gifs/${post.id}/flags`)
+				.set('Authorization', `Bearer ${accessToken}`)
+				.send(data)
+				.expect(422)
+
+		})
+
 	})
 
 	describe('Success', () => {
@@ -81,11 +101,17 @@ describe('POST /gifs/:id/flags', () => {
 				.send(data)
 				.expect(201)
 				.then(res => {
-					expect(res.body.data.message).to.eql(
-						`GIF image successfully flagged`)
-					expect(res.body.data.userId).to.eql(user.id)
-					expect(res.body.data.gifId).to.eql(post.id)
-					expect(res.body.data.reason).to.eql(data.reason)
+					expect(res.body).to.eql(
+						{
+							status: 'success',
+							data: {
+							  message: 'GIF image successfully flagged',
+							  userId: user.id,
+							  gifId: post.id,
+							  reason: data.reason
+							}
+						  }
+					)
 				})
 			
 		})
