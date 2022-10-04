@@ -118,10 +118,22 @@ const fixtures = {
 	}, api(){
 		return request(app)
 	},
-	generateInviteToken (email){
-		const inviteToken = jwt.sign({ email }, config("TOKEN_SECRET"),
-			{expiresIn: '7d'})
-		return inviteToken
+
+	async insertPostFlag(overrides = {}){
+		const likeData = {
+			type : faker.helpers.arrayElement(['gif', 'post']),
+			reason : faker.random.words()
+
+		}
+		const newData = {...likeData, ...overrides}
+		const result = await db.query(
+			`INSERT INTO post_flags
+	 ("userId", "postId", reason)
+	  VALUES ($1 , $2, $3 ) 
+	  RETURNING *`, [
+				newData.userId, newData.postId, newData.reason]
+		)
+		return result.rows[0]
 	}
 }
 

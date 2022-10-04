@@ -9,6 +9,7 @@ const deletePost = require("./delete-post")
 const createComment = require("./create-comment")
 const likePost = require("./like-post")
 const unlikePost = require("./unlike-post")
+const flagPost = require("./flag-post")
 
 const uniqueErrorCode = '23505'
 
@@ -111,5 +112,6 @@ module.exports = {
 	assignTagToPost,
 	fetchPosts,
 	likePost,
-	unlikePost
+	unlikePost,
+	flagPost
 }
