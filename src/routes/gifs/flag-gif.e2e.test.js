@@ -58,12 +58,17 @@ describe('POST /gifs/:id/flags', () => {
 				type: 'gif',
 				reason: data.reason
 			})
-			
+		
 			return fixtures.api()
 				.post(`/api/v1/gifs/${post.id}/flags`)
 				.set('Authorization', `Bearer ${accessToken}`)
 				.send(data)
 				.expect(422)
+				.then(res => {
+					expect(res.body.status).eql('fail')
+					expect(res.body.error.message)
+						.eql(`Gif has already been flagged`)
+				})
 		})
 
 	})
