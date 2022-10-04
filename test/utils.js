@@ -117,8 +117,12 @@ const fixtures = {
 		return accessToken
 	}, api(){
 		return request(app)
+	},
+	generateInviteToken (email){
+		const inviteToken = jwt.sign({ email }, config("TOKEN_SECRET"),
+			{expiresIn: '7d'})
+		return inviteToken
 	}
-	
 }
 
 module.exports = {

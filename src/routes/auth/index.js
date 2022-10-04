@@ -1,9 +1,9 @@
 const express = require('express')
-const userSevice = require('../services/users')
-const validateSchema = require('../middleware/validateSchema')
-const isAuthenticated = require('../middleware/isAuthenticated')
-const isAdmin = require('../middleware/isAdmin')
-const { catchAsync , AppError} = require('../lib')
+const userSevice = require('../../services/users')
+const validateSchema = require('../../middleware/validateSchema')
+const isAuthenticated = require('../../middleware/isAuthenticated')
+const isAdmin = require('../../middleware/isAdmin')
+const { catchAsync , AppError} = require('../../lib')
 
 
 const {
@@ -13,9 +13,9 @@ const {
 	UserAlreadyExistsError,
 	InvalidResetEmail,
 	InvalidResetTokenError
-} = require("../services/errors")
+} = require("../../services/errors")
 
-const isValidInvite = require('../middleware/isValidInvite')
+const isValidInvite = require('../../middleware/isValidInvite')
 
 
 const {
@@ -24,7 +24,7 @@ const {
 	inviteUserSchema,
 	authTokenSchema,
 	updatePasswordSchema
-} = require('../schema')
+} = require('../../schema')
 
 const router = express.Router()
 const ERROR_MAP = {
@@ -97,12 +97,12 @@ router.post(
 
 
 		const userDetails = 
-		await userSevice.createNewUser([
+		await userSevice.createNewUser({
 			firstName,
 			lastName,
 			email,
 			password
-		])
+		})
 
 
 		return res.status(201).json({
