@@ -15,12 +15,62 @@ describe('POST /auth/create-user', () => {
 				email: faker.internet.email(),
 				password: faker.internet.password()
 			}
-			inviteToken = fixtures.generateInviteToken(signupInfo.email)
+			const data = {
+				email: signupInfo.email
+			}
+			inviteToken = fixtures.generateAccessToken(data)
 			await fixtures.insertUserInvite(
 				{email: signupInfo.email})
 		})
 
-		it('should throw an error if email is invalid', async () => {
+		it(`should return a 400 error if request body is absent`, async() => {
+			const expectedError = {
+				"error": {
+					"message": 
+				"firstName is required, lastName is required, email is required"
+				},
+				"status": "failed"
+			}
+
+			return fixtures.api()
+				.post('/api/v1/auth/create-user')
+				.expect(400, expectedError)
+		})
+		it(`should return a 400 error if firstName is absent`, async() => {
+			const expectedError = {
+				"error": {
+					"message": "firstName is required"
+				},
+				"status": "failed"
+			}
+
+			return fixtures.api()
+				.post('/api/v1/auth/create-user')
+				.send({
+					lastName: signupInfo.lastName,
+					email: signupInfo.email,
+					password: validPassword
+				})
+				.expect(400, expectedError)
+		})
+		it(`should return a 400 error if lastName is absent`, async() => {
+			const expectedError = {
+				"error": {
+					"message": "lastName is required"
+				},
+				"status": "failed"
+			}
+
+			return fixtures.api()
+				.post('/api/v1/auth/create-user')
+				.send({
+					firstName: signupInfo.firstName,
+					email: signupInfo.email,
+					password: validPassword
+				})
+				.expect(400, expectedError)
+		})
+		it('should return a 400 error if email is invalid', async () => {
 
 			const expectedError = {
 				"error": {
@@ -40,7 +90,7 @@ describe('POST /auth/create-user', () => {
 				.expect(400, expectedError)
 		})
 
-		it('should throw an error if password is invalid', async () => {
+		it('should return an error if password is invalid', async () => {
 			const expectedError = {
 				"error": {
 					"message":
@@ -62,7 +112,7 @@ describe('POST /auth/create-user', () => {
 				.expect(400, expectedError)
 		})
 
-		it('should throw a 401 error if token is not provided', async () => {
+		it('should return a 401 error if token is not provided', async () => {
 			const expectedError = {
 				"error": {
 					"message": "No token provided."
@@ -84,7 +134,7 @@ describe('POST /auth/create-user', () => {
 				})
 		})
 
-		it('should throw a 401 error if token is invalid', async () => {
+		it('should return a 401 error if token is invalid', async () => {
 			const expectedError = {
 				"error": {
 					"message": "Invalid token"
@@ -107,12 +157,13 @@ describe('POST /auth/create-user', () => {
 				})
 		})
 
-		it('should throw a 403 error if token and body emails are different',
+		it(`should return a 403 error 
+		if request body email is not the same as the email in the token`, 
 		 async () => {
 			 const expectedError = {
 				 "error": {
 					 "message": 
-					 "Invalid request. Email in token and body do not match"
+					 "Email in token and request body do not match"
 				 },
 				 "status": "failed"
 			 }
@@ -145,7 +196,10 @@ describe('POST /auth/create-user', () => {
 				email: faker.internet.email(),
 				password: faker.internet.password()
 			}
-			inviteToken = fixtures.generateInviteToken(signupInfo.email)
+			const data = {
+				email: signupInfo.email
+			}
+			inviteToken = fixtures.generateAccessToken(data)
 			await fixtures.insertUserInvite(
 				{email: signupInfo.email})
 

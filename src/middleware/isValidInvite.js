@@ -34,7 +34,7 @@ const verify = (req, res, next) => {
 				status: 'failed',
 				error:{
 					message: 
-					'Invalid request. Email in token and body do not match'
+					"Email in token and request body do not match"
 				}
 			})
         
