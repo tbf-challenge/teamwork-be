@@ -97,12 +97,12 @@ router.post(
 
 
 		const userDetails = 
-		await userSevice.createNewUser([
+		await userSevice.createNewUser({
 			firstName,
 			lastName,
 			email,
 			password
-		])
+		})
 
 
 		return res.status(201).json({
