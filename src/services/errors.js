@@ -58,6 +58,10 @@ module.exports= {
 	GifHasAlreadyBeenFlaggedError : {
 		name : "GifHasAlreadyBeenFlaggedError",
 		message : "Gif has already been flagged"
+	},
+	ArticleHasAlreadyBeenFlaggedError : {
+		name : "ArticleHasAlreadyBeenFlaggedError",
+		message : "Article has already been flagged"
 	}
 
 }

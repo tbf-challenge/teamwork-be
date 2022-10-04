@@ -1,12 +1,13 @@
 const db = require("../../db")
 const {
-	GifHasAlreadyBeenFlaggedError
+	GifHasAlreadyBeenFlaggedError,
+	ArticleHasAlreadyBeenFlaggedError
 } = require("../errors")
 const customError = require("../../lib/custom-error")
 
 const uniqueErrorCode = '23505'
 
-const flagPost = async({userId, postId, reason}) => {
+const flagPost = async({userId, postId, reason, type}) => {
 	const result = await db.query(
 		`INSERT INTO post_flags
 		 ("userId", "postId", reason)
@@ -15,7 +16,10 @@ const flagPost = async({userId, postId, reason}) => {
 		[userId, postId, reason]
 	).catch(error => {
 		if(error.code === uniqueErrorCode ){
-			throw customError(GifHasAlreadyBeenFlaggedError)
+			throw customError(
+				type === 'gif' ?
+					GifHasAlreadyBeenFlaggedError
+					: ArticleHasAlreadyBeenFlaggedError )
 		}
 		else{
 			throw error
