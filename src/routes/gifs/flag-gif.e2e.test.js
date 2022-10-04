@@ -64,7 +64,6 @@ describe('POST /gifs/:id/flags', () => {
 				.set('Authorization', `Bearer ${accessToken}`)
 				.send(data)
 				.expect(422)
-
 		})
 
 	})

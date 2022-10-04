@@ -43,13 +43,11 @@ module.exports = (err, req, res, next) => {
 	error.statusCode = err.statusCode || 500
 	error.status = err.status || 'Internal server error'
 
-
-	if (process.env.NODE_ENV === 'development') {
-		sendDevError(error, res)
-	} else if (process.env.NODE_ENV === 'production') {
+	if (process.env.NODE_ENV === 'production') {
 		if (error.code === errorCodeForDuplicateField) {
 			error = handleErrorForDuplicateFields(error)
 		}
-		sendProdError(error, res)
+		return sendProdError(error, res)
 	}
+	return sendDevError(error,res)
 }
