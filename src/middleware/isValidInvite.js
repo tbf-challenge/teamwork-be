@@ -1,42 +1,23 @@
 const jwt = require('jsonwebtoken')
 const config = require('../config')
+const { AppError } = require('../lib')
 
 
 const verify = (req, res, next) => {
 	const authHeader = req.headers.authorization
 
-	if (!authHeader)  {
-
-		return res.status(401).json({
-			status: 'failed',
-			error:{
-				message: 'No token provided.'
-			}
-		})
-	}
+	if (!authHeader)  return next(new AppError('No token provided', 401))
 
 	const token = authHeader.split(' ')[1]
 
 	return jwt.verify(token, config('TOKEN_SECRET'), (err, user) => {
 
-		if (err) {
-			return res.status(401).json({
-				status: 'failed',
-				error:{
-					message: 'Invalid token'
-				}
-			})
-		}
+		if (err) return next(new AppError('Invalid token', 401))
 
         
 		if (req.body.email !== user.email) 
-			return res.status(403).json({
-				status: 'failed',
-				error:{
-					message: 
-					"Email in token and request body do not match"
-				}
-			})
+			return next(new AppError(
+				'Email in token and request body do not match', 403))
         
 		req.user = user
 

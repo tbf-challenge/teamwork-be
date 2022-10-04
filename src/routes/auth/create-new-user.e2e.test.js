@@ -112,15 +112,8 @@ describe('POST /auth/create-user', () => {
 				.expect(400, expectedError)
 		})
 
-		it('should return a 401 error if token is not provided', async () => {
-			const expectedError = {
-				"error": {
-					"message": "No token provided."
-				},
-				"status": "failed"
-			}
-
-			return fixtures.api()
+		it('should return a 401 error if token is not provided', async () => 
+			fixtures.api()
 				.post('/api/v1/auth/create-user')
 				.send({
 					firstName: signupInfo.firstName,
@@ -130,19 +123,13 @@ describe('POST /auth/create-user', () => {
 				})
 				.expect(401)
 				.then(res => {
-					expect(res.body).to.eql(expectedError)
+					expect(res.body.status).to.eql('fail')
+					expect(res.body.message).to.eql("No token provided")
 				})
-		})
+		)
 
-		it('should return a 401 error if token is invalid', async () => {
-			const expectedError = {
-				"error": {
-					"message": "Invalid token"
-				},
-				"status": "failed"
-			}
-
-			return fixtures.api()
+		it('should return a 401 error if token is invalid', async () => 
+			fixtures.api()
 				.post('/api/v1/auth/create-user')
 				.set('Authorization', `Bearer ${faker.datatype.uuid()}`)
 				.send({
@@ -153,22 +140,15 @@ describe('POST /auth/create-user', () => {
 				})
 				.expect(401)
 				.then(res => {
-					expect(res.body).to.eql(expectedError)
+					expect(res.body.status).to.eql('fail')
+					expect(res.body.message).to.eql('Invalid token')
 				})
-		})
+		)
 
 		it(`should return a 403 error 
 		if request body email is not the same as the email in the token`, 
-		 async () => {
-			 const expectedError = {
-				 "error": {
-					 "message": 
-					 "Email in token and request body do not match"
-				 },
-				 "status": "failed"
-			 }
-
-			 return fixtures.api()
+		 async () => 
+		 fixtures.api()
 				 .post('/api/v1/auth/create-user')
 				 .set('Authorization', `Bearer ${inviteToken}`)
 				 .send({
@@ -179,9 +159,11 @@ describe('POST /auth/create-user', () => {
 				 })
 				 .expect(403)
 				 .then(res => {
-					 expect(res.body).to.eql(expectedError)
+					 expect(res.body.status).to.eql('fail')
+					 expect(res.body.message)
+					 .to.eql("Email in token and request body do not match")
 				 })
-		 })
+		 )
 		
 	})
 
