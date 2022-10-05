@@ -10,6 +10,7 @@ const createComment = require("./create-comment")
 const likePost = require("./like-post")
 const unlikePost = require("./unlike-post")
 const flagPost = require("./flag-post")
+const unflagPost = require("./unflag-post")
 
 const uniqueErrorCode = '23505'
 
@@ -113,5 +114,6 @@ module.exports = {
 	fetchPosts,
 	likePost,
 	unlikePost,
-	flagPost
+	flagPost,
+	unflagPost
 }
