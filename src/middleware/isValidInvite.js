@@ -17,7 +17,7 @@ const verify = (req, res, next) => {
         
 		if (req.body.email !== user.email) 
 			return next(new AppError(
-				'Email in token and request body do not match', 403))
+				'Invalid request email', 403))
         
 		req.user = user
 

@@ -161,7 +161,7 @@ describe('POST /auth/create-user', () => {
 				 .then(res => {
 					 expect(res.body.status).to.eql('fail')
 					 expect(res.body.message)
-					 .to.eql("Email in token and request body do not match")
+					 .to.eql("Invalid request email")
 				 })
 		 )
 		
