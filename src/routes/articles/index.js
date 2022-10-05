@@ -6,7 +6,8 @@ const {
 	ArticleDoesNotExistForCommentError,
 	ArticleDoesNotExistError,
 	TagAlreadyAssignedToPostError,
-	ArticleHasAlreadyBeenLikedError
+	ArticleHasAlreadyBeenLikedError,
+	ArticleHasAlreadyBeenFlaggedError
 } = require("../../services/errors")
 const validateSchema = require('../../middleware/validateSchema')
 
@@ -20,7 +21,8 @@ const {
 	 deleteArticleTagsSchema,
 	 queryArticleTagsSchema,
 	 likePostSchema,
-	 unlikePostSchema
+	 unlikePostSchema,
+	 flagPostSchema
 } = require('../../schema')
 const { catchAsync} = require('../../lib')
 
@@ -30,7 +32,8 @@ const ERROR_MAP = {
 	[ArticleDoesNotExistForCommentError.name] : 422 ,
 	[ArticleDoesNotExistError.name] : 404,
 	[TagAlreadyAssignedToPostError.name] : 422,
-	[ArticleHasAlreadyBeenLikedError.name] : 422
+	[ArticleHasAlreadyBeenLikedError.name] : 422,
+	[ArticleHasAlreadyBeenFlaggedError.name] : 422
 	
 }
 const {transformArticleResponse} = require('../common/transformers')
@@ -257,6 +260,26 @@ const unlikeArticle = catchAsync( async(req, res) => {
 		}
 	})
 })
+
+const flagArticle = catchAsync( async(req, res) => {
+	const {id} = req.params
+	const { userId, reason } = req.body
+	const flaggedArticle = await postService.flagPost({
+		userId,
+		postId : id,
+		reason,
+		type : 'article'
+		 })
+	res.status(201).json({
+		status: 'success',
+		data: {
+			message: 'Article successfully flagged',
+			userId : flaggedArticle.userId,
+			articleId : flaggedArticle.postId,
+			reason : flaggedArticle.reason
+		}
+	})
+})
 // ROUTES
 router.use(isAuthenticated())
 router
@@ -277,6 +300,9 @@ router
 router
 	.route('/:id/likes')
 	.post(validateSchema(likePostSchema), likeArticle )
+router
+	.route('/:id/flags')
+	.post(validateSchema(flagPostSchema), flagArticle )
 router
 	.route('/:articleId/tags')
 	.post(validateSchema(assignTagToArticleSchema), assignTagToArticle)

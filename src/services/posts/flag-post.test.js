@@ -63,5 +63,56 @@ describe('FLAGGED POSTS ', () => {
 		
 
 	})
+	describe('Article', () => {
+		
+		let post
+		before(async ()=>{
+			post = await fixtures.insertPost({
+				userId : user.id , 
+				type : 'article'
+			})
+		})
+		it('should throw an error if Article is already flagged', async () => {
+			await fixtures.insertPostFlag({
+				userId : user.id,
+				postId: post.id,
+				type: 'article',
+				reason
+			})
+			return expect(flagPost({
+				userId: user.id, 
+				postId: post.id,
+				reason,
+				type: 'article'}))
+				.to.be.rejectedWith('Article has already been flagged')
+
+		})
+
+
+		it('should record flags on an article', async () => {
+			const newPost = await fixtures.insertPost({
+				userId : user.id , 
+				type : 'article'
+			})
+			const postFlag = await flagPost({ 
+				userId: user.id, 
+				postId: newPost.id,
+				reason
+		 })
+			const result = await db.query(
+				`SELECT * FROM post_flags
+             WHERE "userId" = $1
+             AND "postId" = $2`,[ user.id, newPost.id ])
+			const expectedFlag = result.rows[0]
+			expect(postFlag).to.eql({
+				userId : expectedFlag.userId,
+				postId : expectedFlag.postId,
+				reason : expectedFlag.reason,
+				createdAt : expectedFlag.createdAt
+			})	 
+		})
+		
+
+	})
 	
 })
