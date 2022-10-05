@@ -1066,6 +1066,48 @@ paths:
                         example: this gif is inappropriate
       security:
         - access_token: []
+  /gifs/{id}/flags{userId}:
+    delete:
+      tags:
+        - gif
+      operationId: Unflag a gif
+      summary: Unflag a gif
+      description: Unflag a gif
+      parameters:
+      - in : path
+        name : id
+        schema:
+          type: integer
+        required: true
+        description : Numeric ID of the gif
+      - in : path
+        name : userId
+        schema:
+          type: integer
+        required: true
+        description : User id
+      responses:
+        '200':
+          description: Successfully unflagging a gif
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: successful unflagging a gif
+                    example: success
+                  data:
+                    type: object
+                    description: Data for unflagging a gif
+                    properties:
+                      message:
+                        type: string
+                        description: Message for unflagging a gif
+                        example: Gif image successfully unflagged
+      security:
+        - access_token: []
   /feed:
     get:
       tags:
