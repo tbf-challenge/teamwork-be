@@ -21,7 +21,7 @@ const {
 	 deleteArticleTagsSchema,
 	 queryArticleTagsSchema,
 	 likePostSchema,
-	 unlikePostSchema,
+	 unlikeOrUnflagPostSchema,
 	 flagPostSchema
 } = require('../../schema')
 const { catchAsync} = require('../../lib')
@@ -311,7 +311,7 @@ router
 	.delete(validateSchema(deleteArticleTagsSchema), deleteArticleTags)
 router
 	.route('/:id/likes/:userId')
-	.delete(validateSchema(unlikePostSchema), unlikeArticle)
+	.delete(validateSchema(unlikeOrUnflagPostSchema), unlikeArticle)
 router
 	.use((err, req, res, next)=> {
 		// eslint-disable-next-line no-param-reassign
