@@ -118,7 +118,6 @@ const fixtures = {
 	}, api(){
 		return request(app)
 	},
-	
 
 	async insertPostFlag(overrides = {}){
 		const likeData = {
