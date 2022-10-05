@@ -6,7 +6,7 @@ const { AppError } = require('../lib')
 const verify = (req, res, next) => {
 	const authHeader = req.headers.authorization
 
-	if (!authHeader)  return next(new AppError('No token provided', 401))
+	if (!authHeader) return next(new AppError('No token provided', 401))
 
 	const token = authHeader.split(' ')[1]
 
@@ -16,8 +16,7 @@ const verify = (req, res, next) => {
 
         
 		if (req.body.email !== user.email) 
-			return next(new AppError(
-				'Invalid request email', 403))
+			return next(new AppError('Invalid request email', 403))
         
 		req.user = user
 
