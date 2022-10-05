@@ -122,21 +122,79 @@ paths:
                         type: string
                         description: message
                         example: User account successfully created
-                      token:
+                      accessToken:
                         type: string
-                        description: user token
+                        description: access token
+                        example: eyajhjdla2jkqh489q83hquirpq
+                      refreshToken:
+                        type: string
+                        description: refresh token
                         example: eyajhjdla2jkqh489q83hquirpq
                       userId:
                         type: integer
                         description: user id
                         example: 10
-  /auth/invites:
+  /auth/invites/{token}:
     get:
       tags: 
         - user
       operationId: validityOfAccessToken
       summary: Checking the validity of access token of a potential user
       description: Checking the validity of the access token for invites before being allowed to sign up
+      parameters:
+      - in : path
+        name : token
+        schema:
+          type: string
+        required: true
+        description : token generated for sending invites
+      responses:
+        '200':
+          description: A successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: success
+                    example: success
+                  data:
+                    type: object
+                    description: data
+                    properties:
+                      message: 
+                        type: string
+                        description: message
+                        example: success
+                      status:
+                        type: string
+                        description: user status
+                        example: active
+                      email:
+                        type: string
+                        description: email
+                        example: example@gmail.com
+                      
+  /auth/invite-user:
+    post:
+      tags: 
+        - user
+      operationId: inviteUser
+      summary: Inviting a user to sing up
+      description: Inviting a user sign up
+      requestBody:
+        description: Invite a user to sign up for Teamwork
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: email
+                  example: randomuser@gmail.com
       responses:
         '200':
           description: A successful Operation
@@ -165,6 +223,10 @@ paths:
                         type: string
                         description: email
                         example: example@gmail.com
+                      status:
+                        type: string
+                        description: user status
+                        example: pending
   /auth/password:
     post:
       tags: 
@@ -249,6 +311,64 @@ paths:
                         type: string
                         description: message
                         example: Password has been reset
+  /auth/{token}:
+    post:
+      tags: 
+        - user
+      operationId: generateTokens
+      summary: Generate new refresh and access tokens
+      description: Generate new refresh and access tokens 
+      requestBody:
+        description: Generate new refresh and access tokens
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: user email
+                  example: example@gmail.com
+                refreshToken:
+                  type: string
+                  description: refresh token
+                  example: eteteNDAkDkS57S89adhJSd
+      responses:
+        '200':
+          description: A successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: success
+                    example: success
+                  data:
+                    type: object
+                    description: data
+                    properties:
+                      message: 
+                        type: string
+                        description: message
+                        example:  success
+                      userId:
+                        type: integer
+                        description: user id
+                        example: 10
+                      email:
+                        type: string
+                        description: email
+                        example: example@gmail.com
+                      accessToken:
+                        type: string
+                        description: access token
+                        example: GDKSjdsfjsfks*(&5sdjhd)
+                      refreshToken:
+                        type: string
+                        description: refresh token
+                        example: sfsdJGSkhfshfs(8732e)
   /articles:
     post:
       tags:
