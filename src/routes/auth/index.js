@@ -41,6 +41,18 @@ const transformUserResponse = (userDetails) => ({
 	userId : userDetails.userId,
 	refreshToken : userDetails.refreshToken
 })
+const transformUserInformationResponse = (user) => ({
+	firstName: user.firstName,
+	lastName: user.lastName,
+	email: user.email,
+	gender: user.gender,
+	role: user.role,
+	department: user.department,
+	address: user.department,
+	jobRole: user.jobRole,
+	createdAt : user.createdAt
+
+})
 
 
 router.post(
@@ -51,12 +63,12 @@ router.post(
 
 		const userDetails = await userSevice
 			.signInUserByEmail(email, password)
-
 		return res.json({
 			status: 'success',
-			data: transformUserResponse(userDetails)
-			
-
+			data:{
+			   ...transformUserResponse(userDetails),
+				...transformUserInformationResponse(userDetails.user)
+			}
 		})
 	})
 )
