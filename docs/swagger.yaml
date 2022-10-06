@@ -788,6 +788,48 @@ paths:
                         example: this article is inappropriate
       security:
         - access_token: []
+  /articles/{id}/flags{userId}:
+    delete:
+      tags:
+        - article
+      operationId: Unflag an article
+      summary: Unflag an article
+      description: Unflag an article
+      parameters:
+      - in : path
+        name : id
+        schema:
+          type: integer
+        required: true
+        description : Numeric ID of the article
+      - in : path
+        name : userId
+        schema:
+          type: integer
+        required: true
+        description : User id
+      responses:
+        '200':
+          description: Successfully unflagging an article
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: successful unflagging an article
+                    example: success
+                  data:
+                    type: object
+                    description: Data for unflagging an article
+                    properties:
+                      message:
+                        type: string
+                        description: Message for unflagging an article
+                        example: Article successfully unflagged
+      security:
+        - access_token: []
   /gifs:
     post:
       tags:
