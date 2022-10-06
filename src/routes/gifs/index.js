@@ -16,7 +16,8 @@ const {
 	deletePostSchema,
 	createCommentSchema,
 	likePostSchema,
-	unlikeOrUnflagPostSchema,
+	unlikePostSchema,
+	unflagPostSchema,
 	flagPostSchema
 	
 } = require('../../schema')
@@ -184,7 +185,7 @@ router
 	.post( validateSchema(createGifSchema), createGif)
 router
 	.route('/:id/likes/:userId')
-	.delete(validateSchema(unlikeOrUnflagPostSchema), unlikeGif )
+	.delete(validateSchema(unlikePostSchema), unlikeGif )
 router
 	.route('/:id/likes')
 	.post(validateSchema(likePostSchema), likeGif )
@@ -200,7 +201,7 @@ router
 	.post(validateSchema(createCommentSchema), createComment)
 router
 	.route('/:id/flags/:userId')
-	.delete(validateSchema(unlikeOrUnflagPostSchema), unflagGif )
+	.delete(validateSchema(unflagPostSchema), unflagGif )
 
 router
 	.use((err, req, res, next)=> {
