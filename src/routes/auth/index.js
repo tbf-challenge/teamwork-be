@@ -51,12 +51,22 @@ router.post(
 
 		const userDetails = await userSevice
 			.signInUserByEmail(email, password)
-
 		return res.json({
 			status: 'success',
-			data: transformUserResponse(userDetails)
-			
-
+			data:{
+			   ...transformUserResponse(userDetails),
+			   refreshToken: userDetails.user.refreshToken,
+			   userId : userDetails.user.id,
+			   firstName: userDetails.user.firstName,
+			   lastName: userDetails.user.lastName,
+			   email: userDetails.user.email,
+			   gender: userDetails.user.gender,
+			   role: userDetails.user.role,
+			   department: userDetails.user.department,
+			   address: userDetails.user.department,
+			   jobRole: userDetails.user.jobRole,
+			   createdAt : userDetails.user.createdAt
+			}
 		})
 	})
 )

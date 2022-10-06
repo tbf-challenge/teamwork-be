@@ -134,6 +134,44 @@ paths:
                         type: integer
                         description: user id
                         example: 10
+                      firstName:
+                        type: string
+                        description: user first name
+                        example: Jones
+                      lastName:
+                        type: string
+                        description: user last name
+                        example: Doe
+                      email:
+                        type: string
+                        description: user email
+                        format: email
+                        example: jones@gmail.com
+                      gender:
+                        type: string
+                        description: gender of user
+                        example: male
+                      role:
+                        type: string
+                        description: role of user
+                        format: admin/user
+                        example: user
+                      department:
+                        type: string
+                        description: department of user
+                        example: sales
+                      address:
+                        type: string
+                        description: address of user
+                        example: sales
+                      jobRole:
+                        type: string
+                        description: job role of user
+                        example: sales
+                      createdAt:
+                        type: string
+                        description: time a user was created
+                        example: "2022-10-06T12:50:11.970Z"
   /auth/invites/{token}:
     get:
       tags: 
@@ -311,7 +349,7 @@ paths:
                         type: string
                         description: message
                         example: Password has been reset
-  /auth/{token}:
+  /auth/token:
     post:
       tags: 
         - user
