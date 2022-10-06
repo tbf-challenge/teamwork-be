@@ -17,10 +17,9 @@ const flagPost = async({userId, postId, reason, type}) => {
 	).catch(error => {
 		if(error.code === uniqueErrorCode ){
 			throw customError(
-				type === 'article' ?
-					ArticleHasAlreadyBeenFlaggedError
-					: GifHasAlreadyBeenFlaggedError
-					 )
+				type === 'gif' ?
+					GifHasAlreadyBeenFlaggedError
+					: ArticleHasAlreadyBeenFlaggedError )
 		}
 		else{
 			throw error
