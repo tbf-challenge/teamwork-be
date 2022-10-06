@@ -248,6 +248,14 @@ const flagPostSchema = Joi.object({
 	}
 })
 
+const unflagPostSchema = Joi.object({
+	params: {
+		id :Joi.number()
+			.required(),
+		userId: Joi.number()
+			.required()
+	}
+})
 module.exports = {
 	authSchema,
 	signinSchema,
@@ -268,5 +276,6 @@ module.exports = {
 	updatePasswordSchema,
 	likePostSchema,
 	unlikePostSchema,
-	flagPostSchema
+	flagPostSchema,
+	unflagPostSchema
 }

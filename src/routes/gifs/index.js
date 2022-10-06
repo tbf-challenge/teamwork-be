@@ -17,6 +17,7 @@ const {
 	createCommentSchema,
 	likePostSchema,
 	unlikePostSchema,
+	unflagPostSchema,
 	flagPostSchema
 	
 } = require('../../schema')
@@ -163,6 +164,21 @@ const flagGif = catchAsync( async(req, res) => {
 		}
 	})
 })
+
+const unflagGif = catchAsync( async(req, res) => {
+	const {id , userId} = req.params
+	await postService.unflagPost({
+		userId,
+		postId : id,
+		type : 'gif'
+		 })
+	res.status(200).json({
+		status: 'success',
+		data: {
+			message: 'GIF image successfully unflagged'
+		}
+	})
+})
 router.use(isAuthenticated())
 router
 	.route('/')
@@ -183,6 +199,9 @@ router
 router
 	.route('/:id/comment')
 	.post(validateSchema(createCommentSchema), createComment)
+router
+	.route('/:id/flags/:userId')
+	.delete(validateSchema(unflagPostSchema), unflagGif )
 
 router
 	.use((err, req, res, next)=> {
