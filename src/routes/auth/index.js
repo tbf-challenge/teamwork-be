@@ -41,18 +41,6 @@ const transformUserResponse = (userDetails) => ({
 	userId : userDetails.userId,
 	refreshToken : userDetails.refreshToken
 })
-const transformUserInformationResponse = (user) => ({
-	firstName: user.firstName,
-	lastName: user.lastName,
-	email: user.email,
-	gender: user.gender,
-	role: user.role,
-	department: user.department,
-	address: user.department,
-	jobRole: user.jobRole,
-	createdAt : user.createdAt
-
-})
 
 
 router.post(
@@ -67,7 +55,15 @@ router.post(
 			status: 'success',
 			data:{
 			   ...transformUserResponse(userDetails),
-				...transformUserInformationResponse(userDetails.user)
+			   firstName: userDetails.user.firstName,
+			   lastName: userDetails.user.lastName,
+			   email: userDetails.user.email,
+			   gender: userDetails.user.gender,
+			   role: userDetails.user.role,
+			   department: userDetails.user.department,
+			   address: userDetails.user.department,
+			   jobRole: userDetails.user.jobRole,
+			   createdAt : userDetails.user.createdAt
 			}
 		})
 	})
