@@ -45,12 +45,10 @@ const getUserByEmail = async (email) => {
 
 const signInUserByEmail = async (email, password) => {
 	const user = await getUserByEmail(email)
-
 	const isPasswordSame = await verifyPassword(password, user.passwordHash)
 	if (!isPasswordSame) {
 		throw new AppError(invalidEmailAndPassword, 401)
 	}
-	
 	const body = { id: user.id, email: user.email }
 	const accessToken =  generateAccessToken({
 		data: {user : body}, 
@@ -60,7 +58,7 @@ const signInUserByEmail = async (email, password) => {
 	const refreshToken = await generateRefreshToken()
 	await updateRefreshToken(refreshToken , user.id)
 
-	return { accessToken, refreshToken, userId: user.id }
+	return { accessToken,user }
 }
 
 /**
