@@ -21,7 +21,8 @@ const {
 	 queryArticleTagsSchema,
 	 likePostSchema,
 	 unlikePostSchema,
-	 flagPostSchema
+	 flagPostSchema,
+	 unflagPostSchema
 } = require('../../schema')
 const { catchAsync, AppError} = require('../../lib')
 
@@ -247,6 +248,21 @@ const flagArticle = catchAsync( async(req, res) => {
 		}
 	})
 })
+
+const unflagArticle = catchAsync( async(req, res) => {
+	const {id , userId} = req.params
+	await postService.unflagPost({
+		userId,
+		postId : id,
+		type : 'article'
+		 })
+	res.status(200).json({
+		status: 'success',
+		data: {
+			message: 'Article successfully unflagged'
+		}
+	})
+})
 // ROUTES
 router.use(isAuthenticated())
 router
@@ -279,6 +295,9 @@ router
 router
 	.route('/:id/likes/:userId')
 	.delete(validateSchema(unlikePostSchema), unlikeArticle)
+router
+	.route('/:id/flags/:userId')
+	.delete(validateSchema(unflagPostSchema), unflagArticle )
 router
 	.use((err, req, res, next)=> {
 		const error = err
