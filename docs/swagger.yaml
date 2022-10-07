@@ -826,7 +826,7 @@ paths:
                         example: this article is inappropriate
       security:
         - access_token: []
-  /articles/{id}/flags{userId}:
+  /articles/{id}/flags/{userId}:
     delete:
       tags:
         - article
