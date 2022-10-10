@@ -511,7 +511,7 @@ paths:
         required: true
         description : Numeric ID of the article to get
       requestBody:
-        description: Edit a new article by article userId
+        description: Edit a new article by article id
         content:
           application/json:
             schema:
@@ -569,7 +569,7 @@ paths:
         required: true
         description : Numeric ID of the article to get
       responses:
-        '204':
+        '200':
           description: A Successful Operation
           content:
             application/json:
@@ -605,7 +605,7 @@ paths:
         description : Numeric ID of the article to get
       responses:
         '200':
-          description: A successfully Operation
+          description: A successful Operation
           content:
             application/json:
               schema:
@@ -1636,7 +1636,7 @@ paths:
                   description: Content of the tag
                   example: How to date responsibly
       responses:
-        '201':
+        '200':
           description: A Successful Operation
           content:
             application/json:
