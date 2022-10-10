@@ -289,7 +289,9 @@ const updateUserSchema = Joi.object({
 			.alphanum()
 			.min(3)
 			.max(100),
-		address: Joi.string()
+		address: Joi.string(),
+		profilePictureUrl: Joi.string()
+			.uri()
 	}
 })
 module.exports = {

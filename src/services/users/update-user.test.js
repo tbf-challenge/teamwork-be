@@ -18,7 +18,8 @@ describe('Update User', () => {
 			gender: faker.name.gender(),
 			jobRole: faker.name.jobTitle(),
 			department: faker.name.jobArea(),
-			address: faker.address.streetAddress()
+			address: faker.address.streetAddress(),
+			profilePictureUrl: faker.image.imageUrl()
 		}
 	})
 
@@ -37,10 +38,12 @@ describe('Update User', () => {
 	it('should update user', async () => {
 		const { id } = user
 		const { firstName, lastName, email, 
-			gender, jobRole, department, address } = updatedInfo
+			gender, jobRole, department, address, 
+			profilePictureUrl } = updatedInfo
 		const newUpdatedUser = await updateUser(
 			{ id, firstName, lastName, email, 
-				gender, jobRole, department, address })
+				gender, jobRole, department, address, 
+				profilePictureUrl })
 
 		const { rows } = await db.query(
 			`SELECT * FROM users
@@ -57,7 +60,8 @@ describe('Update User', () => {
 			jobRole: updatedUser.jobRole,
 			department: updatedUser.department,
 			address: updatedUser.address,
-			refreshToken: updatedUser.refreshToken
+			refreshToken: updatedUser.refreshToken,
+			profilePictureUrl: updatedUser.profilePictureUrl
 		})
 
 	})

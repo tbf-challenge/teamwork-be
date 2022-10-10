@@ -36,7 +36,8 @@ const updateUser = catchAsync(async (req, res ) => {
 		gender,
 		jobRole,
 		department,
-		address
+		address,
+		profilePictureUrl
 	} = req.body
 
 	const { id } = req.params
@@ -49,7 +50,8 @@ const updateUser = catchAsync(async (req, res ) => {
 		gender,
 		jobRole,
 		department,
-		address
+		address, 
+		profilePictureUrl
 	})
 
 	res.status(200).json({

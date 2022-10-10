@@ -152,6 +152,26 @@ describe('PATCH /users/:id', () => {
 				.expect(400, expectedError)
 		})
 
+		it('should return 400 if profilePictureUrl is not a valid url',
+		 async () => {
+				const expectedError = {
+					"error": {
+						"message": "profilePictureUrl must be a valid uri"
+					},
+					"status": "failed"
+				}
+				return fixtures.api()
+					.patch(`/api/v1/users/${user.id}`)
+					.set('Authorization', `Bearer ${accessToken}`)
+					.send({
+						firstName: user.firstName,
+						lastName: user.lastName,
+						email: user.email,
+						profilePictureUrl: "inavlid-profile-picture-url"
+					})
+					.expect(400, expectedError)
+			})
+
 		it('should return 404 if user is not found', async () => 
 			
 			fixtures.api()

@@ -11,14 +11,18 @@ const updateUser = async ({
 	gender,
 	jobRole,
 	department,
-	address
+	address, 
+	profilePictureUrl
 }) => {
 	const { rows } = await db.query(
 		`UPDATE users SET "firstName" = $1, "lastName" = $2, 
         "email" = $3, "gender" = $4, "jobRole" = $5, "department" = $6,
-        "address" = $7 WHERE id = $8 RETURNING id, "firstName", "lastName", 
-        "email", "gender", "jobRole", "department", "address", "refreshToken"`,
-		[firstName, lastName, email, gender, jobRole, department, address, id]
+        "address" = $7, "profilePictureUrl" = $8 WHERE id = $9 
+		RETURNING id, "firstName", "lastName", 
+        "email", "gender", "jobRole", "department", "address", "refreshToken",
+			"profilePictureUrl"`,
+		[firstName, lastName, email, gender, jobRole, 
+			department, address, profilePictureUrl, id]
 	)
 	const user = rows[0]
 	if(!user) {

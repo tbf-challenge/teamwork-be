@@ -1449,6 +1449,10 @@ paths:
                   type: string
                   description: department of the user
                   example: Software Development
+                profilePictureUrl:
+                  type: string
+                  description: profile picture url of the user
+                  example: https://imgbb.com/
 components:
   schemas:
     User:
