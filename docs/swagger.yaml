@@ -13,6 +13,8 @@ tags:
     description: Operations about users
   - name: article
     description: Access to article
+  - name: tag
+    description: Operations about tags
 paths:
   /auth/create-user:
     post:
@@ -45,6 +47,10 @@ paths:
                   type: string
                   description: user last name
                   example: Doe
+                profilePictureUrl:
+                  type: string
+                  description: user image
+                  example: https://imgbb.com/
       responses:
         '201':
           description: A successful operation
@@ -77,6 +83,14 @@ paths:
                         type: integer
                         description: user id
                         example: 10
+                      profilePictureUrl:
+                        type: string
+                        description: user image
+                        example: https://imgbb.com/
+                      createdAt:
+                        type: string
+                        description: time a user was created
+                        example: "2022-10-06T12:50:11.970Z"
       security:
         - access_token: []                  
   /auth/signin:
@@ -172,6 +186,10 @@ paths:
                         type: string
                         description: time a user was created
                         example: "2022-10-06T12:50:11.970Z"
+                      profilePictureUrl:
+                        type: string
+                        description: user image
+                        example: https://imgbb.com/
   /auth/invites/{token}:
     get:
       tags: 
@@ -1716,6 +1734,42 @@ paths:
                 type: array
                 items: 
                   type: string
+      security:
+        - access_token: []
+  /tags/{tagId}:
+    delete:
+      tags:
+        - tag
+      operationId: Delete a tag
+      summary: Delete a tag
+      description: Delete a tag
+      parameters:
+      - in : path
+        name : tagId
+        schema:
+          type: integer
+        required: true
+        description : Numeric ID of the tag to get
+      responses:
+        '200':
+          description: Successfully deleting a tag
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: successful deleting a tag
+                    example: success
+                  data:
+                    type: object
+                    description: Data for deleting a tag
+                    properties:
+                      message:
+                        type: string
+                        description: Message for deleting a tag
+                        example: Tag has been successfully deleted
       security:
         - access_token: []
 components:
