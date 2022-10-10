@@ -45,6 +45,10 @@ paths:
                   type: string
                   description: user last name
                   example: Doe
+                profilePictureUrl:
+                  type: string
+                  description: user image
+                  example: https://imgbb.com/
       responses:
         '201':
           description: A successful operation
@@ -77,6 +81,14 @@ paths:
                         type: integer
                         description: user id
                         example: 10
+                      profilePictureUrl:
+                        type: string
+                        description: user image
+                        example: https://imgbb.com/
+                      createdAt:
+                        type: string
+                        description: time a user was created
+                        example: "2022-10-06T12:50:11.970Z"
       security:
         - access_token: []                  
   /auth/signin:
@@ -172,6 +184,10 @@ paths:
                         type: string
                         description: time a user was created
                         example: "2022-10-06T12:50:11.970Z"
+                      profilePictureUrl:
+                        type: string
+                        description: user image
+                        example: https://imgbb.com/
   /auth/invites/{token}:
     get:
       tags: 
