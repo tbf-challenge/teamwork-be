@@ -37,6 +37,7 @@ const createNewUser = async (user) => {
 		firstName,
 		lastName,
 		email,
+		profilePictureUrl,
 		password
 	} = user
 	
@@ -46,13 +47,19 @@ const createNewUser = async (user) => {
 	const passwordHash = await genPasswordHash(password)
 	const refreshToken =  await generateRefreshToken()
 	const { rows } = await db.query(
-		`INSERT INTO users ("firstName", "lastName", "email", "passwordHash"
-		, "refreshToken") 
-		 VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+		`INSERT INTO users ("firstName", 
+		"lastName", 
+		"email", 
+		"profilePictureUrl",
+		"passwordHash",
+		"refreshToken"
+		) 
+		 VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
 		[
 			firstName,
 			lastName,
 			email,
+			profilePictureUrl,
 			passwordHash,
 			refreshToken
 		]
