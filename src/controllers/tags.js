@@ -74,9 +74,9 @@ const updateTag = catchAsync(async (req, res) => {
 
 /** Controller for deleting a tag */ 
 const deleteTag = catchAsync(async (req, res) => {
-	const { id } = req.params
+	const { tagId } = req.params
 
-	await tagService.deleteTag(id)
+	await tagService.deleteTag(tagId)
 	
 	return res.status(200).json({
 		status: 'success',
