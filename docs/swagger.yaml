@@ -455,19 +455,27 @@ paths:
                         type: string
                         description: Message for article created
                         example: Article successfully posted
+                      userId:
+                        type: integer
+                        description: user Id
+                        example: 10
                       articleId:
                         type: integer
                         description: Article id
                         example: 10
+                      title: 
+                        type: string
+                        description: Title of article
+                        example: How to become a 10x software developer
                       createdOn: 
                         type: string
                         description: Created date of a new article
                         pattern: /([0-9]{4})-(?:[0-9]{2})-([0-9]{2})/
                         example: "2019-05-17"
-                      title: 
-                        type: string
-                        description: Title of article
-                        example: How to become a 10x software developer
+                      published:
+                        type: boolean
+                        description: Published or not
+                        example: True
       security:
         - access_token: []
   /articles/{articleId}:
@@ -572,9 +580,13 @@ paths:
                     type: object
                     description: Article deleted successfuly
                     properties:
-                      id:
+                      userId:
                         type: integer
-                        description: Article id
+                        description: user id
+                        example: 10
+                      articleId:
+                        type: integer
+                        description: article Id
                         example: 10
                       createdOn: 
                         type: string
