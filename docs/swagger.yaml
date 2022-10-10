@@ -48,7 +48,7 @@ paths:
                 profilePictureUrl:
                   type: string
                   description: user image
-                  example: /https://imgbb.com/
+                  example: https://imgbb.com/
       responses:
         '201':
           description: A successful operation
@@ -84,7 +84,7 @@ paths:
                       profilePictureUrl:
                         type: string
                         description: user image
-                        example: /https://imgbb.com/
+                        example: https://imgbb.com/
                       createdAt:
                         type: string
                         description: time a user was created
@@ -187,7 +187,7 @@ paths:
                       profilePictureUrl:
                         type: string
                         description: user image
-                        example: /https://imgbb.com/
+                        example: https://imgbb.com/
   /auth/invites/{token}:
     get:
       tags: 
