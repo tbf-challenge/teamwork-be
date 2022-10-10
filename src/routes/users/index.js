@@ -13,6 +13,10 @@ const ERROR_MAP = {
 	[ UserNotFoundError.name ] : 404
 }
 
+const transformUserResponse = (userDetails) => ({
+	...userDetails }
+)
+
 const router = express.Router()
 
 const fetchUsers = (req, res) => {
@@ -50,17 +54,7 @@ const updateUser = catchAsync(async (req, res ) => {
 
 	res.status(200).json({
 		status: "success",
-		data: {
-			userId: userDetails.id,
-			firstName: userDetails.firstName,
-			lastName: userDetails.lastName,
-			email: userDetails.email,
-			gender: userDetails.gender,
-			jobRole: userDetails.jobRole,
-			department: userDetails.department,
-			address: userDetails.address,
-			refreshToken: userDetails.refreshToken
-		}
+		data: transformUserResponse(userDetails)
 	})
 })
 const deleteUser = () => {}

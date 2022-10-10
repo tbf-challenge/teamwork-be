@@ -209,7 +209,7 @@ describe('PATCH /users/:id', () => {
 				.expect(200)
 				.then((res) => {
 					expect(res.body.status).eql('success')
-					expect(res.body.data).to.have.property('userId')
+					expect(res.body.data).to.have.property('id')
 					expect(res.body.data).to.have.property('firstName')
 					expect(res.body.data).to.have.property('lastName')
 					expect(res.body.data).to.have.property('email')
@@ -218,7 +218,7 @@ describe('PATCH /users/:id', () => {
 					expect(res.body.data.firstName).to.be.a('string')
 					expect(res.body.data.lastName).to.be.a('string')
 					expect(res.body.data.email).to.be.a('string')
-					expect(res.body.data.userId).to.be.a('number')
+					expect(res.body.data.id).to.be.a('number')
 					expect(res.body.data.address).to.be.a('string')
 					expect(res.body.data.department).to.be.a('string')
 				})
