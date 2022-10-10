@@ -1379,6 +1379,60 @@ paths:
                   type: string
       security:
         - access_token: []
+  /users/{id}:
+    patch:
+      security:
+        - access_token: []
+      tags:
+        - user
+      operationId: Update a user
+      summary: Update a user
+      description: Update a user
+      parameters:
+      - in : path
+        name : id
+        schema:
+          type: integer
+        required: true
+        description : Numeric ID of the user to get
+      requestBody:
+        description: Update a user
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName: 
+                  type: string
+                  description: First name of user
+                  example: John
+                  required: true
+                lastName: 
+                  type: string
+                  description: Last name of user
+                  example: Doe
+                  required: true
+                email: 
+                  type: string
+                  description: Email of user
+                  example: arikeade@gmail.com
+                  required: true
+                gender:
+                  type: string
+                  description: gender of the user
+                  example: non-binary
+                address:
+                  type: string
+                  description: address of the user
+                  example: 10, Ogunlana Drive, Surulere, Lagos
+                jobRole:
+                  type: string
+                  description: job role of the user
+                  example: Software Developer
+                department:
+                  type: string
+                  description: department of the user
+                  example: Software Development
 components:
   schemas:
     User:
