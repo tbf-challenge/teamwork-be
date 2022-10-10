@@ -13,7 +13,8 @@ describe('POST /auth/create-user', () => {
 				firstName: faker.name.firstName(),
 				lastName: faker.name.lastName(),
 				email: faker.internet.email(),
-				password: faker.internet.password()
+				password: faker.internet.password(),
+				profilePictureUrl: faker.internet.url()
 			}
 			const data = {
 				email: signupInfo.email
@@ -49,7 +50,8 @@ describe('POST /auth/create-user', () => {
 				.send({
 					lastName: signupInfo.lastName,
 					email: signupInfo.email,
-					password: validPassword
+					password: validPassword,
+					profilePictureUrl: signupInfo.profilePictureUrl
 				})
 				.expect(400, expectedError)
 		})
@@ -66,7 +68,8 @@ describe('POST /auth/create-user', () => {
 				.send({
 					firstName: signupInfo.firstName,
 					email: signupInfo.email,
-					password: validPassword
+					password: validPassword,
+					profilePictureUrl: signupInfo.profilePictureUrl
 				})
 				.expect(400, expectedError)
 		})
@@ -85,7 +88,8 @@ describe('POST /auth/create-user', () => {
 					firstName: signupInfo.firstName,
 					lastName: signupInfo.lastName,
 					email: 'invalid-email.com',
-					password: validPassword
+					password: validPassword,
+					profilePictureUrl: signupInfo.profilePictureUrl
 				})
 				.expect(400, expectedError)
 		})
@@ -107,7 +111,8 @@ describe('POST /auth/create-user', () => {
 					firstName: signupInfo.firstName,
 					lastName: signupInfo.lastName,
 					email: signupInfo.email,
-					password: 'invalid'
+					password: 'invalid',
+					profilePictureUrl: signupInfo.profilePictureUrl
 				})
 				.expect(400, expectedError)
 		})
@@ -119,7 +124,8 @@ describe('POST /auth/create-user', () => {
 					firstName: signupInfo.firstName,
 					lastName: signupInfo.lastName,
 					email: signupInfo.email,
-					password: validPassword
+					password: validPassword,
+					profilePictureUrl: signupInfo.profilePictureUrl
 				})
 				.expect(401)
 				.then(res => {
@@ -136,7 +142,8 @@ describe('POST /auth/create-user', () => {
 					firstName: signupInfo.firstName,
 					lastName: signupInfo.lastName,
 					email: signupInfo.email,
-					password: validPassword
+					password: validPassword,
+					profilePictureUrl: signupInfo.profilePictureUrl
 				})
 				.expect(401)
 				.then(res => {
@@ -155,7 +162,8 @@ describe('POST /auth/create-user', () => {
 					 firstName: signupInfo.firstName,
 					 lastName: signupInfo.lastName,
 					 email: faker.internet.email(),
-					 password: validPassword
+					 password: validPassword,
+					 profilePictureUrl: signupInfo.profilePictureUrl
 				 })
 				 .expect(403)
 				 .then(res => {
@@ -164,6 +172,28 @@ describe('POST /auth/create-user', () => {
 					 .to.eql("Invalid request email")
 				 })
 		 )
+		 it(`should return a 400 error if profilePictureUrl is invalid`,
+		  async () => {
+
+				const expectedError = {
+					"error": {
+						"message": "profilePictureUrl must be a valid uri"
+					},
+					"status": "failed"
+				}
+				return fixtures.api()
+					.post('/api/v1/auth/create-user')
+					.set('Authorization', `Bearer ${inviteToken}`)
+					.send({
+						firstName: signupInfo.firstName,
+						lastName: signupInfo.lastName,
+						email: signupInfo.email,
+						password: validPassword,
+						profilePictureUrl: 'invalid-profilePictureUrl'
+					})
+					.expect(400, expectedError)
+			})
+
 		
 	})
 
@@ -176,7 +206,8 @@ describe('POST /auth/create-user', () => {
 				firstName: faker.name.firstName(),
 				lastName: faker.name.lastName(),
 				email: faker.internet.email(),
-				password: faker.internet.password()
+				password: faker.internet.password(),
+				profilePictureUrl : faker.internet.url()
 			}
 			const data = {
 				email: signupInfo.email
@@ -196,7 +227,8 @@ describe('POST /auth/create-user', () => {
 					firstName: signupInfo.firstName,
 					lastName: signupInfo.lastName,
 					email: signupInfo.email,
-					password: validPassword
+					password: validPassword,
+					profilePictureUrl : signupInfo.profilePictureUrl
 				})
 				.expect('Content-Type', /json/)
 				.expect(201)
@@ -210,7 +242,8 @@ describe('POST /auth/create-user', () => {
 					firstName: signupInfo.firstName,
 					lastName: signupInfo.lastName,
 					email: signupInfo.email,
-					password: validPassword
+					password: validPassword,
+					profilePictureUrl: signupInfo.profilePictureUrl
 				})
 				.expect(201)
 				.then((res) => {
