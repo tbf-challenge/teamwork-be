@@ -13,6 +13,8 @@ tags:
     description: Operations about users
   - name: article
     description: Access to article
+  - name: tag
+    description: Operations about tags
 paths:
   /auth/create-user:
     post:
@@ -1393,6 +1395,42 @@ paths:
                 type: array
                 items: 
                   type: string
+      security:
+        - access_token: []
+  /tags/{tagId}:
+    delete:
+      tags:
+        - tag
+      operationId: Delete a tag
+      summary: Delete a tag
+      description: Delete a tag
+      parameters:
+      - in : path
+        name : tagId
+        schema:
+          type: integer
+        required: true
+        description : Numeric ID of the tag to get
+      responses:
+        '200':
+          description: Successfully deleting a tag
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: successful deleting a tag
+                    example: success
+                  data:
+                    type: object
+                    description: Data for deleting a tag
+                    properties:
+                      message:
+                        type: string
+                        description: Message for deleting a tag
+                        example: Tag has been successfully deleted
       security:
         - access_token: []
 components:

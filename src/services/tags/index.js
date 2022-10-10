@@ -1,6 +1,7 @@
-const db = require("../db")
-const { TagDoesNotExistError, TagAlreadyExistsError } = require("./errors")
-const customError = require("../lib/custom-error")
+const db = require("../../db")
+const { TagDoesNotExistError, TagAlreadyExistsError } = require("../errors")
+const customError = require("../../lib/custom-error")
+const deleteTag = require("./delete-tag")
 
 const uniqueErrorCode = '23505'
 /**
@@ -57,13 +58,7 @@ const updateTag = async (title, content, tagId) => {
 	return updatedTag
 }
 
-/**
- * Delete a tag
- * @param {number} tagId - The id of the tag
- */
-const deleteTag = tagId => 
-	db.query("DELETE FROM tags WHERE id = $1", [tagId])
-	
+
 module.exports = {
 	createTag,
 	fetchTags,

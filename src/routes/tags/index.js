@@ -1,13 +1,13 @@
 const tagRouter = require("express").Router()
-const isAuthenticated = require("../middleware/isAuthenticated")
-const { tagController } = require('../controllers')
-const validateSchema = require('../middleware/validateSchema')
+const isAuthenticated = require("../../middleware/isAuthenticated")
+const { tagController } = require('../../controllers')
+const validateSchema = require('../../middleware/validateSchema')
 
 const {
 	createTagSchema,
 	updateTagSchema,
 	deleteTagSchema
-} = require('../schema')
+} = require('../../schema')
 // isAuthenticated middle to protect all posts related requests
 tagRouter.use(isAuthenticated())
 
