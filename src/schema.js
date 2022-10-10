@@ -31,7 +31,9 @@ const authSchema = Joi.object({
 					allow: ['com', 'net']
 				}
 			})
-			.required()
+			.required(),
+		profilePictureUrl: Joi.string()
+			.uri()
 	}	
 })
 

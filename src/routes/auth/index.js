@@ -65,7 +65,8 @@ router.post(
 			   department: userDetails.user.department,
 			   address: userDetails.user.department,
 			   jobRole: userDetails.user.jobRole,
-			   createdAt : userDetails.user.createdAt
+			   createdAt : userDetails.user.createdAt,
+			   profilePictureUrl: userDetails.user.profilePictureUrl
 			}
 		})
 	})
@@ -102,7 +103,8 @@ router.post(
 			firstName,
 			lastName,
 			email,
-			password
+			password,
+			profilePictureUrl
 		} = req.body
 
 
@@ -111,7 +113,8 @@ router.post(
 			firstName,
 			lastName,
 			email,
-			password
+			password,
+			profilePictureUrl
 		})
 
 
