@@ -38,20 +38,24 @@ const fixtures = {
 				'marketting', 'finance', 'sales', 'technology']),
 			address : faker.address.city(),
 			jobRole : faker.random.word(),
+			profilePictureUrl : faker.internet.url(),
 			refreshToken : faker.datatype.uuid()
+
 			
 		}
 		const newData = {...userData, ...overrides}
 		const passwordHash = await genPasswordHash(newData.password)
 		const newUser = await db.query(
 			`INSERT INTO users
-			("firstName", "lastName", email, "passwordHash",
-				 gender, role, department, address, "jobRole", "refreshToken")
-			 VALUES ($1 , $2 , $3 , $4, $5, $6, $7, $8, $9 , $10) RETURNING *
+			("firstName", "lastName", email, "passwordHash" ,
+			 "profilePictureUrl",gender, role, department, address,
+			  "jobRole", "refreshToken")
+			 VALUES ($1 , $2 , $3 , $4, $5, $6, $7, $8, $9 , $10, $11)
+			  RETURNING *
 			`, [newData.firstName , newData.lastName , newData.email, 
-				passwordHash, newData.gender, newData.role ,
-				newData.department, newData.address, newData.jobRole,
-				newData.refreshToken
+				passwordHash, newData.profilePictureUrl, newData.gender,
+				newData.role ,newData.department, newData.address, 
+				newData.jobRole,newData.refreshToken
 			]
 		)
 		return newUser.rows[0]
