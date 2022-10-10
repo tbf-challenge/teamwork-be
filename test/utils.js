@@ -134,6 +134,19 @@ const fixtures = {
 				newData.userId, newData.postId, newData.reason]
 		)
 		return result.rows[0]
+	},
+	async insertTag(overrides = {}){
+		const tagData = {
+			title : faker.random.word(),
+			content: faker.random.words()
+		}
+		const newData = {...tagData, ...overrides}
+		const result = await db.query(
+			`INSERT INTO tags
+			(title, content) VALUES ($1, $2) RETURNING *`, 
+			[newData.title, newData.content]
+		)
+		return result.rows[0]
 	}
 }
 
