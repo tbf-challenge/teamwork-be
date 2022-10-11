@@ -32,7 +32,6 @@ const updateUser = catchAsync(async (req, res ) => {
 	const {
 		firstName,
 		lastName,
-		email,
 		gender,
 		jobRole,
 		department,
@@ -46,7 +45,6 @@ const updateUser = catchAsync(async (req, res ) => {
 		id,
 		firstName,
 		lastName,
-		email,
 		gender,
 		jobRole,
 		department,

@@ -268,18 +268,11 @@ const updateUserSchema = Joi.object({
 		firstName: Joi.string()
 			.alphanum()
 			.min(3)
-			.max(30)
-			.required(),
-
+			.max(30),
 		lastName: Joi.string()
 			.alphanum()
 			.min(3)
-			.max(30)
-			.required(),
-
-		email: Joi.string()
-			.email()
-			.required(),
+			.max(30),
 		gender: Joi.string(),
 		jobRole: Joi.string()
 			.alphanum()

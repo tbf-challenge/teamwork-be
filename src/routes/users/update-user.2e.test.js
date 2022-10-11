@@ -31,29 +31,12 @@ describe('PATCH /users/:id', () => {
 				.set('Authorization', `Bearer ${accessToken}`)
 				.send(
 					{firstName : faker.name.firstName(),
-						lastName : faker.name.lastName(),
-						email : faker.internet.email()
+						lastName : faker.name.lastName()
 					})
 				.expect(400, expectedError)
 
 		})
         
-		it('should return 400 if email is not a valid email', async () => {
-			const expectedError = {
-				"error": {
-					"message": "email must be a valid email"
-				},
-				"status": "failed"
-			}
-			return fixtures.api()
-				.patch(`/api/v1/users/${user.id}`)
-				.set('Authorization', `Bearer ${accessToken}`)
-				.send(
-					{ email: 'sdsdsd',
-						firstName: user.firstName,
-						lastName: user.lastName })
-				.expect(400, expectedError)
-		})
 		it('should return 400 if firstName is not a string', async () => {
 			const expectedError = {
 				"error": {
@@ -65,8 +48,7 @@ describe('PATCH /users/:id', () => {
 				.patch(`/api/v1/users/${user.id}`)
 				.set('Authorization', `Bearer ${accessToken}`)
 				.send({ firstName: 123,
-					lastName: user.lastName,
-					email: user.email })
+					lastName: user.lastName})
 				.expect(400, expectedError)
 		})
 		it('should return 400 if lastName is not a string', async () => {
@@ -80,8 +62,7 @@ describe('PATCH /users/:id', () => {
 				.patch(`/api/v1/users/${user.id}`)
 				.set('Authorization', `Bearer ${accessToken}`)
 				.send({ lastName: 123,
-					firstName: user.firstName,
-					email: user.email })
+					firstName: user.firstName })
 				.expect(400, expectedError)
 		})
 		it('should return 400 if jobRole is not a string', async () => {
@@ -94,10 +75,7 @@ describe('PATCH /users/:id', () => {
 			return fixtures.api()
 				.patch(`/api/v1/users/${user.id}`)
 				.set('Authorization', `Bearer ${accessToken}`)
-				.send({ jobRole: 123,
-					firstName: user.firstName,
-					lastName: user.lastName,
-					email: user.email })
+				.send({ jobRole: 123 })
 				.expect(400, expectedError)
 		})
 		it('should return 400 if department is not a string', async () => {
@@ -110,10 +88,7 @@ describe('PATCH /users/:id', () => {
 			return fixtures.api()
 				.patch(`/api/v1/users/${user.id}`)
 				.set('Authorization', `Bearer ${accessToken}`)
-				.send({ department: 123,
-					firstName: user.firstName,
-					lastName: user.lastName,
-					email: user.email })
+				.send({ department: 123 })
 				.expect(400, expectedError)
 		})
 		it('should return 400 if address is not a string', async () => {
@@ -126,10 +101,7 @@ describe('PATCH /users/:id', () => {
 			return fixtures.api()
 				.patch(`/api/v1/users/${user.id}`)
 				.set('Authorization', `Bearer ${accessToken}`)
-				.send({ address: 123,
-					firstName: user.firstName,
-					lastName: user.lastName,
-					email: user.email })
+				.send({ address: 123 })
 				.expect(400, expectedError)
 		})
 
@@ -144,9 +116,6 @@ describe('PATCH /users/:id', () => {
 				.patch(`/api/v1/users/${user.id}`)
 				.set('Authorization', `Bearer ${accessToken}`)
 				.send({
-					firstName: user.firstName,
-					lastName: user.lastName,
-					email: user.email,
 					gender: 123
 				})
 				.expect(400, expectedError)
@@ -164,9 +133,6 @@ describe('PATCH /users/:id', () => {
 					.patch(`/api/v1/users/${user.id}`)
 					.set('Authorization', `Bearer ${accessToken}`)
 					.send({
-						firstName: user.firstName,
-						lastName: user.lastName,
-						email: user.email,
 						profilePictureUrl: "inavlid-profile-picture-url"
 					})
 					.expect(400, expectedError)
@@ -178,9 +144,6 @@ describe('PATCH /users/:id', () => {
 				.patch(`/api/v1/users/${user.id + 2}`)
 				.set('Authorization', `Bearer ${accessToken}`)
 				.send({
-					firstName: user.firstName,
-					lastName: user.lastName,
-					email: user.email,
 					address: faker.address.streetAddress() })
 				.expect(404)
 				.then((res) => {
@@ -206,8 +169,6 @@ describe('PATCH /users/:id', () => {
 				.set('Authorization', `Bearer ${accessToken}`)
 				.send({ 
 					firstName: user.firstName,
-					lastName: user.lastName,
-					email: user.email,
 					address: faker.address.streetAddress(),
 					department: faker.name.jobArea(),
 					gender: faker.name.gender() 
@@ -220,9 +181,7 @@ describe('PATCH /users/:id', () => {
 				.patch(`/api/v1/users/${user.id}`)
 				.set('Authorization', `Bearer ${accessToken}`)
 				.send({ 
-					firstName: user.firstName,
 					lastName: user.lastName,
-					email: user.email,
 					address: faker.address.streetAddress(),
 					department: faker.name.jobArea()
 				})

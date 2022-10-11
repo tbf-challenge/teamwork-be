@@ -1464,10 +1464,6 @@ paths:
                   type: string
                   description: Last name of user
                   example: Doe
-                email: 
-                  type: string
-                  description: Email of user
-                  example: arikeade@gmail.com
                 gender:
                   type: string
                   description: gender of the user
