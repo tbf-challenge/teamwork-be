@@ -1541,19 +1541,20 @@ paths:
                   data:
                     type: array
                     description: Data for getting all tags
-                    properties:
-                      id:
-                        type: integer
-                        description: Tag id
-                        example: 10
-                      title: 
-                        type: string
-                        description: Title of a tag
-                        example: Technology
-                      content:
-                        type: string
-                        description: Content of a tag
-                        example: How to become a developer
+                    items:
+                      properties:
+                        id:
+                          type: integer
+                          description: Tag id
+                          example: 10
+                        title: 
+                          type: string
+                          description: Title of a tag
+                          example: Technology
+                        content:
+                          type: string
+                          description: Content of a tag
+                          example: How to become a developer
       security:
         - access_token: []
     post:
