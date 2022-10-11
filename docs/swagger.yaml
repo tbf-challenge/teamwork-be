@@ -473,19 +473,27 @@ paths:
                         type: string
                         description: Message for article created
                         example: Article successfully posted
+                      userId:
+                        type: integer
+                        description: user Id
+                        example: 10
                       articleId:
                         type: integer
                         description: Article id
                         example: 10
+                      title: 
+                        type: string
+                        description: Title of article
+                        example: How to become a 10x software developer
                       createdOn: 
                         type: string
                         description: Created date of a new article
                         pattern: /([0-9]{4})-(?:[0-9]{2})-([0-9]{2})/
                         example: "2019-05-17"
-                      title: 
-                        type: string
-                        description: Title of article
-                        example: How to become a 10x software developer
+                      published:
+                        type: boolean
+                        description: Published or not
+                        example: true
       security:
         - access_token: []
   /articles/{articleId}:
@@ -495,8 +503,15 @@ paths:
       operationId: updateArticle
       summary: Edit article
       description: Edit article with an article id
+      parameters:
+      - in : path
+        name : articleId
+        schema:
+          type: integer
+        required: true
+        description : Numeric ID of the article to get
       requestBody:
-        description: Edit a new article by article userId
+        description: Edit a new article by article id
         content:
           application/json:
             schema:
@@ -546,8 +561,15 @@ paths:
       operationId: deleteArticle
       summary: Delete article
       description: Delete article with an article id
+      parameters:
+      - in : path
+        name : tagId
+        schema:
+          type: integer
+        required: true
+        description : Numeric ID of the article to get
       responses:
-        '204':
+        '200':
           description: A Successful Operation
           content:
             application/json:
@@ -574,9 +596,16 @@ paths:
       operationId: getArticle
       summary: Get an article
       description: Get an article with an article id
+      parameters:
+      - in : path
+        name : articleId
+        schema:
+          type: integer
+        required: true
+        description : Numeric ID of the article to get
       responses:
         '200':
-          description: A successfully Operation
+          description: A successful Operation
           content:
             application/json:
               schema:
@@ -590,9 +619,13 @@ paths:
                     type: object
                     description: Article deleted successfuly
                     properties:
-                      id:
+                      userId:
                         type: integer
-                        description: Article id
+                        description: user id
+                        example: 10
+                      articleId:
+                        type: integer
+                        description: article Id
                         example: 10
                       createdOn: 
                         type: string
@@ -610,6 +643,10 @@ paths:
                           section and ensure you persist your data using a PostgreSQL database.\
                           You are to write SQL queries that will help you write to and read from your database. The
                           endpoints are to be secured with JSON Web Token (JWT)
+                      published:
+                        type: boolean
+                        description: published or not
+                        example: true
                       comments:
                         type: array
                         items:
@@ -886,6 +923,162 @@ paths:
                         example: Article successfully unflagged
       security:
         - access_token: []
+  /articles/{articleId}/tags:
+    post:
+      tags:
+        - article
+      operationId: Assign a tag to an article
+      summary: Assign a tag to an article
+      description: Assign a tag to an article
+      parameters:
+      - in : path
+        name : articleId
+        schema:
+          type: integer
+        required: true
+        description : Numeric ID of the article to get
+      requestBody:
+        description: Assign a tag to an article
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tagId: 
+                  type: integer
+                  description: tag id
+                  example: 10
+      responses:
+        '201':
+          description: Successfully tagging an article
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: successfully tagging an article
+                    example: success
+                  data:
+                    type: object
+                    description: Data for tagging an article
+                    properties:
+                      message:
+                        type: string
+                        description: Message for tagging an article
+                        example: Article  successfully tagged
+                      tagId: 
+                        type: integer
+                        description: tag id
+                        example: 10
+                      articleId: 
+                        type: integer
+                        description: article id
+                        example: 10
+  /articles/{articleId}/tags/{tagId}:
+    delete:
+      tags:
+        - article
+      operationId: Delete a tag assigned to an article
+      summary: delete a tag assigned to a tag to an article
+      description: delete a tag assigned to a tag to an article
+      parameters:
+      - in : path
+        name : articleId
+        schema:
+          type: integer
+        required: true
+      - in : path
+        name : tagId
+        schema:
+          type: integer
+        required: true
+        description : Numeric ID of the article and tag
+      responses:
+        '200':
+          description: Successfully untagging an article
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: successfully untagging an article
+                    example: success
+                  data:
+                    type: object
+                    description: Data for untagging an article
+                    properties:
+                      message:
+                        type: string
+                        description: Message for untagging an article
+                        example: Tag has been removed from post
+  /articles/query:
+    get:
+      tags:
+        - article
+      operationId: Query article tags
+      summary: Query article tags
+      description: Query article tags
+      parameters:
+      - in : query
+        name : tag
+        schema:
+          type: integer
+        required: true
+        description : Tag Id
+      responses:
+        '200':
+          description: Successfully querying an article tags
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: successfully querying an article tags
+                    example: success
+                  data:
+                    type: object
+                    description: Data for querying an article tags
+                    properties:
+                      message:
+                        type: string
+                        description: Message for querying an article tag
+                        example: success
+                      userId: 
+                        type: integer
+                        description: user id
+                        example: 10
+                      articleId: 
+                        type: integer
+                        description: article id
+                        example: 10
+                      title:
+                        type: string
+                        description: article title
+                        example: How to be a good developer
+                      article:
+                        type: string
+                        description: content of the article
+                        example: You need to be prepared to put in the work 
+                      createdAt:
+                        type: string
+                        description: time of article creation
+                        example:  "2022-10-06T12:50:11.970Z"
+                      published:
+                        type: boolean
+                        description: published or not 
+                        example: true
+                      tagId:
+                          type: integer
+                          description: Tag Id
+                          example: 10
+                            
+
   /gifs:
     post:
       tags:
@@ -951,7 +1144,7 @@ paths:
                       published:
                         type: boolean
                         description: Published or not
-                        example: True
+                        example: true
                       imageUrl:
                         type: string
                         description: image/gif content
@@ -1008,7 +1201,7 @@ paths:
                       published:
                         type: boolean
                         description: Published or not
-                        example: True
+                        example: true
                       comments:
                         type: array
                         items:
@@ -1326,6 +1519,152 @@ paths:
                         example: Gif image successfully unflagged
       security:
         - access_token: []
+  /tags:
+    post:
+      tags:
+        - tag
+      operationId: createTag
+      summary: Create a new tag
+      description: Create a new tag
+      requestBody:
+        description: Create a new tag
+        content:
+          application/json:
+            schema: 
+              type: object
+              required:
+                - title
+              properties:
+                title:
+                  type: string
+                  description: Title of tag
+                  example: Technology
+                content:
+                  type: string
+                  description: tag content
+                  example: How to become a developer
+      responses:
+        '201':
+          description: A successful operation
+          content: 
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: successful
+                    example: success
+                  data:
+                    type: object
+                    description: Data for new tag created
+                    properties:
+                      id:
+                        type: integer
+                        description: Tag id
+                        example: 10
+                      title: 
+                        type: string
+                        description: Title of a tag
+                        example: Technology
+                      content:
+                        type: string
+                        description: Content of a tag
+                        example: How to become a developer
+      security:
+        - access_token: []
+  /tags/{tagId}:
+    delete:
+      tags:
+        - tag
+      operationId: deleteTag
+      summary: Delete a tag
+      description: Delete a tag with a tag id
+      parameters:
+      - in : path
+        name : tagId
+        schema:
+          type: integer
+        required: true
+        description : Numeric ID of the tag to get
+      responses:
+        '200':
+          description: A successfully Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: success
+                    example: success
+                  data:
+                    type: object
+                    description: Tag has been successfully deleted 
+                    properties:
+                      message:
+                        type: string
+                        description: Message to indicate successful delete
+                        example: Tag has been successfully deleted
+    patch:
+      tags:
+        - tag
+      operationId: updateTag
+      summary: Edit tag
+      description: Edit a tag with a tag id
+      parameters:
+      - in : path
+        name : tagId
+        schema:
+          type: integer
+        required: true
+        description : Numeric ID of the tag to get
+      requestBody:
+        description: Edit a tag by tag id
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: Title of the tag
+                  example: Love
+                content:
+                  type: string
+                  description: Content of the tag
+                  example: How to date responsibly
+      responses:
+        '200':
+          description: A Successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: A successful content update
+                    example: success
+                  data:
+                    type: object
+                    description: Tag returned on a successful tag update
+                    properties:
+                      message:
+                        type: string
+                        description: Message to indicate successful update
+                        example: Tag successfully updated 
+                      title:
+                        type: string
+                        description: Title of the tag
+                        example: Love
+                      content:
+                        type: string
+                        description: Content of the tag
+                        example: How to date responsibly
+      security:
+        - access_token: []                      
   /feed:
     get:
       tags:
@@ -1376,7 +1715,7 @@ paths:
                         published:
                           type: boolean
                           description: Published or not
-                          example: True
+                          example: true
                         
       security:
         - access_token: []
@@ -1395,42 +1734,6 @@ paths:
                 type: array
                 items: 
                   type: string
-      security:
-        - access_token: []
-  /tags/{tagId}:
-    delete:
-      tags:
-        - tag
-      operationId: Delete a tag
-      summary: Delete a tag
-      description: Delete a tag
-      parameters:
-      - in : path
-        name : tagId
-        schema:
-          type: integer
-        required: true
-        description : Numeric ID of the tag to get
-      responses:
-        '200':
-          description: Successfully deleting a tag
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    description: successful deleting a tag
-                    example: success
-                  data:
-                    type: object
-                    description: Data for deleting a tag
-                    properties:
-                      message:
-                        type: string
-                        description: Message for deleting a tag
-                        example: Tag has been successfully deleted
       security:
         - access_token: []
 components:
