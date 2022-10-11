@@ -55,18 +55,18 @@ router.post(
 			status: 'success',
 			data:{
 			   ...transformUserResponse(userDetails),
-			   refreshToken: userDetails.updatedUser.refreshToken,
-			   userId : userDetails.updatedUser.id,
-			   firstName: userDetails.updatedUser.firstName,
-			   lastName: userDetails.updatedUser.lastName,
-			   email: userDetails.updatedUser.email,
-			   gender: userDetails.updatedUser.gender,
-			   role: userDetails.updatedUser.role,
-			   department: userDetails.updatedUser.department,
-			   address: userDetails.updatedUser.department,
-			   jobRole: userDetails.updatedUser.jobRole,
-			   createdAt : userDetails.updatedUser.createdAt,
-			   profilePictureUrl: userDetails.updatedUser.profilePictureUrl
+			   refreshToken: userDetails.user.refreshToken,
+			   userId : userDetails.user.id,
+			   firstName: userDetails.user.firstName,
+			   lastName: userDetails.user.lastName,
+			   email: userDetails.user.email,
+			   gender: userDetails.user.gender,
+			   role: userDetails.user.role,
+			   department: userDetails.user.department,
+			   address: userDetails.user.department,
+			   jobRole: userDetails.user.jobRole,
+			   createdAt : userDetails.user.createdAt,
+			   profilePictureUrl: userDetails.user.profilePictureUrl
 			}
 		})
 	})

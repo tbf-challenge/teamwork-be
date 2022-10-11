@@ -57,7 +57,7 @@ const signInUserByEmail = async (email, password) => {
 	
 	const refreshToken = await generateRefreshToken()
 	const updatedUser = await updateRefreshToken(refreshToken , user.id)
-	return { accessToken, updatedUser }
+	return { accessToken, user: updatedUser }
 }
 
 /**
