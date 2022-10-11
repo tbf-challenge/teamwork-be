@@ -1532,14 +1532,14 @@ paths:
           content: 
             application/json:
               schema:
-                type: array
+                type: object
                 properties:
                   status:
                     type: string
                     description: successful
                     example: success
                   data:
-                    type: object
+                    type: array
                     description: Data for getting all tags
                     properties:
                       id:
