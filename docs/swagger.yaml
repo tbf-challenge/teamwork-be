@@ -1532,7 +1532,7 @@ paths:
           content: 
             application/json:
               schema:
-                type: object
+                type: array
                 properties:
                   status:
                     type: string
