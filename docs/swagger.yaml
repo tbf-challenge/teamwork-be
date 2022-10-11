@@ -1520,6 +1520,42 @@ paths:
       security:
         - access_token: []
   /tags:
+    get:
+      tags:
+        - tag
+      operationId: getTags
+      summary: Get all tags
+      description: Get all tags
+      responses:
+        '200':
+          description: A successful operation
+          content: 
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: successful
+                    example: success
+                  data:
+                    type: object
+                    description: Data for getting all tags
+                    properties:
+                      id:
+                        type: integer
+                        description: Tag id
+                        example: 10
+                      title: 
+                        type: string
+                        description: Title of a tag
+                        example: Technology
+                      content:
+                        type: string
+                        description: Content of a tag
+                        example: How to become a developer
+      security:
+        - access_token: []
     post:
       tags:
         - tag
