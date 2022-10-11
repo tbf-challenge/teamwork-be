@@ -493,7 +493,7 @@ paths:
                       published:
                         type: boolean
                         description: Published or not
-                        example: True
+                        example: true
       security:
         - access_token: []
   /articles/{articleId}:
@@ -646,7 +646,7 @@ paths:
                       published:
                         type: boolean
                         description: published or not
-                        example: True
+                        example: true
                       comments:
                         type: array
                         items:
@@ -1015,7 +1015,7 @@ paths:
                         type: string
                         description: Message for untagging an article
                         example: Tag has been removed from post
-  /articles/query?tag={tagId}:
+  /articles/query:
     get:
       tags:
         - article
@@ -1023,12 +1023,12 @@ paths:
       summary: Query article tags
       description: Query article tags
       parameters:
-      - in : path
-        name : tagId
+      - in : query
+        name : tag
         schema:
           type: integer
         required: true
-        description : Numeric ID of the tag to get
+        description : Tag Id
       responses:
         '200':
           description: Successfully querying an article tags
@@ -1072,7 +1072,7 @@ paths:
                       published:
                         type: boolean
                         description: published or not 
-                        example: True
+                        example: true
                       tagId:
                           type: integer
                           description: Tag Id
@@ -1144,7 +1144,7 @@ paths:
                       published:
                         type: boolean
                         description: Published or not
-                        example: True
+                        example: true
                       imageUrl:
                         type: string
                         description: image/gif content
@@ -1201,7 +1201,7 @@ paths:
                       published:
                         type: boolean
                         description: Published or not
-                        example: True
+                        example: true
                       comments:
                         type: array
                         items:
@@ -1715,7 +1715,7 @@ paths:
                         published:
                           type: boolean
                           description: Published or not
-                          example: True
+                          example: true
                         
       security:
         - access_token: []
