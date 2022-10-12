@@ -36,11 +36,11 @@ describe('Update User', () => {
 
 	it('should update user', async () => {
 		const { id } = user
-		const { firstName, lastName, email, 
+		const { firstName, lastName,
 			gender, jobRole, department, address, 
 			profilePictureUrl } = updatedInfo
 		const newUpdatedUser = await updateUser(
-			id, { firstName, lastName, email, 
+			id, { firstName, lastName, 
 				gender, jobRole, department, address, 
 				profilePictureUrl })
 

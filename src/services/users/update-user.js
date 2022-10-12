@@ -46,7 +46,7 @@ const updateUser = async (id,
 
 	const colValues = Object.keys(
 		requestBody
-	)
+	).map(key => requestBody[key])
 
 	const { rows } = await db.query(
 		query, colValues)
