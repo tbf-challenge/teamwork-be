@@ -29,7 +29,7 @@ describe('Update User', () => {
 			`DELETE FROM users
              WHERE id = $1`, [id])
 
-		return expect(updateUser({ id, firstName, lastName,  gender }))
+		return expect(updateUser(id, { firstName, lastName,  gender }))
 			.to.be.rejectedWith(
 				'User not found')
 	})
@@ -40,7 +40,7 @@ describe('Update User', () => {
 			gender, jobRole, department, address, 
 			profilePictureUrl } = updatedInfo
 		const newUpdatedUser = await updateUser(
-			{ id, firstName, lastName, email, 
+			id, { firstName, lastName, email, 
 				gender, jobRole, department, address, 
 				profilePictureUrl })
 

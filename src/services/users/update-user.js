@@ -2,48 +2,61 @@ const db = require("../../db")
 const customError = require("../../lib/custom-error")
 const { UserNotFoundError } = require("../errors")
 
+/**
+ * 
+ * @param {Number} id - id of the user to be updated
+ * @param {Object} cols - columns to be updated
+ * @returns {String} - query to be executed
+ */
+const constructQuery = (id, cols) => {
 
-const updateUser = async ({
-	id,
-	firstName,
-	lastName,
-	gender,
-	jobRole,
-	department,
-	address, 
-	profilePictureUrl
-}) => {
+	// Setup static beginning of query
+	const query = ['UPDATE users']
+	query.push('SET')
+  
+	// Create another array storing each set command
+	// and assigning a number value for parameterized query
+	const set = []
+	Object.keys(cols).forEach((key, i) => {
+	  set.push(`"${key}" = ($${(i + 1)})`) 
+	})
+	query.push(set.join(', '))
+  
+	// Add the WHERE statement to look up by id
+	query.push(`WHERE id = ${id} RETURNING  "id",
+	"firstName", "lastName", "email",
+	"gender", "jobRole", "department", 
+	"address", "refreshToken", "profilePictureUrl"` )
+  
+	// Return a complete query string
+	return query.join(' ')
+}
 
-	const { rows:user } = await db.query(
-		`SELECT * FROM users WHERE id = $1`, [id])
-	const userDefault = user[0]
+/**
+ * 
+ * @param {Number} id - id of the user to be updated
+ * @param {*} requestBody - reqquest body
+ * @returns {Object} - updated user
+ */
+const updateUser = async (id,
+	requestBody
+) => {
 
-	if(!userDefault) {
-		throw customError(UserNotFoundError)
-	}
-	
+	const query = constructQuery(id, requestBody)
 
-	const newFirstName = firstName || userDefault.firstName
-	const newLastName = lastName || userDefault.lastName
-	const newGender = gender || userDefault.gender
-	const newJobRole = jobRole || userDefault.jobRole
-	const newDepartment = department || userDefault.department
-	const newAddress = address || userDefault.address
-	const newProfilePictureUrl = 
-		profilePictureUrl || userDefault.profilePictureUrl
-
+	const colValues = Object.keys(
+		requestBody
+	)
 
 	const { rows } = await db.query(
-		`UPDATE users SET "firstName" = $1, "lastName" = $2, 
-        "gender" = $3, "jobRole" = $4, "department" = $5,
-        "address" = $6, "profilePictureUrl" = $7 WHERE id = $8 
-		RETURNING id, "firstName", "lastName", 
-        "email", "gender", "jobRole", "department", "address", "refreshToken",
-			"profilePictureUrl"`,
-		[newFirstName, newLastName, newGender, newJobRole, 
-			newDepartment, newAddress, newProfilePictureUrl, id]
-	)
+		query, colValues)
+
 	const userUpdated = rows[0]
+
+
+	if(!userUpdated) {
+		throw customError(UserNotFoundError)
+	}
 	
 	return userUpdated
 }

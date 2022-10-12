@@ -29,28 +29,12 @@ const getUser = async (req, res) => {
 	res.send(rows[0])
 }
 const updateUser = catchAsync(async (req, res ) => {
-	const {
-		firstName,
-		lastName,
-		gender,
-		jobRole,
-		department,
-		address,
-		profilePictureUrl
-	} = req.body
-
+	
 	const { id } = req.params
 
-	const userDetails = await userSevice.updateUser({
-		id,
-		firstName,
-		lastName,
-		gender,
-		jobRole,
-		department,
-		address, 
-		profilePictureUrl
-	})
+	const requestBody = { ...req.body }
+
+	const userDetails = await userSevice.updateUser(id, requestBody)
 
 	res.status(200).json({
 		status: "success",
