@@ -20,7 +20,21 @@ const transformGifResponse = (gif) => ({
 	
 })
 
+const transformUserResponse = (userDetails) => ({
+	id: userDetails.id,
+	firstName: userDetails.firstName,
+	lastName: userDetails.lastName,
+	email: userDetails.email,
+	gender: userDetails.gender,
+	jobRole: userDetails.jobRole,
+	department: userDetails.department,
+	address: userDetails.address,
+	profilePictureUrl: userDetails.profilePictureUrl
+})
+
+
 module.exports = {
 	transformArticleResponse,
-	transformGifResponse
+	transformGifResponse,
+	transformUserResponse
 }

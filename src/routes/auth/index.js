@@ -1,5 +1,5 @@
 const express = require('express')
-const userSevice = require('../../services/users')
+const userService = require('../../services/users')
 const validateSchema = require('../../middleware/validateSchema')
 const isAuthenticated = require('../../middleware/isAuthenticated')
 const isAdmin = require('../../middleware/isAdmin')
@@ -49,7 +49,7 @@ router.post(
 	catchAsync(async (req, res) => {
 		const { email, password } = req.body
 
-		const userDetails = await userSevice
+		const userDetails = await userService
 			.signInUserByEmail(email, password)
 		return res.json({
 			status: 'success',
@@ -81,7 +81,7 @@ router.post(
 	catchAsync(async (req, res) => {
 		const { email } = req.body
 
-		const { email:userEmail, status } = await userSevice.inviteUser(email)
+		const { email:userEmail, status } = await userService.inviteUser(email)
 
 		res.status(200).json({
 			status: 'success',
@@ -109,7 +109,7 @@ router.post(
 
 
 		const userDetails = 
-		await userSevice.createNewUser({
+		await userService.createNewUser({
 			firstName,
 			lastName,
 			email,
@@ -138,7 +138,7 @@ router.post(
 			refreshToken : currentRefreshToken 
 		 } = req.body
 
-		const userDetails = await userSevice.getNewTokens(
+		const userDetails = await userService.getNewTokens(
 			email,
 			currentRefreshToken
 		)
@@ -158,7 +158,7 @@ router.get(
 			token 
 		} = req.params
 		const userDetails = 
-		await userSevice.getInvitedUserDetail(
+		await userService.getInvitedUserDetail(
 			token
 		)
 
@@ -177,7 +177,7 @@ router.post('/password',
 	catchAsync(async (req, res) => {
 		const { email } = req.body
 
-		await userSevice.sendPasswordResetLink(email)
+		await userService.sendPasswordResetLink(email)
 
 		return res.status(200).json({
 			status: 'success',
@@ -195,7 +195,7 @@ router.patch(
 		const { token } = req.params
 		const { newPassword } = req.body
 		
-		await userSevice.resetPassword({ token, newPassword })
+		await userService.resetPassword({ token, newPassword })
 		
 		return res.status(200).json({
 			status: "success",

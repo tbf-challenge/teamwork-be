@@ -39,7 +39,7 @@ describe('Update User', () => {
 		const { firstName, lastName,
 			gender, jobRole, department, address, 
 			profilePictureUrl } = updatedInfo
-		const newUpdatedUser = await updateUser(
+		await updateUser(
 			id, { firstName, lastName, 
 				gender, jobRole, department, address, 
 				profilePictureUrl })
@@ -50,16 +50,14 @@ describe('Update User', () => {
 
 		const  updatedUser = rows[0]
 
-		return expect(newUpdatedUser).to.eql({
-			id: updatedUser.id,
+
+		return expect(updatedInfo).to.eql({
 			firstName: updatedUser.firstName,
 			lastName: updatedUser.lastName,
-			email: updatedUser.email,
 			gender: updatedUser.gender,
 			jobRole: updatedUser.jobRole,
 			department: updatedUser.department,
 			address: updatedUser.address,
-			refreshToken: updatedUser.refreshToken,
 			profilePictureUrl: updatedUser.profilePictureUrl
 		})
 

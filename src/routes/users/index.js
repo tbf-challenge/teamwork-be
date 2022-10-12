@@ -1,21 +1,19 @@
 const express = require("express")
 const db = require("../../db")
 const isAuthenticated = require("../../middleware/isAuthenticated")
-const userSevice = require('../../services/users')
+const userService = require('../../services/users')
 const validateSchema = require('../../middleware/validateSchema')
 const {
 	updateUserSchema
 } = require("../../schema")
 const { catchAsync, AppError } = require("../../lib")
 const { UserNotFoundError } = require("../../services/errors")
+const { transformUserResponse }= require("../common/transformers")
 
 const ERROR_MAP = {
 	[ UserNotFoundError.name ] : 404
 }
 
-const transformUserResponse = (userDetails) => ({
-	...userDetails }
-)
 
 const router = express.Router()
 
@@ -32,9 +30,8 @@ const updateUser = catchAsync(async (req, res ) => {
 	
 	const { id } = req.params
 
-	const requestBody = { ...req.body }
 
-	const userDetails = await userSevice.updateUser(id, requestBody)
+	const userDetails = await userService.updateUser(id, req.body)
 
 	res.status(200).json({
 		status: "success",
