@@ -37,14 +37,14 @@ const constructQuery = (cols) => {
  * @returns {Object} - updated user
  */
 const updateUser = async (id,
-	requestBody
+	data
 ) => {
 
-	const query = constructQuery(requestBody)	
+	const query = constructQuery(data)	
 
-	const colValues = Object.keys(
-		requestBody
-	).map(key => requestBody[key])
+	const colValues = Object.values(
+		data
+	)
 
 	colValues.push(id)
 
