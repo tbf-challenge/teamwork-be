@@ -4,6 +4,7 @@ const validateSchema = require('../../middleware/validateSchema')
 const isAuthenticated = require('../../middleware/isAuthenticated')
 const isAdmin = require('../../middleware/isAdmin')
 const { catchAsync , AppError} = require('../../lib')
+const { transformUserResponse } = require('../common/transformers')
 
 
 const {
@@ -36,7 +37,7 @@ const ERROR_MAP = {
 	[ InvalidResetTokenError.name ] : 401
 }
 
-const transformUserResponse = (userDetails) => ({
+const transformCreateUserResponse = (userDetails) => ({
 	accessToken : userDetails.accessToken,
 	userId : userDetails.userId,
 	refreshToken : userDetails.refreshToken
@@ -56,17 +57,8 @@ router.post(
 			data:{
 			   ...transformUserResponse(userDetails),
 			   refreshToken: userDetails.user.refreshToken,
-			   userId : userDetails.user.id,
-			   firstName: userDetails.user.firstName,
-			   lastName: userDetails.user.lastName,
-			   email: userDetails.user.email,
-			   gender: userDetails.user.gender,
-			   role: userDetails.user.role,
-			   department: userDetails.user.department,
-			   address: userDetails.user.department,
-			   jobRole: userDetails.user.jobRole,
 			   createdAt : userDetails.user.createdAt,
-			   profilePictureUrl: userDetails.user.profilePictureUrl
+			   accessToken : userDetails.accessToken
 			}
 		})
 	})
@@ -122,7 +114,7 @@ router.post(
 			status: 'success',
 			data: {
 				message: 'User account successfully created',
-				...transformUserResponse(userDetails)
+				...transformCreateUserResponse(userDetails)
 			}
 		})
 	})
