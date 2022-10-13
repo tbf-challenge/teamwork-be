@@ -258,6 +258,35 @@ const unflagPostSchema = Joi.object({
 			.required()
 	}
 })
+
+const updateUserSchema = Joi.object({
+	params: {
+		id: Joi.number()
+			.required()
+	},
+	body: {
+		firstName: Joi.string()
+			.alphanum()
+			.min(3)
+			.max(30),
+		lastName: Joi.string()
+			.alphanum()
+			.min(3)
+			.max(30),
+		gender: Joi.string(),
+		jobRole: Joi.string()
+			.alphanum()
+			.min(3)
+			.max(100),
+		department: Joi.string()
+			.alphanum()
+			.min(3)
+			.max(100),
+		address: Joi.string(),
+		profilePictureUrl: Joi.string()
+			.uri()
+	}
+})
 module.exports = {
 	authSchema,
 	signinSchema,
@@ -279,5 +308,6 @@ module.exports = {
 	likePostSchema,
 	unlikePostSchema,
 	flagPostSchema,
-	unflagPostSchema
+	unflagPostSchema,
+	updateUserSchema
 }

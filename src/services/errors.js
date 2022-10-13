@@ -62,6 +62,10 @@ module.exports= {
 	ArticleHasAlreadyBeenFlaggedError : {
 		name : "ArticleHasAlreadyBeenFlaggedError",
 		message : "Article has already been flagged"
+	},
+	UserNotFoundError : {
+		name : "UserNotFoundError",
+		message : "User not found"
 	}
 
 }

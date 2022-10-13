@@ -1773,6 +1773,109 @@ paths:
                   type: string
       security:
         - access_token: []
+  /users/{id}:
+    patch:
+      security:
+        - access_token: []
+      tags:
+        - user
+      operationId: Update a user
+      summary: Update a user
+      description: Update a user
+      parameters:
+      - in : path
+        name : id
+        schema:
+          type: integer
+        required: true
+        description : Numeric ID of the user to get
+      requestBody:
+        description: Update a user
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName: 
+                  type: string
+                  description: First name of user
+                  example: John
+                lastName: 
+                  type: string
+                  description: Last name of user
+                  example: Doe
+                gender:
+                  type: string
+                  description: gender of the user
+                  example: non-binary
+                address:
+                  type: string
+                  description: address of the user
+                  example: 10, Ogunlana Drive, Surulere, Lagos
+                jobRole:
+                  type: string
+                  description: job role of the user
+                  example: Software Developer
+                department:
+                  type: string
+                  description: department of the user
+                  example: Software Development
+                profilePictureUrl:
+                  type: string
+                  description: profile picture url of the user
+                  example: https://imgbb.com/
+      responses:
+        '200':
+          description: Successfully updating a user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: successful updating a user
+                    example: success
+                  data:
+                    type: object
+                    description: Data for updating a user
+                    properties:
+                      id: 
+                        type: integer
+                        description: user id
+                        example: 10
+                      firstName: 
+                        type: string
+                        description: First name of user
+                        example: John
+                      lastName: 
+                        type: string
+                        description: Last name of user
+                        example: Doe
+                      email: 
+                        type: string
+                        description: Email of user
+                        example: atilade@gmail.com
+                      gender:
+                        type: string
+                        description: gender of the user
+                        example: non-binary
+                      address:
+                        type: string
+                        description: address of the user
+                        example: 10, Ogunlana Drive, Surulere, Lagos
+                      jobRole:
+                        type: string
+                        description: job role of the user
+                        example: Software Developer
+                      department:
+                        type: string
+                        description: department of the user
+                        example: Software Development  
+                      refreshToken:
+                        type: string
+                        description: Refresh token
+                        example: 44yytruy76iiui945436t
 components:
   schemas:
     User:
