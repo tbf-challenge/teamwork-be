@@ -55,7 +55,7 @@ router.post(
 		return res.json({
 			status: 'success',
 			data:{
-			   ...transformUserResponse(userDetails),
+			   ...transformUserResponse(userDetails.user),
 			   refreshToken: userDetails.user.refreshToken,
 			   createdAt : userDetails.user.createdAt,
 			   accessToken : userDetails.accessToken
