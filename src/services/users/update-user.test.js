@@ -24,25 +24,19 @@ describe('Update User', () => {
 
 	it('should throw an error if user does not exist', async () => {
 		const { id } = user
-		const { firstName, lastName, gender } = updatedInfo
 		await db.query(
 			`DELETE FROM users
              WHERE id = $1`, [id])
 
-		return expect(updateUser(id, { firstName, lastName,  gender }))
+		return expect(updateUser(id, updatedInfo))
 			.to.be.rejectedWith(
 				'User not found')
 	})
 
 	it('should update user', async () => {
 		const { id } = user
-		const { firstName, lastName,
-			gender, jobRole, department, address, 
-			profilePictureUrl } = updatedInfo
 		await updateUser(
-			id, { firstName, lastName, 
-				gender, jobRole, department, address, 
-				profilePictureUrl })
+			id, updatedInfo)
 
 		const { rows } = await db.query(
 			`SELECT * FROM users
@@ -51,14 +45,14 @@ describe('Update User', () => {
 		const  updatedUser = rows[0]
 
 
-		return expect(updatedInfo).to.eql({
-			firstName: updatedUser.firstName,
-			lastName: updatedUser.lastName,
-			gender: updatedUser.gender,
-			jobRole: updatedUser.jobRole,
-			department: updatedUser.department,
-			address: updatedUser.address,
-			profilePictureUrl: updatedUser.profilePictureUrl
+		return expect(updatedUser).to.include({
+			firstName: updatedInfo.firstName,
+			lastName: updatedInfo.lastName,
+			gender: updatedInfo.gender,
+			jobRole: updatedInfo.jobRole,
+			department: updatedInfo.department,
+			address: updatedInfo.address,
+			profilePictureUrl: updatedInfo.profilePictureUrl
 		})
 
 	})

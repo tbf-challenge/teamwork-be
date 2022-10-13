@@ -21,7 +21,7 @@ const transformGifResponse = (gif) => ({
 })
 
 const transformUserResponse = (userDetails) => ({
-	id: userDetails.id,
+	userId: userDetails.id,
 	firstName: userDetails.firstName,
 	lastName: userDetails.lastName,
 	email: userDetails.email,
