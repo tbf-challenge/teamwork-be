@@ -1840,7 +1840,7 @@ paths:
                     type: object
                     description: Data for updating a user
                     properties:
-                      id: 
+                      userId: 
                         type: integer
                         description: user id
                         example: 10
@@ -1872,10 +1872,10 @@ paths:
                         type: string
                         description: department of the user
                         example: Software Development  
-                      refreshToken:
+                      profilePictureUrl:
                         type: string
-                        description: Refresh token
-                        example: 44yytruy76iiui945436t
+                        description: profile picture url of the user
+                        example: https://imgbb.com/             
 components:
   schemas:
     User:
