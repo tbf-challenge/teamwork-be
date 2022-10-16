@@ -1,6 +1,7 @@
 const { default: pgMigrate} = require('node-pg-migrate')
 const request = require('supertest')
 const path = require('path')
+const format = require('pg-format')
 const { faker } = require('@faker-js/faker')
 const jwt = require("jsonwebtoken")
 const db = require('../src/db')
@@ -38,7 +39,7 @@ const fixtures = {
 				'marketting', 'finance', 'sales', 'technology']),
 			address : faker.address.city(),
 			jobRole : faker.random.word(),
-			profilePictureUrl : faker.internet.url(),
+			profilePictureUrl : faker.image.imageUrl(),
 			refreshToken : faker.datatype.uuid()
 
 			
@@ -61,6 +62,36 @@ const fixtures = {
 		return newUser.rows[0]
 		
 	},
+	 async insertMultipleUsers(numberOfUsers = 5){
+	
+		const users = []
+
+		const createNewUser = () => ([
+			faker.name.firstName(),
+			faker.name.lastName(),
+			faker.internet.email(),
+			faker.internet.password(),
+			faker.helpers.arrayElement(['male', 'female']),
+			faker.helpers.arrayElement(['admin', 'user']),
+			faker.helpers.arrayElement([
+				'marketting', 'finance', 'sales', 'technology']),
+			faker.address.city(),
+			faker.random.word(),
+			faker.image.imageUrl(),
+			faker.datatype.uuid()	
+		])
+		Array.from({ length: numberOfUsers }).forEach(() => {
+			users.push(createNewUser())
+		})
+		const addUsersQuery = format(
+			`INSERT INTO users (
+				"firstName", "lastName", email, "passwordHash",
+				gender, role, department, address, "jobRole", 
+				"profilePictureUrl", "refreshToken") 
+				VALUES %L returning id`, users)
+		const result = await db.query(addUsersQuery)
+		return result
+	 },
 	async insertPost(overrides = {}){
 		const postData = {
 			title : faker.random.words(),
