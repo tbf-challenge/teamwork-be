@@ -1,11 +1,8 @@
 const { expect } = require('chai')
-// const { faker } = require('@faker-js/faker')
 const { fixtures, setupDB } = require('../../../test/utils')
 const fetchUsers = require('../../services/users/fetch-users')
 
-
-describe('GET/users', () => {
-    
+describe('GET/users', () => {    
 	describe('Success', () => {
 		const numberOfUsers = 5
 		let adminUser
@@ -34,11 +31,8 @@ describe('GET/users', () => {
 				.set('Authorization', `Bearer ${accessToken}`)
 				.then(res => {
 				 expect(res.body.length).eql(actualUsers.length)
-				})
-			
-        
-		})
-		
+				}) 
+		})	
 	})
 	describe('Failure', ()=> {
 		let userUser
@@ -46,7 +40,7 @@ describe('GET/users', () => {
 		beforeEach(async () =>{
 			await setupDB()
 			userUser = await fixtures.insertUser({
-				role : 'role'
+				role : 'user'
 			}) 
 			const body = { id: userUser.id, email: userUser.email }
 			accessToken = fixtures.generateAccessToken(
@@ -64,5 +58,4 @@ describe('GET/users', () => {
 				.expect(403 , expectedError)
 		})
 	})
-
 })
