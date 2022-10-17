@@ -23,9 +23,7 @@ const fetchUsers =  catchAsync( async(req, res) => {
 
 	res.status(200).json({
 		status: 'success',
-		data: users.map((user) => (
-			transformUserResponse(user)
-		))
+		data: users.map(transformUserResponse)
 	})
 	
 })
