@@ -1761,16 +1761,61 @@ paths:
       tags:
         - user
       summary: Returns a list of users.
-      description: Optional extended description in CommonMark or HTML.
+      description: Returns list of users
       responses:
-        '200':    # status code
-          description: A JSON array of user names
+        '200':   
+          description: A JSON array of users
           content:
             application/json:
               schema: 
                 type: array
                 items: 
-                  type: string
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                      description: successful updating a user
+                      example: success
+                    data:
+                      type: object
+                      description: Data for updating a user
+                      properties:
+                        id: 
+                          type: integer
+                          description: user id
+                          example: 10
+                        firstName: 
+                          type: string
+                          description: First name of user
+                          example: John
+                        lastName: 
+                          type: string
+                          description: Last name of user
+                          example: Doe
+                        email: 
+                          type: string
+                          description: Email of user
+                          example: atilade@gmail.com
+                        gender:
+                          type: string
+                          description: gender of the user
+                          example: non-binary
+                        address:
+                          type: string
+                          description: address of the user
+                          example: 10, Ogunlana Drive, Surulere, Lagos
+                        jobRole:
+                          type: string
+                          description: job role of the user
+                          example: Software Developer
+                        department:
+                          type: string
+                          description: department of the user
+                          example: Software Development  
+                        refreshToken:
+                          type: string
+                          description: Refresh token
+                          example: 44yytruy76iiui945436t
       security:
         - access_token: []
   /users/{id}:
