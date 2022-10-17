@@ -14,7 +14,7 @@ describe('POST /auth/create-user', () => {
 				lastName: faker.name.lastName(),
 				email: faker.internet.email(),
 				password: faker.internet.password(),
-				profilePictureUrl: faker.image.imageUrl()
+				profilePictureUrl: faker.internet.url()
 			}
 			const data = {
 				email: signupInfo.email
@@ -200,7 +200,7 @@ describe('POST /auth/create-user', () => {
 				lastName: faker.name.lastName(),
 				email: faker.internet.email(),
 				password: faker.internet.password(),
-				profilePictureUrl : faker.image.imageUrl()
+				profilePictureUrl : faker.internet.url()
 			}
 			const data = {
 				email: signupInfo.email
