@@ -2,7 +2,7 @@ const { expect } = require('chai')
 const { fixtures, setupDB } = require('../../../test/utils')
 const fetchUsers = require('../../services/users/fetch-users')
 
-describe('GET/users', () => {    
+describe('GET /users', () => {    
 	describe('Success', () => {
 		const numberOfUsers = 5
 		let adminUser
@@ -47,7 +47,7 @@ describe('GET/users', () => {
 				{user : body}
 			)
 		})
-		it('should return 400 if user is not an admin', async() =>{
+		it('should return 403 if user is not an admin', async() =>{
 			const expectedError = {
 				"status":"failed",
 				"message":"Only admin can create users"
