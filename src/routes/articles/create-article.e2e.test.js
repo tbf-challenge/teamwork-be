@@ -101,7 +101,7 @@ describe('POST /articles', () => {
 				.send(data)
 				.expect(201)
 		)
-		it.only('should return the right response', async () =>
+		it('should return the right response', async () =>
 			fixtures.api()
 				.post(`/api/v1/articles`)
 				.set('Authorization', `Bearer ${accessToken}`)
