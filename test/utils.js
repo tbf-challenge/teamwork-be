@@ -61,6 +61,38 @@ const fixtures = {
 		return newUser.rows[0]
 		
 	},
+	 async insertMultipleUsers( numberOfUsers = 5){
+		return Promise.all(Array.from({
+			 length: numberOfUsers 
+		}).map(() =>  fixtures.insertUser()))
+	},
+	// const users = []
+
+	// const createNewUser = () => ([
+	// 	faker.name.firstName(),
+	// 	faker.name.lastName(),
+	// 	faker.internet.email(),
+	// 	faker.internet.password(),
+	// 	faker.helpers.arrayElement(['male', 'female']),
+	// 	faker.helpers.arrayElement(['admin', 'user']),
+	// 	faker.helpers.arrayElement([
+	// 		'marketting', 'finance', 'sales', 'technology']),
+	// 	faker.address.city(),
+	// 	faker.random.word(),
+	// 	faker.image.imageUrl(),
+	// 	faker.datatype.uuid()	
+	// ])
+	// Array.from({ length: numberOfUsers }).forEach(() => {
+	// 	users.push(createNewUser())
+	// })
+	// const addUsersQuery = format(
+	// 	`INSERT INTO users (
+	// 		"firstName", "lastName", email, "passwordHash",
+	// 		gender, role, department, address, "jobRole", 
+	// 		"profilePictureUrl", "refreshToken") 
+	// 		VALUES %L returning id`, users)
+	// const result = await db.query(addUsersQuery)
+	// return result
 	async insertPost(overrides = {}){
 		const postData = {
 			title : faker.random.words(),

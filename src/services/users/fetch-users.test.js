@@ -4,10 +4,10 @@ const db = require('../../db')
 const fetchUsers = require('./fetch-users')
 
 describe('Fetch all users', () => {
+	const numberOfUsers = 5
 	beforeEach(async () => {
 		await setupDB()
-		await fixtures.insertUser()
-		await fixtures.insertUser()
+		await fixtures.insertMultipleUsers(numberOfUsers)
 	 })
 
 	describe('Success', () => {
