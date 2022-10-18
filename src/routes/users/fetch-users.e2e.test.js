@@ -8,7 +8,7 @@ describe('GET /users', () => {
 		let accessToken
 		beforeEach(async () =>{
 			await setupDB()
-			await fixtures.insertUser()
+			await fixtures.insertMultipleUsers()
 			adminUser = await fixtures.insertUser({
 				role : 'admin'
 			}) 
