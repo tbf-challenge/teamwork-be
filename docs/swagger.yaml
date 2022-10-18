@@ -1812,10 +1812,6 @@ paths:
                           type: string
                           description: department of the user
                           example: Software Development  
-                        refreshToken:
-                          type: string
-                          description: Refresh token
-                          example: 44yytruy76iiui945436t
       security:
         - access_token: []
   /users/{id}:
