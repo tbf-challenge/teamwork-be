@@ -4,12 +4,11 @@ const fetchUsers = require('../../services/users/fetch-users')
 
 describe('GET /users', () => {    
 	describe('Success', () => {
-		const numberOfUsers = 5
 		let adminUser
 		let accessToken
 		beforeEach(async () =>{
 			await setupDB()
-			await fixtures.insertMultipleUsers(numberOfUsers)
+			await fixtures.insertUser()
 			adminUser = await fixtures.insertUser({
 				role : 'admin'
 			}) 
@@ -38,7 +37,6 @@ describe('GET /users', () => {
 		let userUser
 		let accessToken
 		beforeEach(async () =>{
-			await setupDB()
 			userUser = await fixtures.insertUser({
 				role : 'user'
 			}) 
