@@ -5,17 +5,15 @@ const fetchUsers = require('./fetch-users')
 
 describe('Fetch all users', () => {
 	const numberOfUsers = 5
-	beforeEach(async () => {
+	before(async () => {
 		await setupDB()
 		await fixtures.insertMultipleUsers(numberOfUsers)
 	 })
-
-	describe('Success', () => {
-		it('should fetch users data', async () =>{
-			const actualUsers = await fetchUsers()
-			const result = await db.query(`
+	it('should fetch users data', async () =>{
+		const actualUsers = await fetchUsers()
+		const result = await db.query(`
 			SELECT * FROM users`)
-			return expect(actualUsers).to.eql(result.rows)	
-		})
+		return expect(actualUsers).to.eql(result.rows)	
 	})
+
 })
