@@ -15,6 +15,10 @@ const {
 const tearDown = () => 
 	db.query("DROP SCHEMA public CASCADE;CREATE SCHEMA public;")
 
+const resetDBTable = (table) =>
+	 db.query(`
+		TRUNCATE ${table} CASCADE;`)
+
 const setupDB = async() => {
 	await tearDown()
 	await pgMigrate({ 
@@ -38,7 +42,7 @@ const fixtures = {
 				'marketting', 'finance', 'sales', 'technology']),
 			address : faker.address.city(),
 			jobRole : faker.random.word(),
-			profilePictureUrl : faker.internet.url(),
+			profilePictureUrl : faker.image.imageUrl(),
 			refreshToken : faker.datatype.uuid()
 
 			
@@ -60,6 +64,11 @@ const fixtures = {
 		)
 		return newUser.rows[0]
 		
+	},
+	 async insertMultipleUsers( numberOfUsers = 5){
+		return Promise.all(Array.from({
+			 length: numberOfUsers 
+		}).map(() =>  fixtures.insertUser()))
 	},
 	async insertPost(overrides = {}){
 		const postData = {
@@ -157,5 +166,6 @@ const fixtures = {
 module.exports = {
 	setupDB,
 	tearDown,
-	fixtures
+	fixtures,
+	resetDBTable
 }

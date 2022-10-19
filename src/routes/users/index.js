@@ -3,6 +3,7 @@ const db = require("../../db")
 const isAuthenticated = require("../../middleware/isAuthenticated")
 const userService = require('../../services/users')
 const validateSchema = require('../../middleware/validateSchema')
+const isAdmin = require('../../middleware/isAdmin')
 const {
 	updateUserSchema
 } = require("../../schema")
@@ -17,9 +18,15 @@ const ERROR_MAP = {
 
 const router = express.Router()
 
-const fetchUsers = (req, res) => {
-	res.send("get users")
-}
+const fetchUsers =  catchAsync( async(req, res) => {
+	const users = await userService.fetchUsers()
+
+	res.status(200).json({
+		status: 'success',
+		data: users.map(transformUserResponse)
+	})
+	
+})
 const createUsers = () => {}
 const getUser = async (req, res) => {
 	const { id } = req.params
@@ -45,7 +52,7 @@ router.use(isAuthenticated())
 
 router
 	.route("/")
-	.get(fetchUsers)
+	.get(isAdmin, fetchUsers)
 	.post(createUsers)
 router
 	.route("/:id")

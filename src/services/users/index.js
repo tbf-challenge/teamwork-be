@@ -13,6 +13,7 @@ const sendPasswordResetLink  = require('./send-password-reset-link')
 const resetPassword = require('./reset-password')
 const createNewUser = require('./create-new-user')
 const updateUser = require('./update-user')
+const fetchUsers = require('./fetch-users')
 
 const {
 	RefreshTokenIsInvalidError,
@@ -159,5 +160,6 @@ module.exports = {
 	getInvitedUserDetail,
 	sendPasswordResetLink,
 	resetPassword,
-	updateUser
+	updateUser,
+	fetchUsers
 }
