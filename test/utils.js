@@ -15,7 +15,13 @@ const {
 const tearDown = () => 
 	db.query("DROP SCHEMA public CASCADE;CREATE SCHEMA public;")
 
+const resetDBTable = (table) =>
+	 db.query(`
+		DROP TABLE ${table};
+		 CREATE TABLE ${table}`)
+
 const setupDB = async() => {
+	await resetDBTable()
 	await tearDown()
 	await pgMigrate({ 
 		dir: path.join('.', 'migrations'),
@@ -162,5 +168,6 @@ const fixtures = {
 module.exports = {
 	setupDB,
 	tearDown,
-	fixtures
+	fixtures,
+	resetDBTable
 }

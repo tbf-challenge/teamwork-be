@@ -1,5 +1,5 @@
 const { expect } = require('chai')
-const { fixtures, setupDB } = require('../../../test/utils')
+const { fixtures, resetDBTable } = require('../../../test/utils')
 
 describe('GET /users', () => {   
 	describe('Failure', ()=> {
@@ -30,7 +30,7 @@ describe('GET /users', () => {
 		let adminUser
 		let accessToken
 		before(async () =>{
-			await setupDB()
+			await resetDBTable('users')
 			await fixtures.insertMultipleUsers(numberOfUsers)
 			adminUser = await fixtures.insertUser({
 				role : 'admin'
@@ -40,13 +40,12 @@ describe('GET /users', () => {
 				{user : body}
 			)
 		})
-		it('should return 200 if users are fetched', async () => 
+		it('should return 200 if users are fetched', async () =>
 			fixtures.api()
 				.get(`/api/v1/users`)
 				.set('Authorization', `Bearer ${accessToken}`)
-				.expect(200)
-		)
-		it('should return the right number of users', async() =>
+				.expect(200))
+		it.only('should return the right number of users', async() =>
 			fixtures.api()
 				.get(`/api/v1/users`)
 				.set('Authorization', `Bearer ${accessToken}`)
