@@ -3,13 +3,13 @@ const { fixtures, setupDB } = require('../../../test/utils')
 
 describe('GET /users', () => {   
 	describe('Failure', ()=> {
-		let userUser
+		let nonAdminUser
 		let accessToken
 		before(async () =>{
-			userUser = await fixtures.insertUser({
+			nonAdminUser = await fixtures.insertUser({
 				role : 'user'
 			}) 
-			const body = { id: userUser.id, email: userUser.email }
+			const body = { id: nonAdminUser.id, email: nonAdminUser.email }
 			accessToken = fixtures.generateAccessToken(
 				{user : body}
 			)
@@ -19,18 +19,19 @@ describe('GET /users', () => {
 				"status":"failed",
 				"message":"Only admin can create users"
 			}
-			fixtures.api()
+			return fixtures.api()
 				.get(`/api/v1/users`)
 				.set('Authorization', `Bearer ${accessToken}`)
 				.expect(403 , expectedError)
 		})
 	}) 
 	describe('Success', () => {
+		const numberOfUsers = 5
 		let adminUser
 		let accessToken
 		before(async () =>{
 			await setupDB()
-			await fixtures.insertMultipleUsers()
+			await fixtures.insertMultipleUsers(numberOfUsers)
 			adminUser = await fixtures.insertUser({
 				role : 'admin'
 			}) 
@@ -45,13 +46,13 @@ describe('GET /users', () => {
 				.set('Authorization', `Bearer ${accessToken}`)
 				.expect(200)
 		)
-		it('should return the right number of users', async() =>{
+		it('should return the right number of users', async() =>
 			fixtures.api()
 				.get(`/api/v1/users`)
 				.set('Authorization', `Bearer ${accessToken}`)
 				.then(res => {
-				 expect(res.body.length).eql(6)
+				 expect(res.body.data.length).eql(6)
 				}) 
-		})	
+		)	
 	})
 })
