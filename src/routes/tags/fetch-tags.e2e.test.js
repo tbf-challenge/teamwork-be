@@ -25,7 +25,7 @@ describe('GET /tags', () => {
 				insertedTags= await fixtures.insertMultipleTags(numberOfTags)
 			
 			})
-			it('should return 200 if users are fetched', async () =>
+			it('should return 200 if tags are fetched', async () =>
 				fixtures.api()
 					.get(`/api/v1/tags`)
 					.set('Authorization', `Bearer ${accessToken}`)
