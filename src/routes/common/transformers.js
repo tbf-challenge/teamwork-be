@@ -26,10 +26,12 @@ const transformUserResponse = (userDetails) => ({
 	lastName: userDetails.lastName,
 	email: userDetails.email,
 	gender: userDetails.gender,
+	role : userDetails.role,
 	jobRole: userDetails.jobRole,
 	department: userDetails.department,
 	address: userDetails.address,
-	profilePictureUrl: userDetails.profilePictureUrl
+	profilePictureUrl: userDetails.profilePictureUrl,
+	createdOn : userDetails.createdAt
 })
 
 
