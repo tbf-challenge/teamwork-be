@@ -1,12 +1,12 @@
 const { expect } = require('chai')
-const {fixtures, setupDB } = require('../../../test/utils')
+const {fixtures, resetDBTable } = require('../../../test/utils')
 const db = require('../../db')
 const fetchUsers = require('./fetch-users')
 
 describe('Fetch all users', () => {
 	const numberOfUsers = 5
 	before(async () => {
-		await setupDB()
+		await resetDBTable('users')
 		await fixtures.insertMultipleUsers(numberOfUsers)
 	 })
 	it('should fetch users data', async () =>{

@@ -17,11 +17,9 @@ const tearDown = () =>
 
 const resetDBTable = (table) =>
 	 db.query(`
-		DROP TABLE ${table};
-		 CREATE TABLE ${table}`)
+		DELETE FROM ${table};`)
 
 const setupDB = async() => {
-	await resetDBTable()
 	await tearDown()
 	await pgMigrate({ 
 		dir: path.join('.', 'migrations'),

@@ -45,7 +45,7 @@ describe('GET /users', () => {
 				.get(`/api/v1/users`)
 				.set('Authorization', `Bearer ${accessToken}`)
 				.expect(200))
-		it.only('should return the right number of users', async() =>
+		it('should return the right number of users', async() =>
 			fixtures.api()
 				.get(`/api/v1/users`)
 				.set('Authorization', `Bearer ${accessToken}`)
