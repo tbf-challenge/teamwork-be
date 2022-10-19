@@ -43,15 +43,16 @@ describe('CREATE POST', () => {
                 WHERE id = $1
                 AND type = $2
                 `,[gif.id , gif.type ])
+			const queryResult = result.rows[0]
 			expect(gif).to.eql({
-				id : result.rows[0].id,
-				userId : result.rows[0].userId,
-				title : result.rows[0].title,
-				image : result.rows[0].image,
-				content : result.rows[0].content,
-				published : result.rows[0].published,
-				createdAt : result.rows[0].createdAt,
-				type : result.rows[0].type
+				id : queryResult.id,
+				userId : queryResult.userId,
+				title : queryResult.title,
+				image : queryResult.image,
+				content : queryResult.content,
+				published : queryResult.published,
+				createdAt : queryResult.createdAt,
+				type : queryResult.type
 			})
 		})
 	})
@@ -78,15 +79,16 @@ describe('CREATE POST', () => {
                 WHERE id = $1
                 AND type = $2
                 `,[article.id , article.type ])
+			const queryResult = result.rows[0]
 			expect(article).to.eql({
-				id : result.rows[0].id,
-				userId : result.rows[0].userId,
-				title : result.rows[0].title,
-				image : result.rows[0].image,
-				content : result.rows[0].content,
-				published : result.rows[0].published,
-				createdAt : result.rows[0].createdAt,
-				type : result.rows[0].type
+				id : queryResult.id,
+				userId : queryResult.userId,
+				title : queryResult.title,
+				image : queryResult.image,
+				content : queryResult.content,
+				published : queryResult.published,
+				createdAt : queryResult.createdAt,
+				type : queryResult.type
 			})
 		})	
 
