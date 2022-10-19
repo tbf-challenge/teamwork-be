@@ -160,6 +160,11 @@ const fixtures = {
 			[newData.title, newData.content]
 		)
 		return result.rows[0]
+	},
+	async insertMultipleTags( numberOfTags = 5){
+		return Promise.all(Array.from({
+			 length: numberOfTags 
+		}).map(() =>  fixtures.insertTag()))
 	}
 }
 
