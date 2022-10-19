@@ -8,19 +8,26 @@ const {fixtures} = require('../../../test/utils')
 
 describe('CREATE POST', () => {
 	let user
+	let post
 	beforeEach(async ()=>{
 		 user = await fixtures.insertUser() 
+		 post = await createPost({
+			userId: user.id,
+			title : faker.random.words(),
+			image : faker.internet.url(),
+			content : faker.internet.url(),
+			published : faker.datatype.boolean()
+		})
 	})
 	describe('Gif', () => {		
-		it('should insert a gif', async () => {
-			const gif = await createPost({
-				userId: user.id,
-				title : faker.random.words(),
-				image : faker.internet.url(),
-				content : faker.internet.url(),
-				published : faker.datatype.boolean(),
+		let gif
+		beforeEach(async ()=> {
+			gif = post({
 				type : 'gif'
 			})
+
+		})
+		it.only('should insert a gif', async () => {
 			const result = await db.query(
 				`SELECT * FROM posts
                 WHERE id = $1
@@ -29,27 +36,28 @@ describe('CREATE POST', () => {
 			expect(result.rowCount).to.equal(1)
     
 		})
-		it('should return right data', async () => {
-			const gif = await createPost({
-				userId: user.id,
-				title : faker.random.words(),
-				image : faker.internet.url(),
-				content : faker.internet.url(),
-				published : faker.datatype.boolean(),
-				type : 'gif'
-			})
+		it.only('should return right data', async () => {
 			const result = await db.query(
 				`SELECT * FROM posts
                 WHERE id = $1
                 AND type = $2
                 `,[gif.id , gif.type ])
-			expect(gif).to.eql(result.rows[0])
+			expect(gif).to.eql({
+				id : result.rows[0].id,
+				userId : result.rows[0].userId,
+				title : result.rows[0].title,
+				image : result.rows[0].image,
+				content : result.rows[0].content,
+				published : result.rows[0].published,
+				createdAt : result.rows[0].createdAt,
+				type : result.rows[0].type
+			})
 		})
 	})
 	describe('Article', () => {
-		it('should insert an article', async () => {
-    
-			const article = await createPost({
+		let article
+		beforeEach(async ()=>{
+			article = await createPost({
 				userId: user.id,
 				title : faker.random.words(),
 				image : faker.internet.url(),
@@ -57,7 +65,8 @@ describe('CREATE POST', () => {
 				published : faker.datatype.boolean(),
 				type : 'article'
 			})
-    
+		})
+		it('should insert an article', async () => {
 			const result = await db.query(
 				`SELECT * FROM posts
                 WHERE id = $1
@@ -67,21 +76,21 @@ describe('CREATE POST', () => {
     
 		})
 		it('should return right data', async () => {
-    
-			const article = await createPost({
-				userId: user.id,
-				title : faker.random.words(),
-				image : faker.internet.url(),
-				content : faker.internet.url(),
-				published : faker.datatype.boolean(),
-				type : 'article'
-			})
 			const result = await db.query(
 				`SELECT * FROM posts
                 WHERE id = $1
                 AND type = $2
                 `,[article.id , article.type ])
-			expect(article).to.eql(result.rows[0])
+			expect(article).to.eql({
+				id : result.rows[0].id,
+				userId : result.rows[0].userId,
+				title : result.rows[0].title,
+				image : result.rows[0].image,
+				content : result.rows[0].content,
+				published : result.rows[0].published,
+				createdAt : result.rows[0].createdAt,
+				type : result.rows[0].type
+			})
 		})	
 
 	})
