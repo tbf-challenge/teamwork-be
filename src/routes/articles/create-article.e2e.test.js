@@ -108,14 +108,21 @@ describe('POST /articles', () => {
 				.send(data)
 				.expect(201)
 				.then((res) => {
-					expect(res.body).to.have.property('status', 'success')
-					expect(res.body).to.have.property('data')
-					expect(res.body.data.title).to.be.a('string')
-					expect(res.body.data.article).to.be.a('string')
-					expect(res.body.data.articleId).to.be.an('number')
-					expect(res.body.data.userId).to.be.a('number')
-					expect(res.body.data.message)
-						.to.eql('Article successfully posted')
+					delete res.body.data.articleId
+					delete res.body.data.createdOn
+					expect(res.body).to.eql(
+						{
+							status: 'success',
+							data: {
+							  message: 'Article successfully posted',
+							  userId: data.userId,
+							  title: data.title,
+							  image: data.image,
+							  article: data.article,
+							  published: data.published
+							}
+						  
+						})
 				})
 		)
 	})

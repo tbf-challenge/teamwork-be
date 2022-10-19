@@ -8,26 +8,23 @@ const {fixtures} = require('../../../test/utils')
 
 describe('CREATE POST', () => {
 	let user
-	let post
 	beforeEach(async ()=>{
 		 user = await fixtures.insertUser() 
-		 post = await createPost({
-			userId: user.id,
-			title : faker.random.words(),
-			image : faker.internet.url(),
-			content : faker.internet.url(),
-			published : faker.datatype.boolean()
-		})
+		 
 	})
 	describe('Gif', () => {		
 		let gif
 		beforeEach(async ()=> {
-			gif = post({
+			gif = await createPost({
+				userId: user.id,
+				title : faker.random.words(),
+				image : faker.internet.url(),
+				content : faker.internet.url(),
+				published : faker.datatype.boolean(),
 				type : 'gif'
 			})
-
 		})
-		it.only('should insert a gif', async () => {
+		it('should insert a gif', async () => {
 			const result = await db.query(
 				`SELECT * FROM posts
                 WHERE id = $1
@@ -36,7 +33,7 @@ describe('CREATE POST', () => {
 			expect(result.rowCount).to.equal(1)
     
 		})
-		it.only('should return right data', async () => {
+		it('should return right data', async () => {
 			const result = await db.query(
 				`SELECT * FROM posts
                 WHERE id = $1
