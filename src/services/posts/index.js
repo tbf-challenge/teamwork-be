@@ -11,19 +11,10 @@ const likePost = require("./like-post")
 const unlikePost = require("./unlike-post")
 const flagPost = require("./flag-post")
 const unflagPost = require("./unflag-post")
+const createPost = require("./create-post")
 
 const uniqueErrorCode = '23505'
 
-const createPost = async({userId, title, image, content, published, type}) => {
-	const newPost = await db.query(
-		`INSERT INTO posts
-		 ("userId", title , image , content , published, type )
-		  VALUES ($1 , $2 , $3 , $4 , $5, $6 ) 
-		  RETURNING *`,
-		[userId, title, image, content, published, type]
-	)
-	return newPost.rows[0]
-}
 
 const getPost = async({id, type}) => {
 	const result = await db.query(
