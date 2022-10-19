@@ -27,11 +27,12 @@ describe('GET /users', () => {
 	}) 
 	describe('Success', () => {
 		const numberOfUsers = 5
+		let insertedUsers
 		let adminUser
 		let accessToken
 		before(async () =>{
 			await resetDBTable('users')
-			await fixtures.insertMultipleUsers(numberOfUsers)
+			insertedUsers= await fixtures.insertMultipleUsers(numberOfUsers)
 			adminUser = await fixtures.insertUser({
 				role : 'admin'
 			}) 
@@ -50,7 +51,21 @@ describe('GET /users', () => {
 				.get(`/api/v1/users`)
 				.set('Authorization', `Bearer ${accessToken}`)
 				.then(res => {
-				 expect(res.body.data.length).eql(6)
+					expect(res.body.data).to.have.deep.members(
+						[...insertedUsers, adminUser].map((user) =>({
+							userId : user.id,
+							firstName : user.firstName,
+							lastName : user.lastName,
+							email : user.email,
+							gender : user.gender,
+							role : user.role,
+							jobRole : user.jobRole,
+							department : user.department,
+							address : user.address,
+							profilePictureUrl : user.profilePictureUrl,
+							createdOn : user.createdAt.toISOString()
+
+						})))
 				}) 
 		)	
 	})

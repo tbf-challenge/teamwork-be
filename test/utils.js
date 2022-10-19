@@ -17,7 +17,7 @@ const tearDown = () =>
 
 const resetDBTable = (table) =>
 	 db.query(`
-		DELETE FROM ${table};`)
+		TRUNCATE ${table} CASCADE;`)
 
 const setupDB = async() => {
 	await tearDown()

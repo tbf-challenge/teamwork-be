@@ -87,7 +87,7 @@ paths:
                         type: string
                         description: user image
                         example: https://imgbb.com/
-                      createdAt:
+                      createdOn:
                         type: string
                         description: time a user was created
                         example: "2022-10-06T12:50:11.970Z"
@@ -182,7 +182,7 @@ paths:
                         type: string
                         description: job role of user
                         example: sales
-                      createdAt:
+                      createdOn:
                         type: string
                         description: time a user was created
                         example: "2022-10-06T12:50:11.970Z"
@@ -1065,7 +1065,7 @@ paths:
                         type: string
                         description: content of the article
                         example: You need to be prepared to put in the work 
-                      createdAt:
+                      createdOn:
                         type: string
                         description: time of article creation
                         example:  "2022-10-06T12:50:11.970Z"
