@@ -1,4 +1,4 @@
-name: Run Nodejs CI 
+name: Node.js CI
 run-name: ${{ github.actor }} is testing the Teamwork API and Services
 
 on:
@@ -26,4 +26,3 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
-    
