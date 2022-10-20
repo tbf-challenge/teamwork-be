@@ -6,8 +6,8 @@ describe('PATCH /articles/:id', () => {
 	let user
 	let accessToken
 	let article
-	let updatedInfo = {}
-	beforeEach(async ()=> {
+	let updatedInfo 
+	before(async ()=> {
 		user = await fixtures.insertUser() 
 		const body = { id: user.id, email: user.email }
 		accessToken = fixtures.generateAccessToken(
@@ -21,7 +21,10 @@ describe('PATCH /articles/:id', () => {
 			title : faker.random.word(),
 			image : faker.image.imageUrl(),
 			content : faker.random.words(),
-			published : faker.datatype.boolean()
+			published : faker.datatype.boolean(),
+			articleId : article.id,
+			createdOn : article.createdAt.toISOString(),
+			userId : article.userId
 		}
 
 	})
@@ -173,9 +176,6 @@ describe('PATCH /articles/:id', () => {
 					expect(res.body.data.userId).to.be.an('number')
 					expect(res.body.data.articleId).to.be.an('number')
 					expect(res.body.data.createdOn).to.be.a('string')
-					delete res.body.data.userId
-					delete res.body.data.articleId
-					delete res.body.data.createdOn
 					expect(res.body).to.eql(
 						{
 							status: 'success',
@@ -184,7 +184,10 @@ describe('PATCH /articles/:id', () => {
 							  title: updatedInfo.title,
 							  image: updatedInfo.image,
 							  article: updatedInfo.content,
-							  published: updatedInfo.published
+							  published: updatedInfo.published,
+							  articleId : updatedInfo.articleId,
+							  createdOn : updatedInfo.createdOn,
+							  userId : updatedInfo.userId
 							}
 						  
 						}

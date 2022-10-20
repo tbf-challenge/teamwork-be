@@ -8,9 +8,9 @@ const updatePost = require('./update-post')
 describe('Update Article', () => {
 	let user
 	let article
-	let updatedInfo = {}
+	let updatedInfo 
 
-	beforeEach(async () => {
+	before(async () => {
 		user = await fixtures.insertUser()
 		article = await fixtures.insertPost({
 			userId : user.id,
@@ -24,16 +24,11 @@ describe('Update Article', () => {
 		}
 	})
 
-	it('should throw an error if article does not exist', async () => {
-		const { id , type} = article
-		 await db.query(
-			`DELETE FROM posts
-	         WHERE id = $1
-	         AND type = $2`, [id,type])
-		return expect(updatePost({...updatedInfo, id}))
+	it('should throw an error if article does not exist', async () => 
+		 expect(updatePost({...updatedInfo, id: 23}))
 			.to.be.rejectedWith(
 				'Article does not exist')
-	})
+	)
 
 	it('should update article', async () => {
 		const { id , type} = article
