@@ -57,7 +57,7 @@ router.post(
 			data:{
 			   ...transformUserResponse(userDetails.user),
 			   refreshToken: userDetails.user.refreshToken,
-			   createdAt : userDetails.user.createdAt,
+			   createdOn : userDetails.user.createdAt,
 			   accessToken : userDetails.accessToken
 			}
 		})
