@@ -21,10 +21,7 @@ describe('PATCH /articles/:id', () => {
 			title : faker.random.word(),
 			image : faker.image.imageUrl(),
 			content : faker.random.words(),
-			published : faker.datatype.boolean(),
-			articleId : article.id,
-			createdOn : article.createdAt.toISOString(),
-			userId : article.userId
+			published : faker.datatype.boolean()
 		}
 
 	})
@@ -173,9 +170,6 @@ describe('PATCH /articles/:id', () => {
 				})
 				.expect(200)
 				.then((res) => {
-					expect(res.body.data.userId).to.be.an('number')
-					expect(res.body.data.articleId).to.be.an('number')
-					expect(res.body.data.createdOn).to.be.a('string')
 					expect(res.body).to.eql(
 						{
 							status: 'success',
@@ -185,9 +179,9 @@ describe('PATCH /articles/:id', () => {
 							  image: updatedInfo.image,
 							  article: updatedInfo.content,
 							  published: updatedInfo.published,
-							  articleId : updatedInfo.articleId,
-							  createdOn : updatedInfo.createdOn,
-							  userId : updatedInfo.userId
+							  articleId : article.id,
+							  createdOn : article.createdAt.toISOString(),
+							  userId : article.userId
 							}
 						  
 						}
