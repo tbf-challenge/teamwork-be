@@ -1,6 +1,8 @@
 const { expect } = require('chai')
 const { fixtures } = require('../../../test/utils')
 
+const endpointRoute = '/api/v1/auth/signin' 
+
 describe('POST /auth/signin', async() => {
 	let user
 	let validPassword 
@@ -25,7 +27,7 @@ describe('POST /auth/signin', async() => {
 			}
 
 			return fixtures.api()
-				.post('/api/v1/auth/signin')
+				.post(endpointRoute)
 				.expect(400, expectedError)
 		})
 		it(`should return a 400 error if email is absent`, async() => {
@@ -37,7 +39,7 @@ describe('POST /auth/signin', async() => {
 			}
 
 			return fixtures.api()
-				.post('/api/v1/auth/signin')
+				.post(endpointRoute)
 				.send({
 					password : validPassword
 				})
@@ -52,7 +54,7 @@ describe('POST /auth/signin', async() => {
 			}
 
 			return fixtures.api()
-				.post('/api/v1/auth/signin')
+				.post(endpointRoute)
 				.send({
 					email: signinInfo.email
 				})
@@ -66,7 +68,7 @@ describe('POST /auth/signin', async() => {
 				"status": "failed"
 			}
 			return fixtures.api()
-				.post('/api/v1/auth/signin')
+				.post(endpointRoute)
 				.send({
 					email: 'invalid-email.com',
 					password: validPassword
@@ -76,7 +78,7 @@ describe('POST /auth/signin', async() => {
 
 		it('should return an error if password is invalid', async () => 
 			fixtures.api()
-				.post('/api/v1/auth/signin')
+				.post(endpointRoute)
 				.send({
 					email: signinInfo.email,
 					password: "invalid-password"
@@ -93,7 +95,7 @@ describe('POST /auth/signin', async() => {
 	describe('Success', () => {
 		it('should return 200', async () => 
 			fixtures.api()
-				.post('/api/v1/auth/signin')
+				.post(endpointRoute)
 				.send({
 					email: signinInfo.email,
 					password: validPassword
@@ -103,7 +105,7 @@ describe('POST /auth/signin', async() => {
 		)
 		it('should return the right response', async () =>
 			fixtures.api()
-				.post('/api/v1/auth/signin')
+				.post(endpointRoute)
 				.send({
 					email: signinInfo.email,
 					password: validPassword
