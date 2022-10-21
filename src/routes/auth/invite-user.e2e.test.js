@@ -3,26 +3,15 @@ const { expect } = require('chai')
 const { fixtures } = require('../../../test/utils')
 
 describe('POST /invite-user', () => {   
-	let nonAdminUser
 	let adminUser
-	let nonAdminAccessToken
 	let adminAccessToken
 	let invitedUserInfo
-
 	before(async () => {
-		nonAdminUser = await fixtures.insertUser({
-			role : 'user'
-		}) 
-		const body = { id: nonAdminUser.id, email: nonAdminUser.email }
-		nonAdminAccessToken = fixtures.generateAccessToken(
-			{user : body}
-		)
 		adminUser = await fixtures.insertUser({
 			role : 'admin'
 		}) 
-		const result = { id: adminUser.id, email: adminUser.email }
 		adminAccessToken = fixtures.generateAccessToken(
-			{user : result}
+			{user :  { id: adminUser.id, email: adminUser.email }}
 		)
 		invitedUserInfo = {
 			email : faker.internet.email()
@@ -30,6 +19,12 @@ describe('POST /invite-user', () => {
 	})
 	describe('Failure', ()=> {
 		it('should return 403 if user is not an admin', async() =>{
+			const nonAdminUser = await fixtures.insertUser({
+				role : 'user'
+			}) 
+			const nonAdminAccessToken = fixtures.generateAccessToken(
+				{user :  { id: nonAdminUser.id, email: nonAdminUser.email }}
+			)
 			const expectedError = {
 				"status":"failed",
 				"message":"Only admin can create users"
@@ -82,12 +77,11 @@ describe('POST /invite-user', () => {
 				.set('Authorization', `Bearer ${adminAccessToken}`)
 				.send(invitedUserInfo)
 				.then(res => {
-					expect(res.body.data.status).to.eql('pending')
-					delete res.body.data.status
 					expect(res.body).to.eql({
 						"status" : "success",
 						"data" : {
-							email : invitedUserInfo.email
+							email : invitedUserInfo.email,
+							status : 'pending'
 						}
 					})
 						
