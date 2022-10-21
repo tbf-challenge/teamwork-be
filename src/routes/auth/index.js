@@ -37,7 +37,7 @@ const ERROR_MAP = {
 	[ InvalidResetTokenError.name ] : 401
 }
 
-const transformCreateUserResponse = (userDetails) => ({
+const transformUserCredentials = (userDetails) => ({
 	accessToken : userDetails.accessToken,
 	userId : userDetails.userId,
 	refreshToken : userDetails.refreshToken
@@ -114,7 +114,7 @@ router.post(
 			status: 'success',
 			data: {
 				message: 'User account successfully created',
-				...transformCreateUserResponse(userDetails)
+				...transformUserCredentials(userDetails)
 			}
 		})
 	})
@@ -137,7 +137,7 @@ router.post(
 
 		res.status(200).json({
 			status: 'success',
-			data: transformUserResponse(userDetails)
+			data: transformUserCredentials(userDetails)
 			
 		})
 	})

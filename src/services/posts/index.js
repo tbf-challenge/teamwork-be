@@ -12,6 +12,7 @@ const unlikePost = require("./unlike-post")
 const flagPost = require("./flag-post")
 const unflagPost = require("./unflag-post")
 const createPost = require("./create-post")
+const updatePost = require("./update-post")
 
 const uniqueErrorCode = '23505'
 
@@ -34,23 +35,6 @@ const getPost = async({id, type}) => {
 	return post
 }
 
-
-const updatePost = async({title, content, image, published, id}) => {
-	const result = await db.query(
-		`UPDATE posts 
-		SET title = $1, content = $2 , image = $3 , published = $4
-		 WHERE id = $5 
-		 RETURNING *`,
-		[title, content, image, published, id]
-	)
-	const updatedPost = result.rows[0]
-	if (!updatedPost) {
-		throw customError(ArticleDoesNotExistError)
-	}
-	
-	return updatedPost
-
-}
 const deletePostTags = async({postId, tagId}) => {
 	const result = await db.query(
 		'DELETE FROM posts_tags WHERE "postId" = $1 AND "tagId" = $2',
