@@ -24,7 +24,7 @@ describe('User signin', () => {
 				'Invalid email or password.')
 	})
 
-	it('should signin user', async () => {
+	it('should return the right response', async () => {
 		const { id, email} = user
 		await signInUserByEmail(
 			email, validPassword)
@@ -36,15 +36,14 @@ describe('User signin', () => {
 		const  loggedInUser = rows[0]
 
 		return expect(loggedInUser).to.include({
-			firstName: loggedInUser.firstName,
-			lastName: loggedInUser.lastName,
-			email : loggedInUser.email,
-			gender: loggedInUser.gender,
-			jobRole: loggedInUser.jobRole,
-			department: loggedInUser.department,
-			address: loggedInUser.address,
-			profilePictureUrl: loggedInUser.profilePictureUrl,
-			refreshToken : loggedInUser.refreshToken
+			firstName: user.firstName,
+			lastName: user.lastName,
+			email : user.email,
+			gender: user.gender,
+			jobRole: user.jobRole,
+			department: user.department,
+			address: user.address,
+			profilePictureUrl: user.profilePictureUrl
 		})
 
 	})

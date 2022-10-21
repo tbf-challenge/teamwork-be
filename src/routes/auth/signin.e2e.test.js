@@ -94,7 +94,7 @@ describe('POST /auth/signin', async() => {
 	})
 
 	describe('Success', () => {
-		it('should return 201', async () => 
+		it('should return 200', async () => 
 			fixtures.api()
 				.post('/api/v1/auth/signin')
 				.send({
@@ -104,7 +104,7 @@ describe('POST /auth/signin', async() => {
 				.expect('Content-Type', /json/)
 				.expect(200)
 		)
-		it('should return the right response', async () => {			
+		it('should return the right response', async () =>
 			fixtures.api()
 				.post('/api/v1/auth/signin')
 				.send({
@@ -130,10 +130,9 @@ describe('POST /auth/signin', async() => {
 							department: user.department,
 							address: user.address,
 							profilePictureUrl: user.profilePictureUrl,
-							createdOn: user.createdOn.toISOString()
+							createdOn: user.createdAt.toISOString()
 						}
 					})
-				})
-		})
+				}))
 	})
 })
