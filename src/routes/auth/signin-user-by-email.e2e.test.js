@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 const { expect } = require('chai')
 const { fixtures } = require('../../../test/utils')
 
@@ -6,15 +5,11 @@ describe('POST /auth/signin', async() => {
 	let user
 	let validPassword 
 	let signinInfo
-	// let accessToken
 	beforeEach(async ()=> {
 		user = await fixtures.insertUser({
 			password : 'validPassword123$'
 		})
-		// const body = { id: user.id, email: user.email }
-		// accessToken = fixtures.generateAccessToken(
-		// 	{user : body}
-		// )
+	
 		validPassword = 'validPassword123$'
         
 		signinInfo = {
@@ -91,7 +86,8 @@ describe('POST /auth/signin', async() => {
 				})
 				.expect(401)
 				.then((res) => {
-					expect(res.body.error.message).to.eql("Invalid email or password.")
+					expect(res.body.error.message)
+						.to.eql(`Invalid email or password.`)
 					expect(res.body.error.status).to.eql("fail")
 				})
 		)
@@ -108,7 +104,6 @@ describe('POST /auth/signin', async() => {
 				.expect('Content-Type', /json/)
 				.expect(200)
 		)
-
 		it('should return the right response', async () => {			
 			fixtures.api()
 				.post('/api/v1/auth/signin')
@@ -118,11 +113,26 @@ describe('POST /auth/signin', async() => {
 				})
 				.expect(200)
 				.then((res) => {
-					expect(res.body).to.have.property('status', 'success')
-					expect(res.body).to.have.property('data')
 					expect(res.body.data.accessToken).to.be.a('string')
 					expect(res.body.data.refreshToken).to.be.an('string')
-					expect(res.body.data.userId).to.be.a('number')
+					delete res.body.data.accessToken
+					delete res.body.data.refreshToken
+					expect(res.body).to.eql({
+						status: 'success',
+						data: {
+							userId: user.id,
+							firstName: user.firstName,
+							lastName: user.lastName,
+							email: user.email,
+							gender: user.gender,
+							role: user.role,
+							jobRole: user.jobRole,
+							department: user.department,
+							address: user.address,
+							profilePictureUrl: user.profilePictureUrl,
+							createdOn: user.createdOn.toISOString()
+						}
+					})
 				})
 		})
 	})
