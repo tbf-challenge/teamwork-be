@@ -6,15 +6,12 @@ describe('POST /auth/signin', async() => {
 	let validPassword 
 	let signinInfo
 	before(async ()=> {
-		user = await fixtures.insertUser({
-			password : 'validPassword123$'
-		})
-	
 		validPassword = 'validPassword123$'
-        
-		signinInfo = {
-			email : user.email,
+		user = await fixtures.insertUser({
 			password : validPassword
+		})    
+		signinInfo = {
+			email : user.email
 		}
 	})
 	describe('Failure', async() => {
@@ -42,7 +39,7 @@ describe('POST /auth/signin', async() => {
 			return fixtures.api()
 				.post('/api/v1/auth/signin')
 				.send({
-					password : signinInfo.password
+					password : validPassword
 				})
 				.expect(400, expectedError)
 		})
@@ -72,7 +69,7 @@ describe('POST /auth/signin', async() => {
 				.post('/api/v1/auth/signin')
 				.send({
 					email: 'invalid-email.com',
-					password: signinInfo.password
+					password: validPassword
 				})
 				.expect(400, expectedError)
 		})
@@ -99,7 +96,7 @@ describe('POST /auth/signin', async() => {
 				.post('/api/v1/auth/signin')
 				.send({
 					email: signinInfo.email,
-					password: signinInfo.password
+					password: validPassword
 				})
 				.expect('Content-Type', /json/)
 				.expect(200)
@@ -109,7 +106,7 @@ describe('POST /auth/signin', async() => {
 				.post('/api/v1/auth/signin')
 				.send({
 					email: signinInfo.email,
-					password: signinInfo.password
+					password: validPassword
 				})
 				.expect(200)
 				.then((res) => {

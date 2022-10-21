@@ -7,10 +7,10 @@ describe('User signin', () => {
 	let user
 	let validPassword
 	before(async () => {
-		user = await fixtures.insertUser({
-			password : 'validPaswword123$'
-		})
 		validPassword = 'validPaswword123$'
+		user = await fixtures.insertUser({
+			password : validPassword
+		})
 	})
 
 	it('should throw an error if user does not exist', async () => 
