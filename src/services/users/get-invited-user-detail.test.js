@@ -1,7 +1,5 @@
 const { expect } = require('chai')
 const { faker } = require('@faker-js/faker')
-const jwt = require('jsonwebtoken')
-const config = require('../../config')
 const db = require('../../db')
 const {fixtures} = require('../../../test/utils')
 const getInvitedUserDetail = require('./get-invited-user-detail')
