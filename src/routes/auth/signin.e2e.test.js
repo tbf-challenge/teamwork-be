@@ -5,7 +5,7 @@ describe('POST /auth/signin', async() => {
 	let user
 	let validPassword 
 	let signinInfo
-	beforeEach(async ()=> {
+	before(async ()=> {
 		user = await fixtures.insertUser({
 			password : 'validPassword123$'
 		})
