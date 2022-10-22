@@ -5,12 +5,15 @@ const inviteUser = require('./invite-user')
 
 
 describe('Invite a New User', () => {
+
 	let invitedUser
+	
 	before(async () => {
 		invitedUser = {
 			email : faker.internet.email()
 		}
 	})
+
 	it('should check if invite is inserted into the database', async () => {
 		const { email } = invitedUser
 		await inviteUser(email)
@@ -19,6 +22,7 @@ describe('Invite a New User', () => {
 			WHERE email = $1`, [email])
 		return expect(result.rowCount).to.eql(1)
 	})
+
 	it('should return the right response', async () => {
 		const { email } = invitedUser
 		const invite = await inviteUser(email)
