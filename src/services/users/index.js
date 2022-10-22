@@ -1,11 +1,9 @@
 const jwt = require("jsonwebtoken")
-const {  
-	verifyPassword, 
+const {   
 	emailLib 
 } = require("../../lib")
 const config = require("../../config")
 const db = require("../../db")
-const { AppError } = require("../../lib")
 const generateAccessToken = require("./generate-access-token")
 const generateRefreshToken = require("./generate-refresh-token")
 const updateRefreshToken = require("./update-refresh-token")
@@ -15,52 +13,13 @@ const createNewUser = require('./create-new-user')
 const updateUser = require('./update-user')
 const fetchUsers = require('./fetch-users')
 const getInvitedUserDetail = require('./get-invited-user-detail')
+const getUserByEmail = require('./get-user-by-email')
+const signInUserByEmail = require('./signin-user-by-email')
 
 const {
 	RefreshTokenIsInvalidError
 } = require("../errors")
 const customError = require("../../lib/custom-error")
-
-
-const invalidEmailAndPassword = "Invalid email or password."
-
-
-const getUserByEmail = async (email) => {
-	const { rows, error } = await db.query(
-		"SELECT * FROM users WHERE email = $1",
-		[email]
-	)
-
-	if (error) {
-		throw error
-	}
-	const userProfile = rows[0]
-
-	if (!userProfile) {
-		throw new AppError(invalidEmailAndPassword, 401)
-	}
-
-	const user = userProfile
-	return user
-}
-
-
-const signInUserByEmail = async (email, password) => {
-	const user = await getUserByEmail(email)
-	const isPasswordSame = await verifyPassword(password, user.passwordHash)
-	if (!isPasswordSame) {
-		throw new AppError(invalidEmailAndPassword, 401)
-	}
-	const body = { id: user.id, email: user.email }
-	const accessToken =  generateAccessToken({
-		data: {user : body}, 
-		expiry : '15m'
-	})
-	
-	const refreshToken = await generateRefreshToken()
-	const updatedUser = await updateRefreshToken(refreshToken , user.id)
-	return { accessToken, user: updatedUser }
-}
 
 /**
  * service to invite user

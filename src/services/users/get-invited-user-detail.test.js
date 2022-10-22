@@ -21,6 +21,7 @@ describe('GET invited-user information', () => {
 	})
 
 	describe('Failure', async()=>{
+
 		it('should throw an error if the invite is invalid', async () =>{
 			const { email } = inviteUserData
 		 await db.query(
@@ -31,8 +32,10 @@ describe('GET invited-user information', () => {
 					'Invite is invalid/expired')
 		})
 	})
+
 	describe('Success', async()=>{
-		it.only('should get invited user information', async () =>{
+
+		it('should get invited user information', async () =>{
 			const {email} = inviteUserData
 			await getInvitedUserDetail(inviteToken)
 			const {rows} = await db.query(
