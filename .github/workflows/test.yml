@@ -33,6 +33,9 @@ jobs:
         # Docker Hub image
         image: postgres
         # Set health checks to wait until postgres has started
+        env:
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
