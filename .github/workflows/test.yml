@@ -66,6 +66,5 @@ jobs:
           POSTGRES_HOST: localhost
           # The default PostgreSQL port
           POSTGRES_PORT: 5432
-    - uses: docker ps -a
     - run: npm run build --if-present
     - run: npm test
