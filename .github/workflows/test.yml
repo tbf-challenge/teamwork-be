@@ -3,7 +3,7 @@ run-name: ${{ github.actor }} is testing the Teamwork API and Services
 
 on:
   push:
-    branches: [ $default-branch ]
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
