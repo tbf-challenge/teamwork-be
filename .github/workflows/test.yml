@@ -46,7 +46,6 @@ jobs:
           - 5432:5432
 
     steps:
-    - uses: docker ps -a
     # Downloads a copy of the code in your repository before running CI tests
     - name: Check out repository code
       uses: actions/checkout@v3
@@ -63,10 +62,10 @@ jobs:
       run: npm ci
 
       env:
-        # The hostname used to communicate with the PostgreSQL service container
-        POSTGRES_HOST: localhost
-        # The default PostgreSQL port
-        POSTGRES_PORT: 5432
-
+          # The hostname used to communicate with the PostgreSQL service container
+          POSTGRES_HOST: localhost
+          # The default PostgreSQL port
+          POSTGRES_PORT: 5432
+    - uses: docker ps -a
     - run: npm run build --if-present
     - run: npm test
