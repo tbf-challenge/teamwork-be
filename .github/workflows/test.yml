@@ -8,6 +8,15 @@ on:
     branches: [ main ]
 env:
   DATABASE_URL: hello_family
+  PORT: 3000
+  TOKEN_SECRET: secret
+  EMAIL_SERVICE_HOST: smtp.gmail.com
+  EMAIL_SERVICE_PASSWORD: your host password
+  EMAIL_SERVICE_PORT: 465
+  EMAIL_SERVICE_USERNAME: example@gmail.com
+  EMAIL_FROM: businessexample@gmail.com
+  FRONTEND_BASE_URL: https://www.anyplaceholder.com/
+  ORGANIZATION_NAME: teamwork
 
 jobs:
   build:
