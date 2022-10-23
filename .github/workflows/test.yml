@@ -34,7 +34,6 @@ jobs:
         image: postgres
         # Set health checks to wait until postgres has started
         env:
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           
         options: >-
