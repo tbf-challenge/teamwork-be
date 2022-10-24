@@ -1745,10 +1745,22 @@ paths:
                             section and ensure you persist your data using a PostgreSQL database.\
                             You are to write SQL queries that will help you write to and read from your database. The
                             endpoints are to be secured with JSON Web Token (JWT)/ /https://imgbb.com/
-                        userId:
-                          type: integer
-                          description: Article id
-                          example: 10
+                        user:
+                            type: array
+                            items:
+                              properties:
+                                fullName:
+                                  type: string
+                                  description: fullname of user
+                                  example: John Doe
+                                email:
+                                  type: string
+                                  description: email of individual
+                                  example: johndoe@gmail.com
+                                profilePictureUrl:
+                                  type: string
+                                  description: profile picture url
+                                  example: https://imgbb.com/
                         published:
                           type: boolean
                           description: Published or not

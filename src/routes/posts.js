@@ -4,12 +4,14 @@ const { catchAsync} = require('../lib')
 const postService = require('../services/posts')
 const {
 	transformArticleResponse ,
-	transformGifResponse
+	transformGifResponse,
+	transformUserResponse
 } = require('./common/transformers')
 
 const typeTransformMap = {
 	article : transformArticleResponse,
-	gif : transformGifResponse
+	gif : transformGifResponse,
+	user : transformUserResponse
 }
 
 const router = express.Router()
@@ -25,9 +27,14 @@ const fetchPosts = catchAsync( async(req, res) => {
 
 	res.status(200).json({
 		status: 'success',
-		data: feed.map((post) => (
-			typeTransformMap[post.type](post)
-		))
+		data: feed.map((post) => ({
+			...typeTransformMap[post.type](post),
+			user :({
+				fullName: `${post.firstName} ${post.lastName}`,
+				profilePictureUrl : post.profilePictureUrl,
+				email : post.email
+			})})
+		)
 	})
 	
 })
