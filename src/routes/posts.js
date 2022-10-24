@@ -4,14 +4,12 @@ const { catchAsync} = require('../lib')
 const postService = require('../services/posts')
 const {
 	transformArticleResponse ,
-	transformGifResponse,
-	transformUserResponse
+	transformGifResponse
 } = require('./common/transformers')
 
 const typeTransformMap = {
 	article : transformArticleResponse,
-	gif : transformGifResponse,
-	user : transformUserResponse
+	gif : transformGifResponse
 }
 
 const router = express.Router()

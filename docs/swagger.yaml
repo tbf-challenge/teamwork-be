@@ -1746,9 +1746,8 @@ paths:
                             You are to write SQL queries that will help you write to and read from your database. The
                             endpoints are to be secured with JSON Web Token (JWT)/ /https://imgbb.com/
                         user:
-                            type: array
-                            items:
-                              properties:
+                            type: object
+                            properties:
                                 fullName:
                                   type: string
                                   description: fullname of user
