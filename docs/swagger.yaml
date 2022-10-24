@@ -1705,7 +1705,7 @@ paths:
   /feed:
     get:
       tags:
-        - article
+        - feed
       operationId: getAllFeed
       summary: Get all articles and gifs
       description: Get all articles and gifs
