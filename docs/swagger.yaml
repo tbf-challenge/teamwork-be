@@ -1738,7 +1738,7 @@ paths:
                           type: string
                           description: Title of article
                           example: How to become a 10x software developer
-                        article/url: 
+                        article/imageUrl: 
                           type: string
                           description: Article created / url of image created
                           example: /You are expected to create a set of ​ API endpoints​ listed under the ​ API Endpoints Specification\
