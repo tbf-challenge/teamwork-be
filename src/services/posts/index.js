@@ -72,9 +72,9 @@ const assignTagToPost = async({postId , tagId}) => {
 
 const fetchPosts = async() => {
 	const feed = await db.query(`
-	SELECT posts.id, posts.title, posts.image, posts.content,
-	posts.published, posts."createdAt", posts.type , users."firstName",
-	users."lastName", users.email, users."profilePictureUrl"
+	SELECT posts.id, posts."userId" , posts.title, posts.image, posts.content,
+	posts.published, posts."createdAt", posts.type ,users."firstName",
+	users."lastName", users.email, users."profilePictureUrl" 
 	FROM posts
 	INNER JOIN users on posts."userId" = users.id;
 	`)

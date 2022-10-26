@@ -25,9 +25,10 @@ const fetchPosts = catchAsync( async(req, res) => {
 
 	res.status(200).json({
 		status: 'success',
-		data: feed.map((post) => ({
+		data: feed.map(({userId, ...post}) => ({
 			...typeTransformMap[post.type](post),
 			user :({
+				userId ,
 				fullName: `${post.firstName} ${post.lastName}`,
 				profilePictureUrl : post.profilePictureUrl,
 				email : post.email
