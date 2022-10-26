@@ -28,6 +28,7 @@ const fetchPosts = catchAsync( async(req, res) => {
 		data: feed.map((post) => ({
 			...typeTransformMap[post.type](post),
 			user :({
+				userId : post.userId ,
 				fullName: `${post.firstName} ${post.lastName}`,
 				profilePictureUrl : post.profilePictureUrl,
 				email : post.email
