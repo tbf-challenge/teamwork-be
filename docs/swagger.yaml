@@ -1748,6 +1748,10 @@ paths:
                         user:
                             type: object
                             properties:
+                                userId: 
+                                  type: integer
+                                  description: user Id
+                                  example: 10
                                 fullName:
                                   type: string
                                   description: fullname of user
