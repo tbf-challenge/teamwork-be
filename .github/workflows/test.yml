@@ -1,4 +1,4 @@
-name: Node.js CI
+name: Teamwork CI
 run-name: ${{ github.actor }} is testing the Teamwork API and Services
 
 on:
