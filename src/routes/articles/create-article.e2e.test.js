@@ -44,7 +44,7 @@ describe('POST /articles', () => {
 				.post(`/api/v1/articles`)
 				.set('Authorization', `Bearer ${accessToken}`)
 				.send({
-					title : faker.random.word(),
+					title : faker.random.word(5),
 					article: "",
 					published : faker.datatype.boolean(),
 					type : 'article'
@@ -64,7 +64,7 @@ describe('POST /articles', () => {
 		let data
 		before(async ()=>{
 			data = {
-				title : faker.random.word(),
+				title : faker.random.word(5),
 				image : faker.image.imageUrl(),
 				article : faker.random.words(),
 				published : faker.datatype.boolean(),

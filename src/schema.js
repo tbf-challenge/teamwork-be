@@ -3,15 +3,9 @@ const Joi = require('joi')
 const authSchema = Joi.object({
 	body:{	
 		firstName: Joi.string()
-			.alphanum()
-			.min(3)
-			.max(30)
 			.required(),
 
 		lastName: Joi.string()
-			.alphanum()
-			.min(3)
-			.max(30)
 			.required(),
 
 		password: Joi.string()
@@ -255,14 +249,8 @@ const updateUserSchema = Joi.object({
 			.required()
 	},
 	body: {
-		firstName: Joi.string()
-			.alphanum()
-			.min(3)
-			.max(30),
-		lastName: Joi.string()
-			.alphanum()
-			.min(3)
-			.max(30),
+		firstName: Joi.string(),
+		lastName: Joi.string(),
 		gender: Joi.string(),
 		jobRole: Joi.string()
 			.alphanum()
