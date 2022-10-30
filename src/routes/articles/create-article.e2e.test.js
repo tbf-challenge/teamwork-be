@@ -14,26 +14,6 @@ describe('POST /articles', () => {
 		)
 	})
 	describe('Failure', () => {
-		it('should return 400 if id is not a number', async () => {
-			const expectedError = {
-				"status" : "failed",
-				"error": {
-			  "message": "userId must be a number"
-				}
-		  }
-			return	fixtures.api()
-				.post(`/api/v1/articles`)
-				.set('Authorization', `Bearer ${accessToken}`)
-				.send({
-					userId : "userId",
-					title : faker.random.word(),
-					article: faker.random.words(),
-					published : faker.datatype.boolean(),
-					type : 'article'
-				})
-				.expect(400, expectedError)
-
-		})
 		it('should return 400 if title is invalid', async () => {
 			const expectedError = {
 				"status" : "failed",
@@ -45,7 +25,6 @@ describe('POST /articles', () => {
 				.post(`/api/v1/articles`)
 				.set('Authorization', `Bearer ${accessToken}`)
 				.send({
-					userId : user.id,
 					title : "",
 					article: faker.random.words(),
 					published : faker.datatype.boolean(),
@@ -65,7 +44,6 @@ describe('POST /articles', () => {
 				.post(`/api/v1/articles`)
 				.set('Authorization', `Bearer ${accessToken}`)
 				.send({
-					userId : user.id,
 					title : faker.random.word(),
 					article: "",
 					published : faker.datatype.boolean(),
@@ -86,7 +64,6 @@ describe('POST /articles', () => {
 		let data
 		before(async ()=>{
 			data = {
-				userId : user.id,
 				title : faker.random.word(),
 				image : faker.image.imageUrl(),
 				article : faker.random.words(),
@@ -117,7 +94,7 @@ describe('POST /articles', () => {
 							status: 'success',
 							data: {
 							  message: 'Article successfully posted',
-							  userId: data.userId,
+							  userId: user.id,
 							  title: data.title,
 							  image: data.image,
 							  article: data.article,
