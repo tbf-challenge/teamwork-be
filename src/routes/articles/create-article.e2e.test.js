@@ -64,7 +64,8 @@ describe('POST /articles', () => {
 		let data
 		before(async ()=>{
 			data = {
-				title : faker.random.word(),
+				userId : user.id,
+				title : faker.random.word(5),
 				image : faker.image.imageUrl(),
 				article : faker.random.words(),
 				published : faker.datatype.boolean(),
