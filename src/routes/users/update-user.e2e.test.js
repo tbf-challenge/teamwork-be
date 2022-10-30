@@ -180,8 +180,6 @@ describe('PATCH /users/:id', () => {
 				.patch(`/api/v1/users/${user.id}`)
 				.set('Authorization', `Bearer ${accessToken}`)
 				.send({ 
-					firstName: user.firstName,
-					lastName: user.lastName,
 					address: faker.address.streetAddress(),
 					department: faker.name.jobArea()
 				})

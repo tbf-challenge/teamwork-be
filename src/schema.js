@@ -1,4 +1,3 @@
-/* eslint-disable no-useless-escape */
 const Joi = require('joi')
 
 const authSchema = Joi.object({
