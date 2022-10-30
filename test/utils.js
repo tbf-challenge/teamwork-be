@@ -39,9 +39,9 @@ const fixtures = {
 			gender : faker.helpers.arrayElement(['male', 'female']),
 			role : faker.helpers.arrayElement(['admin', 'user']),
 			department : faker.helpers.arrayElement([
-				'marketting', 'finance', 'sales', 'technology']),
+				'marketing', 'finance', 'sales', 'technology']),
 			address : faker.address.city(),
-			jobRole : faker.random.word(),
+			jobRole : faker.random.word(5),
 			profilePictureUrl : faker.image.imageUrl(),
 			refreshToken : faker.datatype.uuid()
 
