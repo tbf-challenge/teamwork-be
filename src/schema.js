@@ -1,27 +1,13 @@
 /* eslint-disable no-useless-escape */
 const Joi = require('joi')
 
-const specialChars = /[$\(\)<>]/
-const customNameErrorMessage = {
-	'string.pattern.invert.base': 'name must not contain special characters',
-	'any.required': 'string is required'
-}
-
 const authSchema = Joi.object({
 	body:{	
 		firstName: Joi.string()
-			.required()
-			.regex(specialChars, { 
-				invert: true 
-			})
-			.messages(customNameErrorMessage),
+			.required(),
 
 		lastName: Joi.string()
-			.required()
-			.regex(specialChars, { 
-				invert: true 
-			})
-			.messages(customNameErrorMessage),
+			.required(),
 
 		password: Joi.string()
 			.min(8)
@@ -265,17 +251,9 @@ const updateUserSchema = Joi.object({
 	},
 	body: {
 		firstName: Joi.string()
-			.required()
-			.regex(specialChars, { 
-				invert: true 
-			})
-			.messages(customNameErrorMessage),
+			.required(),
 		lastName: Joi.string()
-			.required()
-			.regex(specialChars, { 
-				invert: true 
-			})
-			.messages(customNameErrorMessage),
+			.required(),
 		gender: Joi.string(),
 		jobRole: Joi.string()
 			.alphanum()
