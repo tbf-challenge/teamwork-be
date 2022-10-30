@@ -14,26 +14,6 @@ describe('POST /articles', () => {
 		)
 	})
 	describe('Failure', () => {
-		it('should return 400 if id is not a number', async () => {
-			const expectedError = {
-				"status" : "failed",
-				"error": {
-			  "message": "userId must be a number"
-				}
-		  }
-			return	fixtures.api()
-				.post(`/api/v1/articles`)
-				.set('Authorization', `Bearer ${accessToken}`)
-				.send({
-					userId : "userId",
-					title : faker.random.word(),
-					article: faker.random.words(),
-					published : faker.datatype.boolean(),
-					type : 'article'
-				})
-				.expect(400, expectedError)
-
-		})
 		it('should return 400 if title is invalid', async () => {
 			const expectedError = {
 				"status" : "failed",
