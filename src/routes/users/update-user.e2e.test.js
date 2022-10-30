@@ -3,7 +3,7 @@ const { faker } = require('@faker-js/faker')
 const { fixtures } = require('../../../test/utils')
 
 describe('PATCH /users/:id', () => {
-
+	faker.locale = 'en'
 	describe('Failure', () => {
 		let user
 		let accessToken
