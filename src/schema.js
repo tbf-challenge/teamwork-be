@@ -250,10 +250,8 @@ const updateUserSchema = Joi.object({
 			.required()
 	},
 	body: {
-		firstName: Joi.string()
-			.required(),
-		lastName: Joi.string()
-			.required(),
+		firstName: Joi.string(),
+		lastName: Joi.string(),
 		gender: Joi.string(),
 		jobRole: Joi.string()
 			.alphanum()
