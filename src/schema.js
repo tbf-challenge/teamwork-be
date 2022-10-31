@@ -3,15 +3,9 @@ const Joi = require('joi')
 const authSchema = Joi.object({
 	body:{	
 		firstName: Joi.string()
-			.alphanum()
-			.min(3)
-			.max(30)
 			.required(),
 
 		lastName: Joi.string()
-			.alphanum()
-			.min(3)
-			.max(30)
 			.required(),
 
 		password: Joi.string()
@@ -54,10 +48,7 @@ const signinSchema = Joi.object({
 
 const createArticleSchema = Joi.object({
 	body:{
-		userId: Joi.number()
-			.required(),
 		title: Joi.string()
-			.alphanum()
 			.min(3)
 			.max(30)
 			.required(),
@@ -188,10 +179,7 @@ const authTokenSchema = Joi.object({
 
 const createGifSchema = Joi.object({
 	body:{
-		userId: Joi.number()
-			.required(),
 		title: Joi.string()
-			.alphanum()
 			.min(3)
 			.max(30)
 			.required(),
@@ -199,10 +187,6 @@ const createGifSchema = Joi.object({
 			.uri()
 			.required(),
 		published: Joi.boolean()
-	},
-	params: {
-		token: Joi.string()
-			.required()
 	}
 })
 
@@ -265,14 +249,8 @@ const updateUserSchema = Joi.object({
 			.required()
 	},
 	body: {
-		firstName: Joi.string()
-			.alphanum()
-			.min(3)
-			.max(30),
-		lastName: Joi.string()
-			.alphanum()
-			.min(3)
-			.max(30),
+		firstName: Joi.string(),
+		lastName: Joi.string(),
 		gender: Joi.string(),
 		jobRole: Joi.string()
 			.alphanum()

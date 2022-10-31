@@ -1,0 +1,70 @@
+name: Teamwork CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+env:
+  DATABASE_URL: ${{ secrets.DATABASE_URL }}
+  PORT: ${{ secrets.PORT }}
+  TOKEN_SECRET: ${{ secrets.TOKEN_SECRET }}
+  EMAIL_SERVICE_HOST: ${{ secrets.EMAIL_SERVICE_HOST }}
+  EMAIL_SERVICE_PASSWORD: ${{ secrets.EMAIL_SERVICE_PASSWORD }}
+  EMAIL_SERVICE_PORT: ${{ secrets.EMAIL_SERVICE_PORT }}
+  EMAIL_SERVICE_USERNAME: ${{ secrets.EMAIL_SERVICE_USERNAME }}
+  EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+  FRONTEND_BASE_URL: ${{ secrets.FRONTEND_BASE_URL }}
+  ORGANIZATION_NAME: ${{ secrets.ORGANIZATION_NAME }}
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [14.x, 16.x, 18.x]
+    
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Set health checks to wait until postgres has started
+        env:
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
+
+    steps:
+    # Downloads a copy of the code in your repository before running CI tests
+    - name: Check out repository code
+      uses: actions/checkout@v3
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    # Performs a clean installation of all dependencies in the `package.json` file
+      # For more information, see https://docs.npmjs.com/cli/ci.html
+    - name: Install dependencies
+      run: npm ci
+
+      env:
+          # The hostname used to communicate with the PostgreSQL service container
+          POSTGRES_HOST: localhost
+          # The default PostgreSQL port
+          POSTGRES_PORT: 5432
+    - run: npm run build --if-present
+    - run: npm test

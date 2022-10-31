@@ -18,7 +18,7 @@ describe('PATCH /articles/:id', () => {
 			type : 'article'
 		})
 		updatedInfo = {
-			title : faker.random.word(),
+			title : faker.random.word(5),
 			image : faker.image.imageUrl(),
 			content : faker.random.words(),
 			published : faker.datatype.boolean()

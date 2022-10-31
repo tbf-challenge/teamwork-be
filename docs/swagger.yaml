@@ -1705,7 +1705,7 @@ paths:
   /feed:
     get:
       tags:
-        - article
+        - feed
       operationId: getAllFeed
       summary: Get all articles and gifs
       description: Get all articles and gifs
@@ -1738,17 +1738,32 @@ paths:
                           type: string
                           description: Title of article
                           example: How to become a 10x software developer
-                        article/url: 
+                        article/imageUrl: 
                           type: string
                           description: Article created / url of image created
                           example: /You are expected to create a set of ​ API endpoints​ listed under the ​ API Endpoints Specification\
                             section and ensure you persist your data using a PostgreSQL database.\
                             You are to write SQL queries that will help you write to and read from your database. The
                             endpoints are to be secured with JSON Web Token (JWT)/ /https://imgbb.com/
-                        userId:
-                          type: integer
-                          description: Article id
-                          example: 10
+                        user:
+                            type: object
+                            properties:
+                                userId: 
+                                  type: integer
+                                  description: user Id
+                                  example: 10
+                                fullName:
+                                  type: string
+                                  description: fullname of user
+                                  example: John Doe
+                                email:
+                                  type: string
+                                  description: email of individual
+                                  example: johndoe@gmail.com
+                                profilePictureUrl:
+                                  type: string
+                                  description: profile picture url
+                                  example: https://imgbb.com/
                         published:
                           type: boolean
                           description: Published or not
