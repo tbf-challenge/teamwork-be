@@ -12,12 +12,12 @@ const resetPassword = require('./reset-password')
 const createNewUser = require('./create-new-user')
 const updateUser = require('./update-user')
 const fetchUsers = require('./fetch-users')
+const getInvitedUserDetail = require('./get-invited-user-detail')
 const getUserByEmail = require('./get-user-by-email')
 const signInUserByEmail = require('./signin-user-by-email')
 
 const {
-	RefreshTokenIsInvalidError,
-	InvalidInviteError
+	RefreshTokenIsInvalidError
 } = require("../errors")
 const customError = require("../../lib/custom-error")
 
@@ -77,36 +77,6 @@ const getNewTokens = async (email, currentRefreshToken) => {
 	await updateRefreshToken(refreshToken , user.id)
 
 	return { accessToken, refreshToken, userId: user.id }
-}
-
-const getInvitedUserDetail = async (token) => {
-	try {
-		const decoded = jwt.verify(token, config('TOKEN_SECRET'))
-		const {email} = decoded
-		const result = await  db.query(
-			`SELECT * FROM user_invites
-		WHERE email = $1 
-		`,
-			[email]
-		)
-		const user = result.rows[0]
-		if (!user || user.status === "active") {
-			throw customError(InvalidInviteError)
-		}
-		const accessToken =  generateAccessToken({
-			data: user, 
-			expiry : '24h'
-		})
-		return { accessToken, email : user.email, userId: user.id }
-	} catch(error) {
-	 if(error.name === 'TokenExpiredError' ){
-	 	throw customError(InvalidInviteError)
-		}
-		else{
-	 	throw error
-	 }
-	 }
-	
 }
 
 
