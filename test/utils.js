@@ -114,6 +114,7 @@ const fixtures = {
 		const { rows:inviteRows }=  await db.query(
 			`INSERT INTO user_invites 
 			("email") VALUES ($1) RETURNING *`, [newData.email])
+			
 		return inviteRows[0]
 	},
 	async updateInviteStatus ({email, status="active"}){

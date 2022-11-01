@@ -1,24 +1,15 @@
 const { expect } = require('chai')
 const { faker } = require('@faker-js/faker')
-const db = require('../../db')
 const {fixtures} = require('../../../test/utils')
 const getInvitedUserDetail = require('./get-invited-user-detail')
 
 
-describe('GET invited-user information', () => {
-	
-	let invalidInviteToken
-
-	before(async () => {
-		
-		invalidInviteToken = fixtures.generateAccessToken({
-			email : faker.internet.email()
-		})
-			
-	})
+describe('Get invited-user information', () => {	
 
 	describe('Failure', async()=>{
-
+		const	invalidInviteToken = fixtures.generateAccessToken({
+			email : faker.internet.email()
+		})
 		it('should throw an error if the invite is invalid', async () =>
 			expect(getInvitedUserDetail(invalidInviteToken))
 				.to.be.rejectedWith(
@@ -30,6 +21,7 @@ describe('GET invited-user information', () => {
 
 		let inviteUserData
 		let inviteToken
+		let invites
 
 		before(async () => {
 			inviteUserData = {
@@ -37,21 +29,17 @@ describe('GET invited-user information', () => {
 			}
 
 			inviteToken = fixtures.generateAccessToken(inviteUserData)
-			await fixtures.insertUserInvite(
+			invites = await fixtures.insertUserInvite(
 				{email: inviteUserData.email})
 		
 		})
 		it('should get invited user information', async () =>{
-			const {email} = inviteUserData
-			const query = await getInvitedUserDetail(inviteToken)
-			const {rows} = await db.query(
-				`SELECT * FROM user_invites
-			 WHERE email = $1`,[email] )
-			const result = rows[0]
+	
+			const invitedUser = await getInvitedUserDetail(inviteToken)
 		
-			return expect(result).to.eql({
-				email : query.email,
-				status : "pending"
+			return expect(invitedUser).to.include({
+				email : invites.email,
+				userId: undefined
 
 
 			})
