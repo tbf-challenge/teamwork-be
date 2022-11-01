@@ -4,7 +4,7 @@ const {fixtures} = require('../../../test/utils')
 const getInvitedUserDetail = require('./get-invited-user-detail')
 
 
-describe('Get invited-user information', () => {	
+describe('Get invited user information', () => {	
 
 	describe('Failure', async()=>{
 		const	invalidInviteToken = fixtures.generateAccessToken({
@@ -21,27 +21,27 @@ describe('Get invited-user information', () => {
 
 		let inviteUserData
 		let inviteToken
-		let invites
+		let invite
 
 		before(async () => {
 			inviteUserData = {
-				email : faker.internet.email()
+				email : faker.internet.email(),
+				status : 'pending'
 			}
-
 			inviteToken = fixtures.generateAccessToken(inviteUserData)
-			invites = await fixtures.insertUserInvite(
-				{email: inviteUserData.email})
-		
+			invite = await fixtures.insertUserInvite(
+				{email: inviteUserData.email,
+					status : 'pending'})
+			
+
 		})
 		it('should get invited user information', async () =>{
 	
 			const invitedUser = await getInvitedUserDetail(inviteToken)
-		
-			return expect(invitedUser).to.include({
-				email : invites.email,
-				userId: undefined
-
-
+			const accessToken = fixtures.generateAccessToken(invite)
+			return expect(invitedUser).to.eql({
+				email : invite.email,
+				accessToken
 			})
 
 		})	

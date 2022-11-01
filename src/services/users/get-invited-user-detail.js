@@ -25,7 +25,7 @@ const getInvitedUserDetail = async (token) => {
 			data: user, 
 			expiry : '24h'
 		})
-		return { accessToken, email : user.email, userId: user.id }
+		return { accessToken, email : user.email }
 	} catch(error) {
 	 if(error.name === 'TokenExpiredError' ){
 	 	throw customError(InvalidInviteError)
