@@ -6,46 +6,52 @@ const getInvitedUserDetail = require('./get-invited-user-detail')
 
 
 describe('GET invited-user information', () => {
-	let inviteUserData
-	let inviteToken
+	
+	let invalidInviteToken
 
 	before(async () => {
-		inviteUserData = {
-			email : faker.internet.email()
-		}
-
-		inviteToken = fixtures.generateAccessToken(inviteUserData)
-		await fixtures.insertUserInvite(
-			{email: inviteUserData.email})
 		
+		invalidInviteToken = fixtures.generateAccessToken({
+			email : faker.internet.email()
+		})
+			
 	})
 
 	describe('Failure', async()=>{
 
-		it('should throw an error if the invite is invalid', async () =>{
-			const { email } = inviteUserData
-		 await db.query(
-				`DELETE FROM user_invites
-             WHERE email = $1`, [email])
-			return expect(getInvitedUserDetail(inviteToken))
+		it('should throw an error if the invite is invalid', async () =>
+			expect(getInvitedUserDetail(invalidInviteToken))
 				.to.be.rejectedWith(
 					'Invite is invalid/expired')
-		})
+		)
 	})
 
 	describe('Success', async()=>{
 
+		let inviteUserData
+		let inviteToken
+
+		before(async () => {
+			inviteUserData = {
+				email : faker.internet.email()
+			}
+
+			inviteToken = fixtures.generateAccessToken(inviteUserData)
+			await fixtures.insertUserInvite(
+				{email: inviteUserData.email})
+		
+		})
 		it('should get invited user information', async () =>{
 			const {email} = inviteUserData
-			await getInvitedUserDetail(inviteToken)
+			const query = await getInvitedUserDetail(inviteToken)
 			const {rows} = await db.query(
 				`SELECT * FROM user_invites
 			 WHERE email = $1`,[email] )
 			const result = rows[0]
 		
 			return expect(result).to.eql({
-				email : inviteUserData.email,
-				status : result.status
+				email : query.email,
+				status : "pending"
 
 
 			})

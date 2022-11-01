@@ -224,14 +224,14 @@ paths:
                         type: string
                         description: message
                         example: success
-                      status:
-                        type: string
-                        description: user status
-                        example: active
                       email:
                         type: string
                         description: email
                         example: example@gmail.com
+                      accessToken:
+                        type: string
+                        description: access_token
+                        example: "HBDbjhbsdhsbhabskhaskjAHKJh8349WSDKhjsf"
                       
   /auth/invite-user:
     post:
