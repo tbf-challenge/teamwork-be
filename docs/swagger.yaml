@@ -1104,6 +1104,10 @@ paths:
                   type: string
                   description: image/gif content
                   example: /https://imgbb.com/
+                published:
+                  type: boolean
+                  description: Published or not
+                  example: true
       responses:
         '201':
           description: A successful operation

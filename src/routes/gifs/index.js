@@ -34,11 +34,12 @@ const {
 
 const createGif = catchAsync( async(req, res) => {
 	const userId = req.user.id
-	const { title, image } = req.body
+	const { title, image , published} = req.body
 	const newGif = await postService.createPost({
 		userId,
 		title, 
 		content : image,
+		published,
 		type : 'gif' })
 	res.status(201).json({
 		status: 'success',
