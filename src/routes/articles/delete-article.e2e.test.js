@@ -3,15 +3,19 @@ const {fixtures} = require('../../../test/utils')
 
 
 describe('DELETE /articles/:id', () => {
+
 	let user
 	let accessToken
+
 	before(async ()=>{
+
 		 user = await fixtures.insertUser() 
 		const body = { id: user.id, email: user.email }
 		accessToken = fixtures.generateAccessToken(
 			{user : body}
 		)
 	})
+	
 	describe('Failure', () => {
 		
 		it('should return 400 if postId is not a number', async () => {
@@ -51,7 +55,7 @@ describe('DELETE /articles/:id', () => {
 				userId : user.id , 
 				postId : post.id}) 
 			return fixtures.api()
-				.delete(`/api/v1/articles/${post.id}/flags/${user.id}`)
+				.delete(`/api/v1/articles/${post.id}`)
 				.set('Authorization', `Bearer ${accessToken}`)
 				.expect(200)
 		})
