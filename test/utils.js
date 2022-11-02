@@ -165,6 +165,32 @@ const fixtures = {
 		return Promise.all(Array.from({
 			 length: numberOfTags 
 		}).map(() =>  fixtures.insertTag()))
+	},
+	async insertPostComment(overrides = {}){
+		const commentData = {
+			comment : faker.random.words()
+		}
+		const newData = {...commentData, ...overrides}
+		const result = await db.query(
+			`SELECT * FROM posts 
+		WHERE id = $1
+		AND type = $2 `,
+		 [newData.id , newData.type ])
+		const post = result.rows[0]
+		// if (!post) {
+		// 	throw customError(
+		// 		type === 'article' ?
+		// 			ArticleDoesNotExistForCommentError :
+		// 			GifDoesNotExistForCommentError)
+		// }
+		const queryResult = await db.query(
+			`INSERT INTO comments 
+			("userId" , "postId" , content)
+			 VALUES ($1 , $2 ,$3) RETURNING *`,
+			[newData.userId, newData.id, newData.comment]
+		)
+		const insertedComment = queryResult.rows[0]
+		return {post , insertedComment}
 	}
 }
 

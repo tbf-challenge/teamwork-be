@@ -36,11 +36,17 @@ describe('GET /Articles/:article.id', () => {
 	describe('Success', () => {
 
 		let article
-
+		let comment
 		before(async ()=>{
 			article = await fixtures.insertPost({
 				userId : user.id , 
 				type : 'article'
+			})
+			comment = await fixtures.insertPostComment({
+				id : article.id,
+				userId : user.id,
+				type: 'article'
+
 			})
 		})
 
@@ -52,31 +58,37 @@ describe('GET /Articles/:article.id', () => {
 				.expect(200)
 		)
 
-		it('should return the right response', async () =>
-
-			fixtures.api()
+		it('should return the right response', async () =>{
+			const {post, insertedComment} = comment
+			return fixtures.api()
 				.get(`/api/v1/articles/${article.id}`)
 				.set('Authorization', `Bearer ${accessToken}`)
 				.expect(200)
 				.then((res) => {
-				
+
 					expect(res.body).to.eql(
 						{
 							status: 'success',
 							data: {
-							  userId: user.id,
-							  title: article.title,
-							  image: article.image,
-							  article: article.content,
-							  published: article.published,
-								createdOn: article.createdAt.toISOString(),
-								articleId : article.id,
-								comments: []
+							  userId: post.userId,
+							  title: post.title,
+							  image: post.image,
+							  article: post.content,
+							  published: post.published,
+								createdOn: post.createdAt.toISOString(),
+								articleId : post.id,
+								comments: [
+									{
+										comment : insertedComment.content,
+										id : insertedComment.id,
+										userId : insertedComment.userId
+									}
+								]
 							}
 						  
 						})
 				})
-		)
+		})
 	})
 
 })
