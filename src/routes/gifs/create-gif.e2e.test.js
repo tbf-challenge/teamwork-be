@@ -27,8 +27,7 @@ describe('POST /gifs', () => {
 				.send({
 					title : "",
 					image: faker.image.imageUrl(),
-					published : faker.datatype.boolean(),
-					type : 'gif'
+					published : faker.datatype.boolean()
 				})
 				.expect(400, expectedError)
 
@@ -46,8 +45,7 @@ describe('POST /gifs', () => {
 				.send({
 					title : faker.random.word(5),
 					image: "",
-					published : faker.datatype.boolean(),
-					type : 'gif'
+					published : faker.datatype.boolean()
 				})
 				.expect(400, expectedError)
 
@@ -67,8 +65,7 @@ describe('POST /gifs', () => {
 			data = {
 				title : faker.random.word(5),
 				image : faker.image.imageUrl(),
-				published: faker.datatype.boolean(),
-				type : 'gif'
+				published: faker.datatype.boolean()
 			}
 		})
 		it('should return 201', async () => 
