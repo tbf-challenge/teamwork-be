@@ -32,16 +32,12 @@ describe('DELETE /articles/:id', () => {
 
 		})
 
-		it('should return 401 if request is not authenticated', async () => {
-			const post = await fixtures.insertPost({
-				userId : user.id , 
-				type : 'article'
-			}) 
-			return fixtures.api()
-				.delete(`/api/v1/articles/${post.id}`)
+		it('should return 401 if request is not authenticated', async () => 
+			fixtures.api()
+				.delete(`/api/v1/articles/${1}`)
 				.expect(401)
 
-		})
+		)
 	})
 
 	describe('Success', () => {
