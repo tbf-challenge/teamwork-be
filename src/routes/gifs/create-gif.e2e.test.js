@@ -3,7 +3,7 @@ const {expect} = require('chai')
 const {fixtures} = require('../../../test/utils')
 
 
-describe('POST /articles', () => {
+describe('POST /gifs', () => {
 	let user
 	let accessToken
 	before(async ()=>{
