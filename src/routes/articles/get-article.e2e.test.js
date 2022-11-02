@@ -2,7 +2,7 @@ const {expect} = require('chai')
 const {fixtures} = require('../../../test/utils')
 
 
-describe('GET /article', () => {
+describe('GET /Articles/:article.id', () => {
     
 	let user
 	let accessToken
