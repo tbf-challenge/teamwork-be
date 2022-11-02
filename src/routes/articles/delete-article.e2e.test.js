@@ -42,7 +42,7 @@ describe('DELETE /articles/:id', () => {
 
 	describe('Success', () => {
 
-		it.only('should return 200', async () => {
+		it('should return 200', async () => {
 			const post = await fixtures.insertPost({
 				userId : user.id , 
 				type : 'article'
