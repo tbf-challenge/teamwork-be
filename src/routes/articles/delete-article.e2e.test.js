@@ -42,14 +42,12 @@ describe('DELETE /articles/:id', () => {
 
 	describe('Success', () => {
 
-		it('should return 200', async () => {
+		it.only('should return 200', async () => {
 			const post = await fixtures.insertPost({
 				userId : user.id , 
 				type : 'article'
 			})
-			await fixtures.insertPostFlag({
-				userId : user.id , 
-				postId : post.id}) 
+
 			return fixtures.api()
 				.delete(`/api/v1/articles/${post.id}`)
 				.set('Authorization', `Bearer ${accessToken}`)
