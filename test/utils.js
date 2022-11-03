@@ -177,12 +177,7 @@ const fixtures = {
 		AND type = $2 `,
 		 [newData.id , newData.type ])
 		const post = result.rows[0]
-		// if (!post) {
-		// 	throw customError(
-		// 		type === 'article' ?
-		// 			ArticleDoesNotExistForCommentError :
-		// 			GifDoesNotExistForCommentError)
-		// }
+
 		const queryResult = await db.query(
 			`INSERT INTO comments 
 			("userId" , "postId" , content)

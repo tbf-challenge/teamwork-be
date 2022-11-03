@@ -15,10 +15,17 @@ describe('Get POST ', () => {
 	describe('Gif', () => {
 		
 		let post
+
 		before(async ()=>{
 			post = await fixtures.insertPost({
 				userId : user.id , 
 				type : 'gif'
+			})
+			await fixtures.insertPostComment({
+				id : post.id,
+				userId : user.id,
+				type: 'gif'
+
 			})
 		})
 
@@ -37,13 +44,17 @@ describe('Get POST ', () => {
 				id: post.id,
 				type : 'gif'
 		 })
-		
+		 	
 			const result = await db.query(
-				`SELECT * FROM posts
-             WHERE "id" = $1
-             AND "type" = $2`,[ post.id, post.type])
+				`SELECT p.*, jsonb_agg(c.* ORDER BY c."createdAt" DESC) 
+				as comments FROM posts p 
+				LEFT JOIN comments c ON p.id = c."postId"
+				WHERE p.id=$1 AND p.type =$2
+				GROUP BY p.id;`,[ post.id, post.type])
 			const expectedPost = result.rows[0]
-	
+			const {comments} = expectedPost
+			const comment = comments[0]
+			
 			expect(insertedPost).to.eql({
 				id : expectedPost.id,
 				userId : expectedPost.userId,
@@ -53,7 +64,16 @@ describe('Get POST ', () => {
 				published : expectedPost.published,
 				createdAt : expectedPost.createdAt,
 				type: expectedPost.type,
-				comments : insertedPost.comments
+				comments : [
+					{
+						id: comment.id,
+						postId: comment.postId,
+						userId: comment.userId,
+						content: comment.content,
+						createdAt: comment.createdAt,
+						published: comment.published
+					}
+				]
 			})	 
 		})
 		
@@ -68,6 +88,12 @@ describe('Get POST ', () => {
 				userId : user.id , 
 				type : 'article'
 			})
+			await fixtures.insertPostComment({
+				id : post.id,
+				userId : user.id,
+				type: 'article'
+
+			})
 		})
 
 		it('should throw an error if Article does not exist', async () => 
@@ -79,7 +105,7 @@ describe('Get POST ', () => {
 		)
 
 
-		it('should return a article', async () => {
+		it('should return an article', async () => {
 
 			const insertedPost = await getPost({ 
 				id: post.id,
@@ -87,11 +113,14 @@ describe('Get POST ', () => {
 		 })
 		
 			const result = await db.query(
-				`SELECT * FROM posts
-             WHERE "id" = $1
-             AND "type" = $2`,[ post.id, post.type])
+				`SELECT p.*, jsonb_agg(c.* ORDER BY c."createdAt" DESC) 
+				as comments FROM posts p 
+				LEFT JOIN comments c ON p.id = c."postId"
+				WHERE p.id=$1 AND p.type =$2
+				GROUP BY p.id;`,[ post.id, post.type])
 			const expectedPost = result.rows[0]
-	
+			const {comments} = expectedPost
+			const comment = comments[0]
 			expect(insertedPost).to.eql({
 				id : expectedPost.id,
 				userId : expectedPost.userId,
@@ -101,7 +130,16 @@ describe('Get POST ', () => {
 				published : expectedPost.published,
 				createdAt : expectedPost.createdAt,
 				type: expectedPost.type,
-				comments : insertedPost.comments
+				comments : [
+					{
+						id: comment.id,
+						postId: comment.postId,
+						userId: comment.userId,
+						content: comment.content,
+						createdAt: comment.createdAt,
+						published: comment.published
+					}
+				]
 			})	 
 		})
 		
