@@ -179,8 +179,7 @@ const fixtures = {
 			[newData.userId, newData.id, newData.comment]
 		)
 
-		const insertedComment = queryResult.rows[0]
-		return {insertedComment}
+		return queryResult.rows[0]
 	}
 }
 

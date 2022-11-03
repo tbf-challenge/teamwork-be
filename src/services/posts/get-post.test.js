@@ -44,7 +44,7 @@ describe('Get POST ', () => {
 				id: post.id,
 				type : 'gif'
 		 })
-		 	const {insertedComment} = comment
+		 	
 			const {comments} = insertedPost
 
 			expect(comments[0].createdAt).to.be.a('string')
@@ -62,11 +62,11 @@ describe('Get POST ', () => {
 				type: post.type,
 				comments : [
 					{
-						id: insertedComment.id,
-						postId: insertedComment.postId,
-						userId: insertedComment.userId,
-						content: insertedComment.content,
-						published: insertedComment.published
+						id: comment.id,
+						postId: comment.postId,
+						userId: comment.userId,
+						content: comment.content,
+						published: comment.published
 					}
 				]
 			})	 
@@ -107,7 +107,7 @@ describe('Get POST ', () => {
 				id: post.id,
 				type : 'article'
 		 })
-		 	const {insertedComment} = comment
+		 	
 			 const {comments} = insertedPost
 
 			 expect(comments[0].createdAt).to.be.a('string')
@@ -124,11 +124,11 @@ describe('Get POST ', () => {
 				type: post.type,
 				comments : [
 					{
-						id: insertedComment.id,
-						postId: insertedComment.postId,
-						userId: insertedComment.userId,
-						content: insertedComment.content,
-						published: insertedComment.published
+						id: comment.id,
+						postId: comment.postId,
+						userId: comment.userId,
+						content: comment.content,
+						published: comment.published
 					}
 				]
 			})	 

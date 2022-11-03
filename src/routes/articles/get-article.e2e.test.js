@@ -58,10 +58,10 @@ describe('GET /articles/:id', () => {
 				.expect(200)
 		)
 
-		it('should return the right response', async () =>{
-			
-			const {insertedComment} = comment
-			return fixtures.api()
+		it('should return the right response', async () =>
+		
+
+			fixtures.api()
 				.get(`/api/v1/articles/${article.id}`)
 				.set('Authorization', `Bearer ${accessToken}`)
 				.expect(200)
@@ -80,16 +80,16 @@ describe('GET /articles/:id', () => {
 								articleId : article.id,
 								comments: [
 									{
-										comment : insertedComment.content,
-										id : insertedComment.id,
-										userId : insertedComment.userId
+										comment : comment.content,
+										id : comment.id,
+										userId : comment.userId
 									}
 								]
 							}
 						  
 						})
 				})
-		})
+		)
 	})
 
 })
