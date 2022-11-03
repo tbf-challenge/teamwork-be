@@ -1,5 +1,4 @@
 const {expect} = require('chai')
-const db = require("../../db")
 const getPost = require("./get-post")
 const {fixtures} = require('../../../test/utils')
 
@@ -15,15 +14,16 @@ describe('Get POST ', () => {
 	describe('Gif', () => {
 		
 		let post
+		let comment
 
 		before(async ()=>{
 			post = await fixtures.insertPost({
 				userId : user.id , 
 				type : 'gif'
 			})
-			await fixtures.insertPostComment({
+			comment = await fixtures.insertPostComment({
 				id : post.id,
-				userId : user.id,
+				userId : post.userId,
 				type: 'gif'
 
 			})
@@ -44,34 +44,29 @@ describe('Get POST ', () => {
 				id: post.id,
 				type : 'gif'
 		 })
-		 	
-			const result = await db.query(
-				`SELECT p.*, jsonb_agg(c.* ORDER BY c."createdAt" DESC) 
-				as comments FROM posts p 
-				LEFT JOIN comments c ON p.id = c."postId"
-				WHERE p.id=$1 AND p.type =$2
-				GROUP BY p.id;`,[ post.id, post.type])
-			const expectedPost = result.rows[0]
-			const {comments} = expectedPost
-			const comment = comments[0]
+		 	const {insertedComment} = comment
+			const {comments} = insertedPost
+
+			expect(comments[0].createdAt).to.be.a('string')
+			delete comments[0].createdAt
+			
 			
 			expect(insertedPost).to.eql({
-				id : expectedPost.id,
-				userId : expectedPost.userId,
-				title : expectedPost.title,
-				image : expectedPost.image,
-				content : expectedPost.content,
-				published : expectedPost.published,
-				createdAt : expectedPost.createdAt,
-				type: expectedPost.type,
+				id : post.id,
+				userId : post.userId,
+				title : post.title,
+				image : post.image,
+				content : post.content,
+				published : post.published,
+				createdAt : post.createdAt,
+				type: post.type,
 				comments : [
 					{
-						id: comment.id,
-						postId: comment.postId,
-						userId: comment.userId,
-						content: comment.content,
-						createdAt: comment.createdAt,
-						published: comment.published
+						id: insertedComment.id,
+						postId: insertedComment.postId,
+						userId: insertedComment.userId,
+						content: insertedComment.content,
+						published: insertedComment.published
 					}
 				]
 			})	 
@@ -83,12 +78,13 @@ describe('Get POST ', () => {
 	describe('Article', () => {
 		
 		let post
+		let comment
 		before(async ()=>{
 			post = await fixtures.insertPost({
 				userId : user.id , 
 				type : 'article'
 			})
-			await fixtures.insertPostComment({
+			comment = await fixtures.insertPostComment({
 				id : post.id,
 				userId : user.id,
 				type: 'article'
@@ -111,33 +107,28 @@ describe('Get POST ', () => {
 				id: post.id,
 				type : 'article'
 		 })
-		
-			const result = await db.query(
-				`SELECT p.*, jsonb_agg(c.* ORDER BY c."createdAt" DESC) 
-				as comments FROM posts p 
-				LEFT JOIN comments c ON p.id = c."postId"
-				WHERE p.id=$1 AND p.type =$2
-				GROUP BY p.id;`,[ post.id, post.type])
-			const expectedPost = result.rows[0]
-			const {comments} = expectedPost
-			const comment = comments[0]
+		 	const {insertedComment} = comment
+			 const {comments} = insertedPost
+
+			 expect(comments[0].createdAt).to.be.a('string')
+			 delete comments[0].createdAt
+			
 			expect(insertedPost).to.eql({
-				id : expectedPost.id,
-				userId : expectedPost.userId,
-				title : expectedPost.title,
-				image : expectedPost.image,
-				content : expectedPost.content,
-				published : expectedPost.published,
-				createdAt : expectedPost.createdAt,
-				type: expectedPost.type,
+				id : post.id,
+				userId : post.userId,
+				title : post.title,
+				image : post.image,
+				content : post.content,
+				published : post.published,
+				createdAt : post.createdAt,
+				type: post.type,
 				comments : [
 					{
-						id: comment.id,
-						postId: comment.postId,
-						userId: comment.userId,
-						content: comment.content,
-						createdAt: comment.createdAt,
-						published: comment.published
+						id: insertedComment.id,
+						postId: insertedComment.postId,
+						userId: insertedComment.userId,
+						content: insertedComment.content,
+						published: insertedComment.published
 					}
 				]
 			})	 

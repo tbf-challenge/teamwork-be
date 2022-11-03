@@ -2,7 +2,7 @@ const {expect} = require('chai')
 const {fixtures} = require('../../../test/utils')
 
 
-describe('GET /Articles/:article.id', () => {
+describe('GET /articles/:id', () => {
     
 	let user
 	let accessToken
@@ -44,7 +44,7 @@ describe('GET /Articles/:article.id', () => {
 			})
 			comment = await fixtures.insertPostComment({
 				id : article.id,
-				userId : user.id,
+				userId : article.userId,
 				type: 'article'
 
 			})
@@ -59,7 +59,8 @@ describe('GET /Articles/:article.id', () => {
 		)
 
 		it('should return the right response', async () =>{
-			const {post, insertedComment} = comment
+			
+			const {insertedComment} = comment
 			return fixtures.api()
 				.get(`/api/v1/articles/${article.id}`)
 				.set('Authorization', `Bearer ${accessToken}`)
@@ -70,13 +71,13 @@ describe('GET /Articles/:article.id', () => {
 						{
 							status: 'success',
 							data: {
-							  userId: post.userId,
-							  title: post.title,
-							  image: post.image,
-							  article: post.content,
-							  published: post.published,
-								createdOn: post.createdAt.toISOString(),
-								articleId : post.id,
+							  userId: article.userId,
+							  title: article.title,
+							  image: article.image,
+							  article: article.content,
+							  published: article.published,
+								createdOn: article.createdAt.toISOString(),
+								articleId : article.id,
 								comments: [
 									{
 										comment : insertedComment.content,

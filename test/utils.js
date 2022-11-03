@@ -171,12 +171,6 @@ const fixtures = {
 			comment : faker.random.words()
 		}
 		const newData = {...commentData, ...overrides}
-		const result = await db.query(
-			`SELECT * FROM posts 
-		WHERE id = $1
-		AND type = $2 `,
-		 [newData.id , newData.type ])
-		const post = result.rows[0]
 
 		const queryResult = await db.query(
 			`INSERT INTO comments 
@@ -184,8 +178,9 @@ const fixtures = {
 			 VALUES ($1 , $2 ,$3) RETURNING *`,
 			[newData.userId, newData.id, newData.comment]
 		)
+
 		const insertedComment = queryResult.rows[0]
-		return {post , insertedComment}
+		return {insertedComment}
 	}
 }
 
