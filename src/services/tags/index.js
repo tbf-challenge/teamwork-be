@@ -1,8 +1,9 @@
 const db = require("../../db")
-const { TagDoesNotExistError, TagAlreadyExistsError } = require("../errors")
+const { TagAlreadyExistsError } = require("../errors")
 const customError = require("../../lib/custom-error")
 const deleteTag = require("./delete-tag")
 const fetchTags = require("./fetch-tags")
+const updateTag = require("./update-tag")
 
 const uniqueErrorCode = '23505'
 /**
@@ -25,28 +26,6 @@ const createTag = async ({ content, title }) => {
 	})
 
 	return newTag.rows[0]
-}
-
-/**
- * Update a tag
- * @param {string} title - Tag title
- * @param {string} content - Tag content
- * @param {number} tagId - The id of the tag
- */
-const updateTag = async (title, content, tagId) => {
-
-	const result = await db.query(
-		`UPDATE tags 
-		SET content = $1, title = $2
-		 WHERE id = $3 RETURNING *`,
-		[content, title, tagId]
-	)
-	const updatedTag = result.rows[0]
-	
-	if (!updatedTag){
-		throw customError(TagDoesNotExistError)
-	}
-	return updatedTag
 }
 
 
