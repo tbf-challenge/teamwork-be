@@ -23,8 +23,7 @@ describe('Get POST ', () => {
 			})
 			comment = await fixtures.insertPostComment({
 				id : post.id,
-				userId : post.userId,
-				type: 'gif'
+				userId : post.userId
 
 			})
 		})
@@ -86,8 +85,7 @@ describe('Get POST ', () => {
 			})
 			comment = await fixtures.insertPostComment({
 				id : post.id,
-				userId : user.id,
-				type: 'article'
+				userId : user.id
 
 			})
 		})

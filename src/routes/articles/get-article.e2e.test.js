@@ -17,7 +17,7 @@ describe('GET /articles/:id', () => {
 
 	describe('Failure', () => {
 
-		it('should return 400 if article.id is invalid', async () => {
+		it('should return 400 if article id is invalid', async () => {
 			const expectedError = {
 				"status" : "failed",
 				"error": {
@@ -30,6 +30,18 @@ describe('GET /articles/:id', () => {
 				.expect(400, expectedError)
 
 		})
+
+		it('should return 404 if article does not exist', async () => 
+			fixtures.api()
+				.get(`/api/v1/articles/${10000}`)
+				.set('Authorization', `Bearer ${accessToken}`)
+				.expect(404)
+				.then(res => {
+					expect(res.body.status).to.eql('fail')
+					expect(res.body.message).to.eql('Article does not exist')
+				})
+
+		)
 		
 	})
 
@@ -44,8 +56,7 @@ describe('GET /articles/:id', () => {
 			})
 			comment = await fixtures.insertPostComment({
 				id : article.id,
-				userId : article.userId,
-				type: 'article'
+				userId : article.userId
 
 			})
 		})
