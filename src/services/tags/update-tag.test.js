@@ -1,6 +1,7 @@
 const {expect} = require('chai')
 const { faker } = require('@faker-js/faker')
 const updateTag = require("./update-tag")
+const db = require('../../db')
 const {fixtures} = require('../../../test/utils')
 
 
@@ -25,16 +26,27 @@ describe('Update Tag', () => {
 				'Tag does not exist')
 	)
 
-	it('should update tag', async () => {
-		// eslint-disable-next-line max-len
-		const updatedTag = await updateTag(updatedInfo.title, updatedInfo.content, updatedInfo.tagId)
+	it('should update a tag', async () => {
+		const { id } = tag
 		
-		return expect(updatedTag).to.eql({
-			id : updatedInfo.tagId,
-			title: updatedInfo.title,
-			content: updatedInfo.content
-		})
+		const updatedTag = await updateTag(
+			updatedInfo.title, 
+			updatedInfo.content,
+			updatedInfo.tagId)
 
+		const { rows } = await db.query(
+			`SELECT * FROM tags
+            WHERE id = $1
+             `, [id])
+
+		const  insertedTag = rows[0]
+
+		return expect(updatedTag).to.eql({
+			id : insertedTag.id,
+			title: insertedTag.title,
+			content: insertedTag.content
+		})
 	})
+
 
 })
