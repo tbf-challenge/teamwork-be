@@ -165,6 +165,21 @@ const fixtures = {
 		return Promise.all(Array.from({
 			 length: numberOfTags 
 		}).map(() =>  fixtures.insertTag()))
+	},
+	async insertPostComment(overrides = {}){
+		const commentData = {
+			comment : faker.random.words()
+		}
+		const newData = {...commentData, ...overrides}
+
+		const queryResult = await db.query(
+			`INSERT INTO comments 
+			("userId" , "postId" , content)
+			 VALUES ($1 , $2 ,$3) RETURNING *`,
+			[newData.userId, newData.id, newData.comment]
+		)
+
+		return queryResult.rows[0]
 	}
 }
 
