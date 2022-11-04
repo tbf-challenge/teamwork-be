@@ -29,7 +29,7 @@ describe('Update Tag', () => {
 	it('should update a tag', async () => {
 		const { id } = tag
 		
-		const updatedTag = await updateTag(
+		await updateTag(
 			updatedInfo.title, 
 			updatedInfo.content,
 			updatedInfo.tagId)
@@ -41,12 +41,24 @@ describe('Update Tag', () => {
 
 		const  insertedTag = rows[0]
 
-		return expect(updatedTag).to.eql({
-			id : insertedTag.id,
-			title: insertedTag.title,
-			content: insertedTag.content
+		return expect(insertedTag).to.eql({
+			id : updatedInfo.tagId,
+			title: updatedInfo.title,
+			content: updatedInfo.content
 		})
 	})
-
-
+	it('should return the right response tag', async () => {
+			
+		const updatedTag = await updateTag(
+			updatedInfo.title, 
+			updatedInfo.content, 
+			updatedInfo.tagId)
+            
+		return expect(updatedTag).to.eql({
+			id : updatedInfo.tagId,
+			title: updatedInfo.title,
+			content: updatedInfo.content
+		})
+    
+	})
 })
