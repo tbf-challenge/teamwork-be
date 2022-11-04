@@ -2,7 +2,7 @@ const { expect } = require('chai')
 const { faker } = require('@faker-js/faker')
 const { fixtures } = require('../../../test/utils')
 
-describe('DELETE /tags/tagId', () => {
+describe('UPDATE /tags/tagId', () => {
 
 	let user
 	let accessToken
@@ -10,7 +10,7 @@ describe('DELETE /tags/tagId', () => {
 	let updatedInfo
 
 	before(async ()=> {
-        
+
 		user = await fixtures.insertUser() 
 		const body = { id: user.id, email: user.email }
 		accessToken = fixtures.generateAccessToken(
