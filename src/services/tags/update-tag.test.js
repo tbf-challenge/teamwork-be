@@ -47,7 +47,7 @@ describe('Update Tag', () => {
 			content: updatedInfo.content
 		})
 	})
-	it('should return the right response tag', async () => {
+	it('should return the right response', async () => {
 			
 		const updatedTag = await updateTag(
 			updatedInfo.title, 
