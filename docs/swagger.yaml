@@ -92,7 +92,7 @@ paths:
                         description: time a user was created
                         example: "2022-10-06T12:50:11.970Z"
       security:
-        - access_token: []                  
+        - bearerAuth: []                  
   /auth/signin:
     post:
       tags: 
@@ -495,7 +495,7 @@ paths:
                         description: Published or not
                         example: true
       security:
-        - access_token: []
+        - bearerAuth: []
   /articles/{articleId}:
     patch:
       tags:
@@ -554,7 +554,7 @@ paths:
                         description: Content of the article
                         example: You need to design and build 10x spectacular projects
       security:
-        - access_token: [] 
+        - bearerAuth: [] 
     delete:
       tags:
         - article
@@ -589,7 +589,7 @@ paths:
                         description: Message to indicate successful delete
                         example: Article successfully deleted 
       security:
-        - access_token: []
+        - bearerAuth: []
     get:
       tags:
         - article
@@ -664,7 +664,7 @@ paths:
                               description: Comment Id
                               example: 10
       security:
-          - access_token: []
+        - bearerAuth: []
   /articles/{articleId}/comment:
     post:
       tags:
@@ -724,7 +724,7 @@ paths:
                         description: New comment to be created
                         example: This post articulates all there is to be a 10x software developer
       security:
-        - access_token: []
+        - bearerAuth: []
   /articles/{articleId}/likes:
     post:
       tags:
@@ -779,7 +779,7 @@ paths:
                         description: article id
                         example: 10
       security:
-        - access_token: []
+        - bearerAuth: []
   /articles/{articleId}/likes{userId}:
     delete:
       tags:
@@ -821,7 +821,7 @@ paths:
                         description: Message for unliking an article
                         example: Article successfully unliked
       security:
-        - access_token: []
+        - bearerAuth: []
   /articles/{articleId}/flags:
     post:
       tags:
@@ -880,7 +880,7 @@ paths:
                         description: reason for flagging an article
                         example: this article is inappropriate
       security:
-        - access_token: []
+        - bearerAuth: []
   /articles/{id}/flags/{userId}:
     delete:
       tags:
@@ -922,7 +922,7 @@ paths:
                         description: Message for unflagging an article
                         example: Article successfully unflagged
       security:
-        - access_token: []
+        - bearerAuth: []
   /articles/{articleId}/tags:
     post:
       tags:
@@ -1154,7 +1154,7 @@ paths:
                         description: image/gif content
                         example: /https://imgbb.com/
       security:
-        - access_token: []
+        - bearerAuth: []
   /gifs/{gifId}:
     get:
       tags:
@@ -1223,7 +1223,7 @@ paths:
                               description: Comment Id
                               example: 10
       security:
-          - access_token: []
+        - bearerAuth: []
     delete:
       tags:
         - gif
@@ -1324,7 +1324,7 @@ paths:
                         description: New comment to be created
                         example: This post articulates all there is to be a 10x software developer
       security:
-        - access_token: []
+        - bearerAuth: []
   /gifs/{gifId}/likes:
     post:
       tags:
@@ -1379,7 +1379,7 @@ paths:
                         description: gif id
                         example: 10
       security:
-        - access_token: []
+        - bearerAuth: []
   /gifs/{gifId}/likes{userId}:
     delete:
       tags:
@@ -1421,7 +1421,7 @@ paths:
                         description: Message for unliking a gif
                         example: Gif successfully unliked
       security:
-        - access_token: []
+        - bearerAuth: []
   /gifs/{gifId}/flags:
     post:
       tags:
@@ -1480,7 +1480,7 @@ paths:
                         description: reason for flagging a Gif
                         example: this gif is inappropriate
       security:
-        - access_token: []
+        - bearerAuth: []
   /gifs/{id}/flags{userId}:
     delete:
       tags:
@@ -1522,7 +1522,7 @@ paths:
                         description: Message for unflagging a gif
                         example: Gif image successfully unflagged
       security:
-        - access_token: []
+        - bearerAuth: []
   /tags:
     get:
       tags:
@@ -1560,7 +1560,7 @@ paths:
                           description: Content of a tag
                           example: How to become a developer
       security:
-        - access_token: []
+        - bearerAuth: []
     post:
       tags:
         - tag
@@ -1613,7 +1613,7 @@ paths:
                         description: Content of a tag
                         example: How to become a developer
       security:
-        - access_token: []
+        - bearerAuth: []
   /tags/{tagId}:
     delete:
       tags:
@@ -1705,7 +1705,7 @@ paths:
                         description: Content of the tag
                         example: How to date responsibly
       security:
-        - access_token: []                      
+        - bearerAuth: []                      
   /feed:
     get:
       tags:
@@ -1774,7 +1774,7 @@ paths:
                           example: true
                         
       security:
-        - access_token: []
+        - bearerAuth: []
   /users:
     get:
       tags:
@@ -1832,11 +1832,11 @@ paths:
                           description: department of the user
                           example: Software Development  
       security:
-        - access_token: []
+        - bearerAuth: []
   /users/{id}:
     patch:
       security:
-        - access_token: []
+        - bearerAuth: []
       tags:
         - user
       operationId: Update a user
@@ -1953,6 +1953,10 @@ components:
           type: string
           example: jones@gmail.com
           format: email
-  
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
         
       
