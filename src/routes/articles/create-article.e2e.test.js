@@ -1,6 +1,9 @@
 const { faker } = require('@faker-js/faker')
 const {expect} = require('chai')
 const {fixtures} = require('../../../test/utils')
+const { logger }  = require('../../lib')
+
+const log = logger()
 
 
 describe('POST /articles', () => {
@@ -78,7 +81,8 @@ describe('POST /articles', () => {
 				.send(data)
 				.expect(201)
 		)
-		it('should return the right response', async () =>
+		it('should return the right response', async () =>{
+			log.info('create new article with this data: ', data)
 			fixtures.api()
 				.post(`/api/v1/articles`)
 				.set('Authorization', `Bearer ${accessToken}`)
@@ -102,7 +106,7 @@ describe('POST /articles', () => {
 							}
 						  
 						})
-				})
+				})}
 		)
 	})
 
