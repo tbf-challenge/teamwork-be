@@ -6,24 +6,26 @@ describe('POST /tags', () => {
 
 	let user
 	let accessToken
-	let tag
 
-	beforeEach(async ()=> {
+	before(async ()=> {
 
 		user = await fixtures.insertUser() 
 		const body = { id: user.id, email: user.email }
 		accessToken = fixtures.generateAccessToken(
 			{user : body}
 		)
-		tag = {
-			title : faker.random.word(5),
-			content : faker.random.words()
-		}
-
 
 	})
 
 	describe('Failure', () => {
+
+		let tag
+		before(async ()=>{
+			tag = {
+				title : faker.random.word(5),
+				content : faker.random.words()
+			}
+		})
 	
 		it('should return 401 if request is not authenticated', async () => 
 			fixtures.api()
@@ -87,6 +89,14 @@ describe('POST /tags', () => {
 	})
 
 	describe('Success', () => {
+
+		let tag
+		beforeEach(async ()=>{
+			tag = {
+				title : faker.random.word(5),
+				content : faker.random.words()
+			}
+		})
 
 		it('should return 201 if tag is created', async () => 
 
