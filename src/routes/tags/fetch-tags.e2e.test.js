@@ -1,8 +1,5 @@
 const { expect } = require('chai')
 const { fixtures, resetDBTable } = require('../../../test/utils')
-const { logger }  = require('../../lib')
-
-const log = logger()
 
 
 describe('GET /tags', () => {   
@@ -42,17 +39,17 @@ describe('GET /tags', () => {
 			
 		})
 
-		it('should return 200 if tags are fetched', async () =>{
-			log.info('should return 200 if tags are fetched ')
-			return fixtures.api()
+		it('should return 200 if tags are fetched', async () =>
+			
+			fixtures.api()
 				.get(`/api/v1/tags`)
 				.set('Authorization', `Bearer ${accessToken}`)
 				.expect(200)
-		})
+		)
 
-		it('should return the right number of tags', async() =>{
-			log.info('should return the right number of tags ')
-			return fixtures.api()
+		it('should return the right number of tags', async() =>
+			
+			fixtures.api()
 				.get(`/api/v1/tags`)
 				.set('Authorization', `Bearer ${accessToken}`)
 				.then(res => {
@@ -64,6 +61,6 @@ describe('GET /tags', () => {
 
 						})))
 				}) 
-		})	
+		)	
 	})
 })
