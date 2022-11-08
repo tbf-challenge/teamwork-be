@@ -2,16 +2,22 @@ const { expect } = require('chai')
 const { faker } = require('@faker-js/faker')
 const db = require('../../db')
 const inviteUser = require('./invite-user')
+const config = require('../../config')
+const emailTemplates = require('../email-templates')
+const utils = require('../../../test/utils')
 
 
 describe('Invite a New User', () => {
 
-	let invitedUser
+	let invitedUser; let sendMailFake
 	
-	before(async () => {
+	beforeEach(async () => {
 		invitedUser = {
 			email : faker.internet.email()
 		}
+
+		sendMailFake = global.transport.sendMail 
+		
 	})
 
 	it('should check if invite is inserted into the database', async () => {
@@ -21,6 +27,28 @@ describe('Invite a New User', () => {
 			`SELECT * FROM user_invites 
 			WHERE email = $1`, [email])
 		return expect(result.rowCount).to.eql(1)
+	})
+
+	it('should send email to the invited user', async () => {
+		await inviteUser(invitedUser.email)
+        
+		const token = utils.fixtures.generateAccessToken({
+			email: invitedUser.email
+		}, '7d')
+
+		const inviteUrl = `${config("FRONTEND_BASE_URL")}/signup?token=${token}`
+
+		const { subject, text } =  emailTemplates
+			.getInviteUserMailSubjectAndBody({
+				organizationName: config('ORGANIZATION_NAME'),
+				inviteUrl
+			})
+
+		expect(sendMailFake.lastArg).to.include({
+			to: invitedUser.email,
+			subject,
+			text
+		})
 	})
 
 	it('should return the right response', async () => {
