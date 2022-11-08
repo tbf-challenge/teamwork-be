@@ -12,8 +12,16 @@ const transportConfig = {
 }
 
 
-const transporter = nodemailer.createTransport(transportConfig)
+let transporter
 
+const createTransport =  () => {
+	if(!transporter) {
+		transporter = nodemailer.createTransport(transportConfig)
+	}
+
+	return transporter
+
+}
 
 /** 
  * Sends a mail 
@@ -24,7 +32,7 @@ const transporter = nodemailer.createTransport(transportConfig)
  * @returns {Promise}
 */
 const sendEmail = ({ from=config('EMAIL_FROM'), to, 
-	subject, text }) => transporter
+	subject, text }) => createTransport()
 	.sendMail({
 		from,
 		to,
