@@ -4,6 +4,7 @@ const {
 } = require("../../lib")
 const config = require("../../config")
 const db = require("../../db")
+const emailTemplates = require('../email-templates')
 
 /**
  * service to invite user
@@ -23,16 +24,15 @@ const inviteUser = async (email) => {
 	const signupInfo = rows[0]
 	
 
-	const url = `${config("FRONTEND_BASE_URL")}/signup?token=${token}`
+	const inviteUrl = `${config("FRONTEND_BASE_URL")}/signup?token=${token}`
 
-	const text = `Hi,
-	\n\nPlease click on the following link to complete your registration:
-	\n${url}\n\nIf you did not request this, please ignore this email.\n`
-
-	await emailLib({ to: email, 
-		subject: `Invitation to join the 
-		${config("ORGANIZATION_NAME")} organization`, 
-		text })
+	await emailLib({
+		to: email, 
+		...emailTemplates.getInviteUserMailSubjectAndBody({
+			organizationName: config('ORGANIZATION_NAME'),
+			inviteUrl
+		})
+	})
 
 	
 	return signupInfo
