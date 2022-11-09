@@ -9,7 +9,8 @@ const updatePost = async({title, content, image, published, id}) => {
 		`UPDATE posts 
 		SET title = $1, content = $2 , image = $3 , published = $4
 		 WHERE id = $5 
-		 RETURNING *`,
+		 RETURNING title, content , id, "createdAt",
+		image, published, "userId"`,
 		[title, content, image, published, id]
 	)
 	const updatedPost = result.rows[0]
