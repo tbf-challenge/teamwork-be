@@ -84,7 +84,8 @@ const fixtures = {
 			`INSERT INTO posts
 		 ("userId", title , image , content , published, type )
 		  VALUES ($1 , $2, $3, $4, $5, $6 )
-		  RETURNING * `, [
+		  RETURNING id, "userId", title, image , content, published,
+		  "createdAt", type `, [
 				newData.userId, newData.title , newData.image,
 				newData.content, newData.published, newData.type]
 		)
@@ -100,7 +101,7 @@ const fixtures = {
 			`INSERT INTO post_likes
 		 ("userId", "postId")
 		  VALUES ($1 , $2 ) 
-		  RETURNING *`, [
+		  RETURNING "userId", "postId", "createdAt"`, [
 				newData.userId, newData.postId]
 		)
 		return newLike.rows[0]
@@ -143,7 +144,7 @@ const fixtures = {
 			`INSERT INTO post_flags
 	 ("userId", "postId", reason)
 	  VALUES ($1 , $2, $3 ) 
-	  RETURNING *`, [
+	  RETURNING "userId", "postId", reason, "createdAt"`, [
 				newData.userId, newData.postId, newData.reason]
 		)
 		return result.rows[0]
