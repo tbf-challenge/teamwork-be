@@ -176,7 +176,8 @@ const fixtures = {
 		const queryResult = await db.query(
 			`INSERT INTO comments 
 			("userId" , "postId" , content)
-			 VALUES ($1 , $2 ,$3) RETURNING *`,
+			 VALUES ($1 , $2 ,$3) RETURNING id, "userId", "postId", "createdAt",
+			 content, published`,
 			[newData.userId, newData.id, newData.comment]
 		)
 
