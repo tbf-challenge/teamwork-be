@@ -55,6 +55,7 @@ describe('Get POST ', () => {
 				userId : post.userId,
 				title : post.title,
 				image : post.image,
+				likesCount : post.likesCount,
 				content : post.content,
 				published : post.published,
 				createdAt : post.createdAt,
@@ -105,7 +106,7 @@ describe('Get POST ', () => {
 				id: post.id,
 				type : 'article'
 		 })
-		 	
+
 			 const {comments} = insertedPost
 
 			 expect(comments[0].createdAt).to.be.a('string')
@@ -116,6 +117,7 @@ describe('Get POST ', () => {
 				userId : post.userId,
 				title : post.title,
 				image : post.image,
+				likesCount : post.likesCount,
 				content : post.content,
 				published : post.published,
 				createdAt : post.createdAt,

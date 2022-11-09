@@ -61,10 +61,11 @@ describe('POST /gifs', () => {
 
 	describe('Success', () => {
 		let data
-		before(async ()=>{
+		beforeEach(async ()=>{
 			data = {
 				title : faker.random.word(5),
 				image : faker.image.imageUrl(),
+				likesCount : faker.datatype.number(),
 				published: faker.datatype.boolean()
 			}
 		})
@@ -82,6 +83,7 @@ describe('POST /gifs', () => {
 				.send(data)
 				.expect(201)
 				.then((res) => {
+	
 					expect(res.body.data.gifId).to.be.an('number')
 					expect(res.body.data.createdOn).to.be.a('string')
 					delete res.body.data.gifId
@@ -94,6 +96,7 @@ describe('POST /gifs', () => {
 							  userId: user.id,
 							  title: data.title,
 							  imageUrl: data.image,
+							  likesCount: data.likesCount,
 							  published: data.published
 							}
 						  

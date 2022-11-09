@@ -85,6 +85,7 @@ describe('GET /articles/:id', () => {
 							  userId: article.userId,
 							  title: article.title,
 							  image: article.image,
+							  likesCount: article.likesCount,
 							  article: article.content,
 							  published: article.published,
 								createdOn: article.createdAt.toISOString(),

@@ -65,11 +65,12 @@ describe('POST /articles', () => {
 
 	describe('Success', () => {
 		let data
-		before(async ()=>{
+		beforeEach(async ()=>{
 			data = {
 				title : faker.random.word(5),
 				image : faker.image.imageUrl(),
 				article : faker.random.words(),
+				likesCount : faker.datatype.number(),
 				published : faker.datatype.boolean(),
 				type : 'article'
 			}
@@ -101,6 +102,7 @@ describe('POST /articles', () => {
 							  userId: user.id,
 							  title: data.title,
 							  image: data.image,
+							  likesCount: data.likesCount,
 							  article: data.article,
 							  published: data.published
 							}

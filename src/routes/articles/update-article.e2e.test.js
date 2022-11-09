@@ -177,6 +177,7 @@ describe('PATCH /articles/:id', () => {
 							  message: 'Article successfully updated',
 							  title: updatedInfo.title,
 							  image: updatedInfo.image,
+							  likesCount : article.likesCount,
 							  article: updatedInfo.content,
 							  published: updatedInfo.published,
 							  articleId : article.id,

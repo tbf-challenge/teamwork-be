@@ -15,6 +15,7 @@ describe('CREATE POST', () => {
 			userId: user.id,
 			title : faker.random.words(),
 			image : faker.internet.url(),
+			likesCount : faker.datatype.number(),
 			content : faker.internet.url(),
 			published : faker.datatype.boolean()
 		})
@@ -49,6 +50,7 @@ describe('CREATE POST', () => {
 				userId : queryResult.userId,
 				title : queryResult.title,
 				image : queryResult.image,
+				likesCount: queryResult.likesCount,
 				content : queryResult.content,
 				published : queryResult.published,
 				createdAt : queryResult.createdAt,
@@ -85,6 +87,7 @@ describe('CREATE POST', () => {
 				userId : queryResult.userId,
 				title : queryResult.title,
 				image : queryResult.image,
+				likesCount: queryResult.likesCount,
 				content : queryResult.content,
 				published : queryResult.published,
 				createdAt : queryResult.createdAt,

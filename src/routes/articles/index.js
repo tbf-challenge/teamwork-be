@@ -40,11 +40,13 @@ const {transformArticleResponse} = require('../common/transformers')
 const createArticle = catchAsync( async (req, res) => {
 	
 	const userId = req.user.id
-	const { title, image, article, published } = req.body
+	const { title, image, likesCount, article, published } = req.body
+	
 	const newArticle = await postService.createPost({
 		userId,
 		title, 
 		image, 
+		likesCount,
 		content : article,
 		published,
 		    type : 'article'
@@ -125,12 +127,13 @@ const deleteArticle = catchAsync( async (req, res) => {
 
 const updateArticle = catchAsync( async (req, res) => {
 	const { id } = req.params 
-	const { title, article, image, published } = req.body 
+	const { title, article, image, likesCount, published } = req.body 
 
 	const updatedArticle = await postService.updatePost({
 		title,
 		content : article,
 		image,
+		likesCount,
 		published,
 		id
 	})

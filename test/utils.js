@@ -74,6 +74,7 @@ const fixtures = {
 		const postData = {
 			title : faker.random.words(),
 			image : faker.internet.url(),
+			likesCount : faker.datatype.number(),
 			content : faker.internet.url(),
 			published : faker.datatype.boolean(),
 			type : 'gif'
@@ -82,11 +83,12 @@ const fixtures = {
 		const newData = {...postData, ...overrides}
 		const newPost = await db.query(
 			`INSERT INTO posts
-		 ("userId", title , image , content , published, type )
-		  VALUES ($1 , $2, $3, $4, $5, $6 )
+		 ("userId", title , image , "likesCount", content , published, type )
+		  VALUES ($1 , $2, $3, $4, $5, $6, $7 )
 		  RETURNING * `, [
 				newData.userId, newData.title , newData.image,
-				newData.content, newData.published, newData.type]
+				newData.likesCount,newData.content, newData.published, 
+				newData.type]
 		)
 		return newPost.rows[0]
 	},

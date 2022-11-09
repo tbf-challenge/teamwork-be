@@ -56,6 +56,7 @@ const createArticleSchema = Joi.object({
 			.uri(),
 		article: Joi.string()
 			.required(),
+		likesCount: Joi.number(),
 		published: Joi.boolean()
 	}
 })
@@ -186,6 +187,7 @@ const createGifSchema = Joi.object({
 		image: Joi.string()
 			.uri()
 			.required(),
+		likesCount: Joi.number(),
 		published: Joi.boolean()
 	}
 })
