@@ -12,7 +12,7 @@ const flagPost = async({userId, postId, reason, type}) => {
 		`INSERT INTO post_flags
 		 ("userId", "postId", reason)
 		  VALUES ($1 , $2, $3 ) 
-		  RETURNING *`,
+		  RETURNING "userId", "postId", reason, "createdAt"`,
 		[userId, postId, reason]
 	).catch(error => {
 		if(error.code === uniqueErrorCode ){
