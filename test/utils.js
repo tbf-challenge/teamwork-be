@@ -151,7 +151,7 @@ const fixtures = {
 	},
 	async insertTag(overrides = {}){
 		const tagData = {
-			title : faker.random.word(),
+			title : faker.random.words(),
 			content: faker.random.words()
 		}
 		const newData = {...tagData, ...overrides}
