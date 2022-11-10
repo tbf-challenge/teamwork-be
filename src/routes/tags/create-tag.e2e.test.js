@@ -1,6 +1,9 @@
 const { expect } = require('chai')
 const { faker } = require('@faker-js/faker')
 const { fixtures } = require('../../../test/utils')
+const createTag = require("../../services/tags/create-tag")
+
+const endpoint = "/api/v1/tags"
 
 describe('POST /tags', () => {
 
@@ -29,7 +32,7 @@ describe('POST /tags', () => {
 	
 		it('should return 401 if request is not authenticated', async () => 
 			fixtures.api()
-				.post(`/api/v1/tags`)
+				.post(endpoint)
 				.expect(401)
 		)
         
@@ -41,7 +44,7 @@ describe('POST /tags', () => {
 				"status": "failed"
 			}
 			return fixtures.api()
-				.post(`/api/v1/tags`)
+				.post(endpoint)
 				.set('Authorization', `Bearer ${accessToken}`)
 				.send({ 
 					title : 123,
@@ -58,7 +61,7 @@ describe('POST /tags', () => {
 				"status": "failed"
 			}
 			return fixtures.api()
-				.post(`/api/v1/tags`)
+				.post(endpoint)
 				.set('Authorization', `Bearer ${accessToken}`)
 				.send({ 
 					title : tag.title,
@@ -77,13 +80,30 @@ describe('POST /tags', () => {
 			}
 			
 			fixtures.api()
-				.post(`/api/v1/tags/`)
+				.post(endpoint)
 				.set('Authorization', `Bearer ${accessToken}`)
 				.send({
 					title : "",
 					content : tag.content
 					 })
 				.expect(400, expectedError)
+		})
+
+		it('should return 400 if tag already exists', async () => {
+			await createTag(tag)
+
+			return fixtures.api()
+				.post(endpoint)
+				.set('Authorization', `Bearer ${accessToken}`)
+				.send({
+					title : tag.title,
+					content : tag.content
+					 })
+				.expect(400)
+				.then(res => {
+					expect(res.body.status).to.eql("fail")
+					expect(res.body.message).to.eql("Tag already exists")
+				})
 		})
 
 	})
@@ -101,7 +121,7 @@ describe('POST /tags', () => {
 		it('should return 201 if tag is created', async () => 
 
 			fixtures.api()
-				.post(`/api/v1/tags`)
+				.post(endpoint)
 				.set('Authorization', `Bearer ${accessToken}`)
 				.send({ 
 					title : tag.title,
@@ -114,7 +134,7 @@ describe('POST /tags', () => {
 		it('should return the right response', async () =>
 			
 			fixtures.api()
-				.post(`/api/v1/tags`)
+				.post(endpoint)
 				.set('Authorization', `Bearer ${accessToken}`)
 				.send(tag)
 				.expect(201)
