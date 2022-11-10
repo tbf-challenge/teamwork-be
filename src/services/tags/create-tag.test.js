@@ -16,6 +16,13 @@ describe('Create tag', () => {
 		 
 	})
 
+	it('should return an error when tag already exists', async () => 
+		
+		expect(createTag(tag))
+			.to.be.rejectedWith('Tag already exists')
+		
+	)
+
 	it('should insert a tag', async () => {
 
 		const insertedTag = await db.query(
