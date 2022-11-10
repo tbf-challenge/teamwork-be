@@ -2,6 +2,7 @@ const {expect} = require('chai')
 const { faker } = require('@faker-js/faker')
 const db = require("../../db")
 const createTag = require("./create-tag")
+const { fixtures } = require('../../../test/utils')
 
 
 describe('Create tag', () => {
@@ -16,12 +17,14 @@ describe('Create tag', () => {
 		 
 	})
 
-	it('should return an error when tag already exists', async () => 
+	it('should return an error when tag already exists', async () => {
+
+		const insertedTag = await fixtures.insertTag()
 		
-		expect(createTag(tag))
+		return expect(createTag(insertedTag))
 			.to.be.rejectedWith('Tag already exists')
 		
-	)
+	})
 
 	it('should insert a tag', async () => {
 
