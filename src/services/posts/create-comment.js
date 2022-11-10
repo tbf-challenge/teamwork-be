@@ -7,7 +7,8 @@ const customError = require("../../lib/custom-error")
 
 const createComment = async({id, userId, comment, type}) => {
 	const result = await db.query(
-		`SELECT * FROM posts 
+		`SELECT content, "createdAt", id, image, published, title,
+	type, "userId" FROM posts 
 	WHERE id = $1
 	AND type = $2 `,
 	 [id , type ])
@@ -21,7 +22,8 @@ const createComment = async({id, userId, comment, type}) => {
 	const queryResult = await db.query(
 		`INSERT INTO comments 
 		("userId" , "postId" , content)
-	 	VALUES ($1 , $2 ,$3) RETURNING *`,
+	 	VALUES ($1 , $2 ,$3) RETURNING id, "userId", "postId", "createdAt",
+		content, published`,
 		[userId, id, comment]
 	)
 	const insertedComment = queryResult.rows[0]

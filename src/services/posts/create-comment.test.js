@@ -36,7 +36,8 @@ describe('CREATE COMMENT', () => {
 				comment})
     
 			const result = await db.query(
-				`SELECT * FROM comments
+				`SELECT content, "createdAt", id, "postId",
+				published, "userId" FROM comments
                 WHERE id = $1
                 `,[commentData.insertedComment.id ])
 			expect(result.rowCount).to.equal(1)
@@ -51,7 +52,8 @@ describe('CREATE COMMENT', () => {
 				comment})
     
 			const result = await db.query(
-				`SELECT * FROM comments
+				`SELECT content, "createdAt", id, "postId",
+				published, "userId" FROM comments
                 WHERE id = $1
                 `,[commentData.insertedComment.id ])
     
@@ -81,7 +83,8 @@ describe('CREATE COMMENT', () => {
 				comment})
     
 			const result = await db.query(
-				`SELECT * FROM comments
+				`SELECT content, "createdAt", id, "postId",
+				published, "userId" FROM comments
                 WHERE id = $1
                 `,[commentData.insertedComment.id ])
 			expect(result.rowCount).to.equal(1)
@@ -96,7 +99,8 @@ describe('CREATE COMMENT', () => {
 				comment})
     
 			const result = await db.query(
-				`SELECT * FROM comments
+				`SELECT content, "createdAt", id, "postId",
+				published, "userId" FROM comments
                 WHERE id = $1
                 `,[commentData.insertedComment.id ])
     

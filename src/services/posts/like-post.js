@@ -12,7 +12,7 @@ const likePost = async({userId, postId, type}) => {
 		`INSERT INTO post_likes
 		 ("userId", "postId")
 		  VALUES ($1 , $2 ) 
-		  RETURNING *`,
+		  RETURNING "userId", "postId", "createdAt"`,
 		[userId, postId]
 	).catch(error => {
 		if(error.code === uniqueErrorCode ){
