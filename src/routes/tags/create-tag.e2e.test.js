@@ -1,7 +1,7 @@
 const { expect } = require('chai')
 const { faker } = require('@faker-js/faker')
 const { fixtures } = require('../../../test/utils')
-const createTag = require("../../services/tags/create-tag")
+
 
 const endpoint = "/api/v1/tags"
 
@@ -90,7 +90,7 @@ describe('POST /tags', () => {
 		})
 
 		it('should return 400 if tag already exists', async () => {
-			await createTag(tag)
+			await fixtures.insertTag(tag)
 
 			return fixtures.api()
 				.post(endpoint)
