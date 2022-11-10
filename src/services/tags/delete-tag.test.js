@@ -1,14 +1,14 @@
 const {expect} = require('chai')
 const db = require("../../db")
 const deleteTag = require("./delete-tag")
-const {fixtures, resetDBTable} = require('../../../test/utils')
+const {fixtures} = require('../../../test/utils')
 
 describe('DELETE tag', () => {
 
 	let tag
 
 	before(async ()=>{
-		await resetDBTable('tags')
+		
 		tag = await fixtures.insertTag()  
 	})
 
