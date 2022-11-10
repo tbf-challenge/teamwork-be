@@ -7,37 +7,39 @@ const { fixtures } = require('../../../test/utils')
 
 describe('Create tag', () => {
 	
-	let tag
-	before(async ()=>{
-		  
-		 tag = await createTag({
-			title : faker.random.word(5),
-			content : faker.random.words()
-		})
-		 
-	})
 
 	it('should return an error when tag already exists', async () => {
 
 		const insertedTag = await fixtures.insertTag()
-		
-		return expect(createTag(insertedTag))
+
+		return expect(createTag({
+			title : insertedTag.title,
+			content : insertedTag.content
+		}))
 			.to.be.rejectedWith('Tag already exists')
 		
 	})
 
 	it('should insert a tag', async () => {
-
+		const tag = await createTag({
+			title : faker.random.words(),
+			content : faker.random.words()
+		})
 		const insertedTag = await db.query(
 			`SELECT * FROM tags
                 WHERE id = $1
                 
                 `,[tag.id ])
-		expect(insertedTag.rowCount).to.equal(1)
+		return expect(insertedTag.rowCount).to.equal(1)
     
 	})
 
 	it('should return right data', async () => {
+
+		const tag = await createTag({
+			title : faker.random.words(),
+			content : faker.random.words()
+		})
 
 		const result = await db.query(
 			`SELECT * FROM tags
@@ -45,7 +47,7 @@ describe('Create tag', () => {
                 `,[tag.id ])
 		const insertedTag = result.rows[0]
 
-		expect(tag).to.eql({
+		return expect(tag).to.eql({
 			id : insertedTag.id,
 			title : insertedTag.title,
 			content : insertedTag.content
