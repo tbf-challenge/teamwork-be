@@ -16,6 +16,7 @@ describe('Invite a New User', () => {
 			email : faker.internet.email()
 		}
 
+		// global.transport is set in test/stub-mailer.js
 		sendMailFake = global.transport.sendMail 
 		
 	})
@@ -44,7 +45,8 @@ describe('Invite a New User', () => {
 				inviteUrl
 			})
 
-		expect(sendMailFake.lastArg).to.include({
+		expect(sendMailFake.lastArg).to.eql({
+			from: config('EMAIL_FROM'),
 			to: invitedUser.email,
 			subject,
 			text
