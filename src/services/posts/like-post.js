@@ -25,7 +25,12 @@ const likePost = async({userId, postId, type}) => {
 			throw error
 		}
 	})
+	
+	/* There is a trigger on the post_likes table that computes and updates 
+	the likesCount column in the posts table on every insert */
+
 	return newLike.rows[0]
 }
+
 
 module.exports = likePost
