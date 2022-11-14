@@ -89,6 +89,31 @@ describe('RECORD LIKES ', () => {
 			expect(likedPost).to.eql(result.rows[0])	 
 		})
 
+		it('should increment likesCount on post', async () => {
+			const newPost = await fixtures.insertPost({
+				userId : user.id , 
+				type : 'article'
+			})
+			await likePost({ 
+				userId: user.id, 
+				postId: newPost.id
+		 })
+			const result = await db.query(
+				`SELECT "likesCount" FROM posts
+             WHERE id = $1`,[ newPost.id ])
+
+			const {likesCount} = result.rows[0]
+
+			const postLikesCountQueryResult = await db.query(
+				`SELECT COUNT(*) FROM post_likes
+             WHERE "postId" = $1`,[ newPost.id ])
+			 
+			const postLikeCount = Number(
+				postLikesCountQueryResult.rows[0].count)
+			
+			expect(postLikeCount).to.eql(likesCount)	 
+		})
+
 	})
 
 })

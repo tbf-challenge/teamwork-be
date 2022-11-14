@@ -7,6 +7,8 @@ const unlikePost = async({userId, postId}) => {
         AND "postId" = $2`,
 		[userId, postId]
 	)
+	/* There is a trigger on the post_likes table that computes and updates 
+	the likesCount column in the posts table on every delete */
 	return newUnlike
 }
 
