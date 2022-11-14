@@ -112,7 +112,31 @@ describe('FLAGGED POSTS ', () => {
 			})	 
 		})
 		
+		it('should increment flagsCount on post', async () => {
+			const newPost = await fixtures.insertPost({
+				userId : user.id , 
+				type : 'article'
+			})
+			await flagPost({ 
+				userId: user.id, 
+				postId: newPost.id
+		 })
+			const result = await db.query(
+				`SELECT "flagsCount" FROM posts
+             WHERE id = $1`,[ newPost.id ])
+		
+			const {flagsCount} = result.rows[0]
+
+
+			const postFlagsCountQueryResult = await db.query(
+				`SELECT COUNT(*) FROM post_flags
+             WHERE "postId" = $1`,[ newPost.id ])
+			 
+			const postFlagCount = Number(
+				postFlagsCountQueryResult.rows[0].count)
+			
+			expect(postFlagCount).to.eql(flagsCount)	 
+		})
 
 	})
-	
 })
