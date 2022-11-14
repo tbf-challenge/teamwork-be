@@ -8,4 +8,7 @@ const unflagPost = ({userId, postId}) =>
 		[userId, postId]
 	)
 	
+/* There is a trigger on the post_flags table that computes and updates 
+	the flagsCount column in the posts table on every delete */
+
 module.exports = unflagPost

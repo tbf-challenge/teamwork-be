@@ -39,13 +39,16 @@ describe('UNFLAG a post', () => {
 	})
 
 	describe('ARTICLE', () => {
+
 		let post
+
 		before(async ()=>{
 			post = await fixtures.insertPost({
 				userId : user.id , 
 				type : 'article'
 			})
 		})
+
 		it('should delete an article flag in the database', async () => {
 			await fixtures.insertPost({
 			   userId : user.id , 
@@ -64,6 +67,30 @@ describe('UNFLAG a post', () => {
 		   expect(result.rowCount).to.eql(0)	 
 	   })
    
+
+	   it('should decrement flagsCount on post', async () => {
+			const newPost = await fixtures.insertPost({
+				userId : user.id , 
+				type : 'article'
+			})
+			await unflagPost({ 
+				userId: user.id, 
+				postId: newPost.id
+	 })
+			const result = await db.query(
+				`SELECT "flagsCount" FROM posts
+		 WHERE id = $1`,[ newPost.id ])
+
+			const {flagsCount} = result.rows[0]
+
+			const postFlagsCountQueryResult = await db.query(
+				`SELECT COUNT(*) FROM post_flags
+		 WHERE "postId" = $1`,[ newPost.id ])
+		 
+			const postFlagCount = Number(
+				postFlagsCountQueryResult.rows[0].count)
+		
+			expect(postFlagCount).to.eql(flagsCount)	 
+		})
 	})
-	
 })

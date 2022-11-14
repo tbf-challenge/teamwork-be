@@ -25,6 +25,9 @@ const flagPost = async({userId, postId, reason, type}) => {
 			throw error
 		}
 	})
+
+	/* There is a trigger on the post_flags table that computes and updates 
+	the flagsCount column in the posts table on every insert */
 	return result.rows[0]
 }
 
