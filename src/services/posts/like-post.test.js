@@ -107,7 +107,7 @@ describe('RECORD LIKES ', () => {
 			const postLikesCountQueryResult = await db.query(
 				`SELECT COUNT(*) FROM post_likes
              WHERE "postId" = $1`,[ newPost.id ])
-			
+			 
 			const postLikeCount = Number(
 				postLikesCountQueryResult.rows[0].count)
 			
