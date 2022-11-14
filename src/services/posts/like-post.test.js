@@ -104,13 +104,14 @@ describe('RECORD LIKES ', () => {
 
 			const {likesCount} = result.rows[0]
 
-			const query = await db.query(
+			const postLikesCountQueryResult = await db.query(
 				`SELECT COUNT(*) FROM post_likes
              WHERE "postId" = $1`,[ newPost.id ])
 			
-			const likedPost = Number(query.rows[0].count)
+			const postLikeCount = Number(
+				postLikesCountQueryResult.rows[0].count)
 			
-			expect(likedPost).to.eql(likesCount)	 
+			expect(postLikeCount).to.eql(likesCount)	 
 		})
 
 	})
