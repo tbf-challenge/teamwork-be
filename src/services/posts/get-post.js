@@ -10,7 +10,7 @@ const customError = require("../../lib/custom-error")
 const getPost = async({id, type}) => {
 	const result = await db.query(
 		`SELECT p.id, p."userId", p.title, p.image, p.content, p.published,
-		p."createdAt", p.type, 
+		p."createdAt", p.type, p."likesCount",
 		jsonb_agg(c.* ORDER BY c."createdAt" DESC) as comments
 		FROM posts p 
 		LEFT JOIN comments c ON p.id = c."postId"
