@@ -58,7 +58,17 @@ describe('CREATE COMMENT', () => {
                 `,[commentData.insertedComment.id ])
     
 			expect(commentData).to.eql({
-				post,
+				post : {
+					id : post.id,
+					userId : post.userId,
+					title : post.title,
+					image : post.image,
+					content : post.content,
+					published : post.published,
+					createdAt : post.createdAt,
+					type: post.type
+				},
+		
 				insertedComment: result.rows[0]
 			})
 		})
@@ -103,9 +113,19 @@ describe('CREATE COMMENT', () => {
 				published, "userId" FROM comments
                 WHERE id = $1
                 `,[commentData.insertedComment.id ])
-    
+
 			expect(commentData).to.eql({
-				post,
+				post : {
+					id : post.id,
+					userId : post.userId,
+					title : post.title,
+					image : post.image,
+					content : post.content,
+					published : post.published,
+					createdAt : post.createdAt,
+					type: post.type
+				},
+		
 				insertedComment: result.rows[0]
 			})
 		})	
