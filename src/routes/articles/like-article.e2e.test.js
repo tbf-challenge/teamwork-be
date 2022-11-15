@@ -25,7 +25,7 @@ describe('POST /articles/:id/likes', () => {
 			}
 		})
 
-		it('should return 400 if postId is not a number', async () => {
+		it('should return 400 if article id is not a number', async () => {
 			const expectedError = {
 				"error": {
 			  "message": "id must be a number"
