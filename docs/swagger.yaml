@@ -647,6 +647,10 @@ paths:
                         type: boolean
                         description: published or not
                         example: true
+                      likesCount:
+                        type: number
+                        description: number of times an article has been liked
+                        example: 3
                       comments:
                         type: array
                         items:

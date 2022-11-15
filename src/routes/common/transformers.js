@@ -7,6 +7,7 @@ const transformArticleResponse = (article) => ({
 	published: article.published,
 	createdOn: article.createdAt,
 	articleId: article.id,
+	likesCount : article.likesCount,
 	tagId : article.tagId
 })
 

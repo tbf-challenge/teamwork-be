@@ -85,7 +85,7 @@ const fixtures = {
 		 ("userId", title , image , content , published, type )
 		  VALUES ($1 , $2, $3, $4, $5, $6 )
 		  RETURNING id, "userId", title, image , content, published,
-		  "createdAt", type `, [
+		  "createdAt", type, "likesCount" `, [
 				newData.userId, newData.title , newData.image,
 				newData.content, newData.published, newData.type]
 		)
