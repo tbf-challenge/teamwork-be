@@ -52,7 +52,7 @@ describe('POST /articles/:id/likes', () => {
 
 		})
 
-		it('should throw an error if Article is already liked', async () => {
+		it('should return 422 if article is already liked', async () => {
 
 			const post = await fixtures.insertPost({
 				userId : user.id , 
