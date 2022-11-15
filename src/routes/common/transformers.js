@@ -17,7 +17,8 @@ const transformGifResponse = (gif) => ({
 	imageUrl: gif.content,
 	createdOn: gif.createdAt,
 	gifId: gif.id,
-	published : gif.published
+	published : gif.published,
+	likesCount : gif.likesCount
 	
 })
 

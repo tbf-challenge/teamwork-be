@@ -1210,6 +1210,10 @@ paths:
                         type: boolean
                         description: Published or not
                         example: true
+                      likesCount:
+                        type: number
+                        description: number of likes on a gif
+                        example: 10
                       comments:
                         type: array
                         items:
