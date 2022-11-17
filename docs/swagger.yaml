@@ -1714,13 +1714,20 @@ paths:
                         example: How to date responsibly
       security:
         - bearerAuth: []                      
-  /feed:
+  /feed/query:
     get:
       tags:
         - feed
       operationId: getAllFeed
       summary: Get all articles and gifs
       description: Get all articles and gifs
+      parameters:
+      - in : query
+        name : isFlagged
+        schema:
+          type: boolean
+        required: true
+        description : true or false
       responses:
         '200':
           description: Get all articles and gifs (feed)
@@ -1760,6 +1767,10 @@ paths:
                         likesCount:
                           type: number
                           description: number of likes on a post
+                          example: 3
+                        flagsCount:
+                          type: number
+                          description: number of flags on a  posts 
                           example: 3
                         user:
                             type: object
