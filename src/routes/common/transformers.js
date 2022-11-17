@@ -8,6 +8,7 @@ const transformArticleResponse = (article) => ({
 	createdOn: article.createdAt,
 	articleId: article.id,
 	likesCount : article.likesCount,
+	flagsCount : article.flagsCount,
 	tagId : article.tagId
 })
 
@@ -18,6 +19,7 @@ const transformGifResponse = (gif) => ({
 	createdOn: gif.createdAt,
 	gifId: gif.id,
 	published : gif.published,
+	flagsCount : gif.flagsCount,
 	likesCount : gif.likesCount
 	
 })
