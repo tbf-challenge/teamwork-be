@@ -20,8 +20,16 @@ const router = express.Router()
 // GET ALL ARTICLES
 
 const fetchPosts = catchAsync( async(req, res) => {
+	let feed
+	const {isFlagged} = req.query
 
-	const feed = await postService.fetchPosts()
+	
+	if (isFlagged === 'true' && req.user.role === 'admin'){
+		feed = await postService.fetchFlaggedPosts()
+	}
+	 else {
+		feed = await postService.fetchPosts()
+	 }
 
 	res.status(200).json({
 		status: 'success',
@@ -38,6 +46,7 @@ const fetchPosts = catchAsync( async(req, res) => {
 	
 })
 
+
 // Routes
 
 // isAuthenticated middle to protect all posts related requests
@@ -46,5 +55,6 @@ router.use(isAuthenticated())
 router
 	.route('/')
 	.get(fetchPosts)
-
+// router.route('/query')
+// 	.get(isAdmin, fetchFlaggedPosts)
 module.exports = router
