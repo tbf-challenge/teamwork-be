@@ -265,6 +265,13 @@ const updateUserSchema = Joi.object({
 			.uri()
 	}
 })
+
+const fetchPostsSchema = Joi.object({
+	query: {
+		isFlagged :Joi.boolean()
+			
+	}
+})
 module.exports = {
 	authSchema,
 	signinSchema,
@@ -287,5 +294,6 @@ module.exports = {
 	unlikePostSchema,
 	flagPostSchema,
 	unflagPostSchema,
-	updateUserSchema
+	updateUserSchema,
+	fetchPostsSchema
 }
