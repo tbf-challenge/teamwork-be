@@ -1714,7 +1714,7 @@ paths:
                         example: How to date responsibly
       security:
         - bearerAuth: []                      
-  /feed/query:
+  /feed:
     get:
       tags:
         - feed
