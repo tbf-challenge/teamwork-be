@@ -91,6 +91,13 @@ const fixtures = {
 		)
 		return newPost.rows[0]
 	},
+	async insertMultiplePosts(userId, numberOfPosts = 5){
+		return Promise.all(Array.from({
+			 length: numberOfPosts 
+		}).map(() =>  fixtures.insertPost({
+			userId
+		})))
+	},
 	async insertPostLike(overrides = {}){
 		const likeData = {
 			type : faker.helpers.arrayElement(['gif', 'post'])
