@@ -12,7 +12,21 @@ const fetchPosts = async(isFlagged) => {
 		users."profilePictureUrl" 
 		FROM posts
 		INNER JOIN users on posts."userId" = users.id
-		WHERE posts."flagsCount" > 0;
+		WHERE posts."flagsCount" > 0
+		ORDER BY "flagsCount" DESC;
+		`)
+	}
+	else if(isFlagged === false){
+		feed = await db.query(`
+		SELECT posts.id, posts."userId" , posts.title, posts.image,
+		posts.content,posts.published, posts."createdAt", posts.type,
+		posts."likesCount", posts."flagsCount",
+		users."firstName", users."lastName", users.email,
+		users."profilePictureUrl" 
+		FROM posts
+		INNER JOIN users on posts."userId" = users.id
+		WHERE posts."flagsCount" = 0
+		ORDER BY "flagsCount" DESC;
 		`)
 	}
 	else(
