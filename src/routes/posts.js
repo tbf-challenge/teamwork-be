@@ -3,12 +3,12 @@ const isAuthenticated = require('../middleware/isAuthenticated')
 const { catchAsync} = require('../lib')
 const postService = require('../services/posts')
 const validateSchema = require('../middleware/validateSchema')
+const isAdmin = require("../middleware/isAdmin")
 const {
 	transformArticleResponse ,
 	transformGifResponse
 } = require('./common/transformers')
 const { fetchPostsSchema } = require('../schema')
-const isFlaggedAndIsAdmin = require('../middleware/isFlaggedAndIsAdmin')
 
 const typeTransformMap = {
 	article : transformArticleResponse,
@@ -49,6 +49,13 @@ router.use(isAuthenticated())
 
 router
 	.route('/')
-	.get( validateSchema(fetchPostsSchema), isFlaggedAndIsAdmin, fetchPosts)
+	.get(
+		(req, res, next) => {
+			if (req.query.isFlagged || req.query.isFlagged === false) {
+				return	isAdmin(req, res, next)
+			   } 
+			   return next()
+	  },validateSchema(fetchPostsSchema), fetchPosts )
+	  
 
 module.exports = router
