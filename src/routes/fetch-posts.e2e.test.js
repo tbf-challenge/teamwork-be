@@ -51,7 +51,7 @@ describe('GET /feed', () => {
 		const numberOfPosts = 3
 		let insertedPosts
 
-		before(async () =>{
+		beforeEach(async () =>{
 
 			await resetDBTable('posts')
 			insertedPosts= await fixtures.insertMultiplePosts(
@@ -102,12 +102,16 @@ describe('GET /feed', () => {
 				userId : user.id ,
 				postId : post.id
 			})
+		
 
 			return fixtures.api()
 				.get(`/api/v1/feed?isFlagged=${true}`)
 				.set('Authorization', `Bearer ${accessToken}`)
 				.then(res => {
 					
+					expect(res.body.data[0].flagsCount).to.eql(1)
+					delete res.body.data[0].flagsCount
+
 					expect(res.body.data[0]).to.eql({
 	
 						createdOn: post.createdAt.toISOString(),
@@ -127,5 +131,48 @@ describe('GET /feed', () => {
 					})
 				}) 
 		})
+
+		it('should return the right number of unFlagged posts', async() =>{
+			
+			const insertedPost = insertedPosts[2]
+			await fixtures.insertPostFlag({
+				userId : user.id ,
+				postId : insertedPost.id
+			})
+		
+
+			return fixtures.api()
+				.get(`/api/v1/feed?isFlagged=${false}`)
+				.set('Authorization', `Bearer ${accessToken}`)
+				.then(res => {
+					
+					expect(res.body.data[0].flagsCount).to.eql(0)
+					expect(res.body.data[1].flagsCount).to.eql(0)
+					delete res.body.data[0].flagsCount
+					delete res.body.data[1].flagsCount
+					
+
+					expect(res.body.data).to.have.deep.members(
+	
+						insertedPosts
+							.filter((post, index) => index < 2)
+							.map((post) =>({
+								createdOn: post.createdAt.toISOString(),
+								gifId : post.id,
+								imageUrl: post.content,
+								likesCount : post.likesCount,
+								published : post.published,
+								title : post.title,
+								user: {
+									userId: user.id,
+									// eslint-disable-next-line max-len
+									fullName:`${user.firstName} ${user.lastName}`,
+									profilePictureUrl : user.profilePictureUrl,
+									email : user.email
+								}
+							
+							})))	
+				})
+		}) 
 	})
 })
