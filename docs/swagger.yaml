@@ -1726,7 +1726,7 @@ paths:
         name : isFlagged
         schema:
           type: boolean
-        required: true
+        required: false
         description : true or false
       responses:
         '200':
