@@ -38,7 +38,7 @@ describe('Fetch all posts', () => {
 			userId : user.id ,
 			postId : posts[0].id
 		})
-		const actualPosts = await fetchPosts({isFlagged : true})
+		const actualPosts = await fetchPosts(true)
         
 
 		const result = await db.query(`
@@ -49,10 +49,35 @@ describe('Fetch all posts', () => {
 		users."profilePictureUrl" 
 		FROM posts
 		INNER JOIN users on posts."userId" = users.id
-		WHERE posts."flagsCount" > 0;
+		WHERE posts."flagsCount" > 0
+		ORDER BY "flagsCount" DESC;
         `)
 
 		return expect(actualPosts).to.eql(result.rows)	
 	})
 
+	it('should fetch unflagged posts', async () =>{
+		await resetDBTable('post_flags')
+	
+		await fixtures.insertPostFlag({
+			userId : user.id ,
+			postId : posts[0].id
+		})
+		const actualPosts = await fetchPosts(false)
+        
+
+		const result = await db.query(`
+		SELECT posts.id, posts."userId" , posts.title, posts.image,
+		posts.content,posts.published, posts."createdAt", posts.type,
+		posts."likesCount", posts."flagsCount",
+		users."firstName", users."lastName", users.email,
+		users."profilePictureUrl" 
+		FROM posts
+		INNER JOIN users on posts."userId" = users.id
+ 		WHERE posts."flagsCount" = 0
+		ORDER BY "flagsCount" DESC;
+        `)
+
+		return expect(actualPosts).to.eql(result.rows)	
+	})
 })
