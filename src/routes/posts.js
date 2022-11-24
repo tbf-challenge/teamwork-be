@@ -51,7 +51,7 @@ router
 	.route('/')
 	.get(
 		(req, res, next) => {
-			if (req.query.isFlagged || req.query.isFlagged === false) {
+			if (req.query.isFlagged !== undefined) {
 				return	isAdmin(req, res, next)
 			   } 
 			   return next()
