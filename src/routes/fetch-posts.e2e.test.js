@@ -26,6 +26,15 @@ describe('GET /feed', () => {
 				.expect(401)
 		
 		) 
+
+		it('should return 400 if isFlagged is not a boolean', async () => 
+			fixtures.api()
+				.get(`/api/v1/feed?isFlagged=${'string'}`)
+				.set('Authorization', `Bearer ${accessToken}`)
+				.expect(400)
+		
+		) 
+
 		it('should return 403 if non-admin fetches flagged posts', async () => {
 			const nonAdminUser = await fixtures.insertUser({
 				role : 'user'
