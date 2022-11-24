@@ -15,7 +15,7 @@ const fetchPosts = async(isFlagged) => {
 	  
 	 const joinClause = `INNER JOIN users on posts."userId" = users.id`
 	 let whereClause = ''
-	 let orderByClause = ''
+	 let orderByClause = `ORDER BY posts."createdAt" DESC`
 	   
 	 if(isFlagged !== undefined){
 		 selectClause+= `, posts."flagsCount"`
