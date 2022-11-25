@@ -79,6 +79,7 @@ describe('Fetch all posts', () => {
 		ORDER BY "flagsCount" DESC;
         `)
 
-		return expect(actualPosts).to.eql(result.rows)	
+		expect(actualPosts).to.eql(result.rows)
+		actualPosts.map(post => expect(post.flagsCount).to.equal(0))	
 	})
 })
