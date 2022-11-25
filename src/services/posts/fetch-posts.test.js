@@ -33,7 +33,7 @@ describe('Fetch all posts', () => {
 		return expect(actualPosts).to.eql(result.rows)	
 	})
 
-	it('should fetch flagged posts', async () =>{
+	it('should fetch flagged posts when isFlagged=true', async () =>{
 	
 		await fixtures.insertPostFlag({
 			userId : user.id ,
@@ -54,10 +54,11 @@ describe('Fetch all posts', () => {
 		ORDER BY "flagsCount" DESC;
         `)
 
-		return expect(actualPosts).to.eql(result.rows)	
+		expect(actualPosts).to.eql(result.rows)
+		actualPosts.map(post => expect(post.flagsCount).to.be.greaterThan(0))	
 	})
 
-	it('should fetch unflagged posts', async () =>{
+	it('should fetch unflagged posts when isFlagged=false', async () =>{
 		await resetDBTable('post_flags')
 	
 		await fixtures.insertPostFlag({
