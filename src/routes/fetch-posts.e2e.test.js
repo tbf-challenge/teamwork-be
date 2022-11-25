@@ -107,10 +107,12 @@ describe('GET /feed', () => {
 		)	
 
 		it('should return flagged posts', async() =>{
-			const post = insertedPosts[0]
+			const firstPost = insertedPosts[0]
+
+			// flag only the first post
 			await fixtures.insertPostFlag({
 				userId : user.id ,
-				postId : post.id
+				postId : firstPost.id
 			})
 		
 
@@ -121,13 +123,13 @@ describe('GET /feed', () => {
 					
 					expect(res.body.data[0]).to.eql({
 	
-						createdOn: post.createdAt.toISOString(),
-						gifId : post.id,
-						imageUrl: post.content,
+						createdOn: firstPost.createdAt.toISOString(),
+						gifId : firstPost.id,
+						imageUrl: firstPost.content,
 						flagsCount : 1,
-						likesCount : post.likesCount,
-						published : post.published,
-						title : post.title,
+						likesCount : firstPost.likesCount,
+						published : firstPost.published,
+						title : firstPost.title,
 						user: {
 							userId: user.id,
 							fullName: `${user.firstName} ${user.lastName}`,
@@ -142,11 +144,17 @@ describe('GET /feed', () => {
 
 		it('should return unflagged posts', async() =>{
 			
-			const insertedPost = insertedPosts[2]
+			const lastPost = insertedPosts[insertedPosts.length - 1]
+
+			// flag only last post
 			await fixtures.insertPostFlag({
 				userId : user.id ,
-				postId : insertedPost.id
+				postId : lastPost.id
 			})
+
+			const unflaggedPosts = insertedPosts.slice(
+				0, insertedPosts.length -1
+			)
 		
 
 			return fixtures.api()
@@ -155,9 +163,8 @@ describe('GET /feed', () => {
 				.then(res => {
 					
 					expect(res.body.data).to.have.deep.members(
-	
-						insertedPosts
-							.slice(0,2)
+					
+						unflaggedPosts
 							.map((post) =>({
 								createdOn: post.createdAt.toISOString(),
 								gifId : post.id,
