@@ -63,6 +63,7 @@ describe('GET /feed', () => {
 		beforeEach(async () =>{
 
 			await resetDBTable('posts')
+			await resetDBTable('post_flags')
 			insertedPosts= await fixtures.insertMultiplePosts(
 				user.id,
 				numberOfPosts
@@ -105,7 +106,7 @@ describe('GET /feed', () => {
 				}) 
 		)	
 
-		it('should return the right number of Flagged posts', async() =>{
+		it('should return flagged posts', async() =>{
 			const post = insertedPosts[0]
 			await fixtures.insertPostFlag({
 				userId : user.id ,
@@ -118,14 +119,12 @@ describe('GET /feed', () => {
 				.set('Authorization', `Bearer ${accessToken}`)
 				.then(res => {
 					
-					expect(res.body.data[0].flagsCount).to.eql(1)
-					delete res.body.data[0].flagsCount
-
 					expect(res.body.data[0]).to.eql({
 	
 						createdOn: post.createdAt.toISOString(),
 						gifId : post.id,
 						imageUrl: post.content,
+						flagsCount : 1,
 						likesCount : post.likesCount,
 						published : post.published,
 						title : post.title,
@@ -141,7 +140,7 @@ describe('GET /feed', () => {
 				}) 
 		})
 
-		it('should return the right number of unFlagged posts', async() =>{
+		it('should return unflagged posts', async() =>{
 			
 			const insertedPost = insertedPosts[2]
 			await fixtures.insertPostFlag({
@@ -155,20 +154,15 @@ describe('GET /feed', () => {
 				.set('Authorization', `Bearer ${accessToken}`)
 				.then(res => {
 					
-					expect(res.body.data[0].flagsCount).to.eql(0)
-					expect(res.body.data[1].flagsCount).to.eql(0)
-					delete res.body.data[0].flagsCount
-					delete res.body.data[1].flagsCount
-					
-
 					expect(res.body.data).to.have.deep.members(
 	
 						insertedPosts
-							.filter((post, index) => index < 2)
+							.slice(0,2)
 							.map((post) =>({
 								createdOn: post.createdAt.toISOString(),
 								gifId : post.id,
 								imageUrl: post.content,
+								flagsCount: 0,
 								likesCount : post.likesCount,
 								published : post.published,
 								title : post.title,
