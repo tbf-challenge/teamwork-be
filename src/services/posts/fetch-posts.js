@@ -15,14 +15,14 @@ const fetchPosts = async(isFlagged) => {
 	  
 	 const joinClause = `INNER JOIN users on posts."userId" = users.id`
 	 let whereClause = ''
-	 let orderByClause = `ORDER BY posts."createdAt" DESC`
+	 let orderByClause = `ORDER BY posts."createdAt"DESC`
 	   
 	 if(isFlagged !== undefined){
 		 selectClause+= `, posts."flagsCount"`
 		 
 		whereClause += `
 			WHERE posts."flagsCount" ${isFlagged ? '>': '='} 0`
-		orderByClause+=`ORDER BY "flagsCount" DESC`
+		orderByClause =`ORDER BY "flagsCount" DESC`
 	 }
 
 	const feed = await db.query(`
