@@ -27,7 +27,8 @@ describe('Fetch all posts', () => {
         users."firstName", users."lastName", users.email, 
         users."profilePictureUrl" 
 	    FROM posts
-	    INNER JOIN users on posts."userId" = users.id;
+	    INNER JOIN users on posts."userId" = users.id
+		ORDER BY posts."createdAt" DESC;
         `)
 		return expect(actualPosts).to.eql(result.rows)	
 	})
