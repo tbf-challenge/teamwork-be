@@ -106,7 +106,8 @@ describe('GET /feed', () => {
 				}) 
 		)	
 
-		it('should return flagged posts', async() =>{
+	
+		it('should return flagged posts if when isFlagged=true', async() =>{
 			const firstPost = insertedPosts[0]
 
 			// flag only the first post
@@ -142,7 +143,8 @@ describe('GET /feed', () => {
 				}) 
 		})
 
-		it('should return unflagged posts', async() =>{
+		
+		it('should return unflagged posts if when isFlagged=false', async() =>{
 			
 			const lastPost = insertedPosts[insertedPosts.length - 1]
 
