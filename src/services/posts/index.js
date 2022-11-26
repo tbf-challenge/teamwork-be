@@ -12,6 +12,8 @@ const unflagPost = require("./unflag-post")
 const createPost = require("./create-post")
 const updatePost = require("./update-post")
 const getPost = require("./get-post")
+const fetchPosts = require("./fetch-posts")
+
 
 const uniqueErrorCode = '23505'
 
@@ -51,19 +53,6 @@ const assignTagToPost = async({postId , tagId}) => {
 	return result.rows[0]
 }
 
-const fetchPosts = async() => {
-	const feed = await db.query(`
-	SELECT posts.id, posts."userId" , posts.title, posts.image, posts.content,
-	posts.published, posts."createdAt", posts.type, posts."likesCount",
-	users."firstName", users."lastName", users.email, users."profilePictureUrl" 
-	FROM posts
-	INNER JOIN users on posts."userId" = users.id;
-	`)
-
-	return feed.rows
-
-}
-
 
 module.exports = {
 	createPost,
@@ -79,4 +68,5 @@ module.exports = {
 	unlikePost,
 	flagPost,
 	unflagPost
+
 }
