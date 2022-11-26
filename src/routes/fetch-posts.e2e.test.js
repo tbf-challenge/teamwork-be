@@ -177,8 +177,8 @@ describe('GET /feed', () => {
 								title : post.title,
 								user: {
 									userId: user.id,
-									// eslint-disable-next-line max-len
-									fullName:`${user.firstName} ${user.lastName}`,
+									fullName: `${user.firstName  } ${
+									 user.lastName}`,
 									profilePictureUrl : user.profilePictureUrl,
 									email : user.email
 								}
