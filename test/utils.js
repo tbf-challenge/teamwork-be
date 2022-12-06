@@ -189,6 +189,16 @@ const fixtures = {
 		)
 
 		return queryResult.rows[0]
+	},
+	async insertPostTag(overrides = {}){
+		const likeData = {}
+		const newData = {...likeData, ...overrides}
+		const result = await db.query(
+			`INSERT INTO posts_tags ("postId","tagId") 
+		VALUES ($1,$2) 
+		RETURNING *`, [newData.postId, newData.tagId]
+		)
+		return result.rows[0]
 	}
 }
 
