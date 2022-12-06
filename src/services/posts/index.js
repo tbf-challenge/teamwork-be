@@ -1,8 +1,5 @@
 const db = require("../../db")
-const {
-	TagAlreadyAssignedToPostError
-} = require("../errors")
-const customError = require("../../lib/custom-error")
+
 const deletePost = require("./delete-post")
 const createComment = require("./create-comment")
 const likePost = require("./like-post")
@@ -13,9 +10,7 @@ const createPost = require("./create-post")
 const updatePost = require("./update-post")
 const getPost = require("./get-post")
 const fetchPosts = require("./fetch-posts")
-
-
-const uniqueErrorCode = '23505'
+const assignTagToPost = require("./assign-tag-to-post")
 
 
 const deletePostTags = async({postId, tagId}) => {
@@ -34,23 +29,6 @@ const queryPostTags = async({tag}) => {
 		[tag]
 	)
 	return feed.rows
-}
-const assignTagToPost = async({postId , tagId}) => {
-	const result = await db.query(
-		`INSERT INTO posts_tags ("postId","tagId") 
-		VALUES ($1,$2) 
-		RETURNING *`,
-		[postId, tagId]
-	).catch(error => {
-		if(error.code === uniqueErrorCode ){
-			throw customError(TagAlreadyAssignedToPostError)
-		}
-		else{
-			throw error
-		}
-	})
-	
-	return result.rows[0]
 }
 
 
