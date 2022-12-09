@@ -1,5 +1,5 @@
 const { expect } = require('chai')
-const { fixtures } = require('../../../test/utils')
+const { fixtures, resetDBTable } = require('../../../test/utils')
 
 
 describe('GET /articles/query', () => {
@@ -32,11 +32,11 @@ describe('GET /articles/query', () => {
 		})
 
 	})
-    
+
 	describe('Success', () => {
 
 		it('should return 200 is request is successful', async () => {
-
+			await resetDBTable('tags')
 			const tag = await fixtures.insertTag()  
     
 			const post = await fixtures.insertPost({
@@ -54,7 +54,7 @@ describe('GET /articles/query', () => {
 		})
 
 		it('should return the right response', async () => {
-		
+			await resetDBTable('tags')
 			const tag = await fixtures.insertTag()  
     
 			const post = await fixtures.insertPost({
