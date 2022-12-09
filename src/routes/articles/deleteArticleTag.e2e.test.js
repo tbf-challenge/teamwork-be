@@ -70,7 +70,7 @@ describe('DELETE /articles/:articleId/tags/:tagId', () => {
 
 	describe('Success', () => {
 
-		it('should return 200', async () => {
+		it('should return status code 200 when request succeeds', async () => {
 
 			const tag = await fixtures.insertTag() 
 			const post = await fixtures.insertPost({
