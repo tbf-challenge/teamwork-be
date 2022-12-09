@@ -1,13 +1,13 @@
-const {expect} = require('chai')
+const { expect } = require('chai')
 const db = require("../../db")
 const assignTagToPost = require("./assign-tag-to-post")
-const {fixtures} = require('../../../test/utils')
+const { fixtures } = require('../../../test/utils')
 
 
 describe('ASSIGN TAG TO POST ', () => {
 	let user
 	
-	before(async ()=>{
+	before(async () => {
 		user = await fixtures.insertUser() 
 		
 	})
@@ -15,13 +15,15 @@ describe('ASSIGN TAG TO POST ', () => {
 		
 		let post
 		let tag
-		before(async ()=>{
+
+		before(async () => {
 			post = await fixtures.insertPost({
 				userId : user.id , 
 				type : 'gif'
 			})
 			tag = await fixtures.insertTag()  
 		})
+
 		it('should throw an error if tag is already assigned', async () => {
 			await fixtures.insertPostTag({
 				postId: post.id,
@@ -66,7 +68,7 @@ describe('ASSIGN TAG TO POST ', () => {
 		let post
 		let tag
 
-		before(async ()=>{
+		before(async () => {
 
 			post = await fixtures.insertPost({
 				userId : user.id , 
