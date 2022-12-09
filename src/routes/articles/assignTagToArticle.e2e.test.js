@@ -1,5 +1,5 @@
-const {expect} = require('chai')
-const {fixtures} = require('../../../test/utils')
+const { expect } = require('chai')
+const { fixtures } = require('../../../test/utils')
 
 
 describe('POST /articles/:id/tags', () => {
