@@ -10,9 +10,9 @@ describe('POST /articles/:id/tags', () => {
 	before(async ()=>{
 
 		 user = await fixtures.insertUser() 
-		const body = { id: user.id, email: user.email }
+		const accessTokenParams = { id: user.id, email: user.email }
 		accessToken = fixtures.generateAccessToken(
-			{user : body}
+			{user : accessTokenParams}
 		)
 	})
 
