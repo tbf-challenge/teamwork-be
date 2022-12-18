@@ -2,7 +2,7 @@ const {expect} = require('chai')
 const { faker } = require('@faker-js/faker')
 const updateTag = require("./update-tag")
 const db = require('../../db')
-const {fixtures} = require('../../../test/utils')
+const {fixtures, resetDBTable} = require('../../../test/utils')
 
 
 describe('Update Tag', () => {
@@ -11,6 +11,7 @@ describe('Update Tag', () => {
 	let updatedInfo 
 
 	before(async () => {
+		await resetDBTable('tags')
 		tag = await fixtures.insertTag() 
 		updatedInfo = {
 			tagId : tag.id,

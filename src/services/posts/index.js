@@ -1,5 +1,3 @@
-const db = require("../../db")
-
 const deletePost = require("./delete-post")
 const createComment = require("./create-comment")
 const likePost = require("./like-post")
@@ -12,18 +10,7 @@ const getPost = require("./get-post")
 const fetchPosts = require("./fetch-posts")
 const assignTagToPost = require("./assign-tag-to-post")
 const deletePostTags = require("./delete-post-tag")
-
-
-const queryPostTags = async({tag}) => {
-	const feed = await db.query(
-		`SELECT * FROM posts 
-		p INNER JOIN posts_tags pt 
-		ON p.id=pt."postId" 
-		WHERE "tagId"=$1`,
-		[tag]
-	)
-	return feed.rows
-}
+const queryPostTags = require("./query-post-tags")
 
 
 module.exports = {
