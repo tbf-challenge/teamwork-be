@@ -23,8 +23,8 @@ const router = express.Router()
 // GET ALL ARTICLES
 
 const fetchPosts = catchAsync( async(req, res) => {
-	const {isFlagged} = req.query
-	const feed = await postService.fetchPosts(isFlagged)
+	const {isFlagged, cursor , limit} = req.query
+	const feed = await postService.fetchPosts(isFlagged, cursor, limit)
 
 	res.status(200).json({
 		status: 'success',
