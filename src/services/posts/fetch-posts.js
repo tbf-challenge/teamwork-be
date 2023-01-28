@@ -13,7 +13,7 @@ const fetchPosts = async(isFlagged, cursor, limit) => {
 	 const fromClause = `FROM posts`
 	  
 	 const joinClause = `INNER JOIN users on posts."userId" = users.id`
-	 const whereClauseArray = []
+	 let whereClauseArray = []
 	 let orderByClause = `ORDER BY posts."createdAt" DESC`
 	 const limitClause = `LIMIT ${limit}`
 
@@ -27,8 +27,16 @@ const fetchPosts = async(isFlagged, cursor, limit) => {
 		 ${isFlagged ? '>': '='} 0`)
 		orderByClause =`ORDER BY "flagsCount" DESC`
 	}
+	
 
-
+	if(whereClauseArray[0] !== undefined){
+	// eslint-disable-next-line no-unused-expressions
+		whereClauseArray[0].startsWith('posts') === true ?
+			whereClauseArray = [`WHERE posts."flagsCount"
+		${isFlagged ? '>': '='} 0`] : 
+			whereClauseArray
+	}
+		
 	const feed = await db.query(`
 ${selectClause} ${fromClause} ${joinClause} 
 ${whereClauseArray.join(' AND ')} ${orderByClause} ${limitClause};
