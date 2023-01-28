@@ -18,7 +18,8 @@ describe('Fetch all posts', () => {
 	 })
 	 
 	it('should fetch posts', async () =>{
-		const actualPosts = await fetchPosts()
+		
+		const actualPosts = await fetchPosts({limit:20})
 
 		const result = await db.query(`
 		SELECT posts.id, posts."userId" , posts.title, posts.image,
@@ -28,9 +29,11 @@ describe('Fetch all posts', () => {
         users."profilePictureUrl" 
 	    FROM posts
 	    INNER JOIN users on posts."userId" = users.id
-		ORDER BY posts."createdAt" DESC;
+		ORDER BY posts."createdAt" DESC LIMIT ${20};
         `)
+		
 		return expect(actualPosts).to.eql(result.rows)	
+
 	})
 
 	it('should fetch flagged posts when isFlagged=true', async () =>{
@@ -39,7 +42,7 @@ describe('Fetch all posts', () => {
 			userId : user.id ,
 			postId : posts[0].id
 		})
-		const actualPosts = await fetchPosts(true)
+		const actualPosts = await fetchPosts({isFlagged : true , limit : 20})
         
 
 		const result = await db.query(`
@@ -51,7 +54,7 @@ describe('Fetch all posts', () => {
 		FROM posts
 		INNER JOIN users on posts."userId" = users.id
 		WHERE posts."flagsCount" > 0
-		ORDER BY "flagsCount" DESC;
+		ORDER BY "flagsCount" DESC LIMIT ${20};
         `)
 
 		expect(actualPosts).to.eql(result.rows)
@@ -65,7 +68,7 @@ describe('Fetch all posts', () => {
 			userId : user.id ,
 			postId : posts[0].id
 		})
-		const actualPosts = await fetchPosts(false)
+		const actualPosts = await fetchPosts({isFlagged : false, limit : 20})
         
 
 		const result = await db.query(`
@@ -77,7 +80,7 @@ describe('Fetch all posts', () => {
 		FROM posts
 		INNER JOIN users on posts."userId" = users.id
  		WHERE posts."flagsCount" = 0
-		ORDER BY "flagsCount" DESC;
+		ORDER BY "flagsCount" DESC LIMIT ${20};
         `)
 
 		expect(actualPosts).to.eql(result.rows)
