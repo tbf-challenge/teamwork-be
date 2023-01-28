@@ -1795,7 +1795,12 @@ paths:
                           type: boolean
                           description: Published or not
                           example: true
-                        
+                  metadata:        
+                    type: object
+                    description: metadata
+                    example:
+                        totalCount: 23
+                    
       security:
         - bearerAuth: []
   /users:
