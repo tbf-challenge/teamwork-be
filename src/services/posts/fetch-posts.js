@@ -1,6 +1,6 @@
 const db = require("../../db")
 
-const fetchPosts = async(isFlagged, cursor, limit) => {
+const fetchPosts = async({isFlagged, cursor, limit }) => {
 	
 	let selectClause = `
 	SELECT posts.id, posts."userId" , posts.title, posts.image,
