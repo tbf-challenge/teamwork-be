@@ -270,7 +270,7 @@ const fetchPostsSchema = Joi.object({
 	query: {
 		isFlagged :Joi.boolean(),
 		cursor : Joi.number(),
-		limit : Joi.number().default(20)
+		limit : Joi.number()
 			
 	}
 })
