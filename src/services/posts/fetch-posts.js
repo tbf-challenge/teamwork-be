@@ -1,6 +1,7 @@
 const db = require("../../db")
 
-const fetchPosts = async({isFlagged, cursor, limit }) => {
+const DEFAULT_LIMIT = 20
+const fetchPosts = async(isFlagged, cursor, limit = DEFAULT_LIMIT ) => {
 	
 	let selectClause = `
 	SELECT posts.id, posts."userId" , posts.title, posts.image,
@@ -31,13 +32,15 @@ const fetchPosts = async({isFlagged, cursor, limit }) => {
 	const whereClause = (whereClauseArray.length > 0 ? ' WHERE ' : '') 
 	+ whereClauseArray.join(' AND ')
 
-	const feed = await db.query(`
+	const result = await db.query(`
 ${selectClause} ${fromClause} ${joinClause} 
 ${whereClause} ${orderByClause} ${limitClause};
 `
 	) 
-	
-	return feed.rows
+	const feed = result.rows
+	const value = await db.query(` SELECT COUNT(posts) FROM posts;`)
+	const count = value.rows[0]
+	return {feed , count}
 
 }
 module.exports = fetchPosts
