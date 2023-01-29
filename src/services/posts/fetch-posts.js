@@ -1,8 +1,8 @@
 const db = require("../../db")
 
 const DEFAULT_LIMIT = 20
-const fetchPosts = async(isFlagged, cursor, limit = DEFAULT_LIMIT ) => {
-	
+
+const fetchData = async(isFlagged, cursor, limit ) => {
 	let selectClause = `
 	SELECT posts.id, posts."userId" , posts.title, posts.image,
 	posts.content,posts.published, posts."createdAt", posts.type,
@@ -38,8 +38,29 @@ ${whereClause} ${orderByClause} ${limitClause};
 `
 	) 
 	const feed = result.rows
-	const value = await db.query(` SELECT COUNT(posts) FROM posts;`)
+	return feed
+}
+
+const getTotalCount = async(isFlagged) => {
+	const selectClause = `SELECT COUNT(posts)`
+	const fromClause = `FROM posts`
+	let whereClause = ''
+
+	if(isFlagged !== undefined){
+	
+		whereClause = (`WHERE posts."flagsCount"
+		 ${isFlagged ? '>': '='} 0`)
+	}
+
+	const value = await db.query(` 
+	 ${selectClause} ${fromClause} ${whereClause};`)
 	const count = value.rows[0]
+	return Number(count.count)
+}
+const fetchPosts = async(isFlagged, cursor, limit = DEFAULT_LIMIT ) => {
+	
+	const feed = await fetchData(isFlagged, cursor, limit) 
+	const count = await getTotalCount(isFlagged)
 	return {feed , count}
 
 }
