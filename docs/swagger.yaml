@@ -1798,8 +1798,11 @@ paths:
                   metadata:        
                     type: object
                     description: metadata
-                    example:
-                        totalCount: 23
+                    properties:
+                        totalCount:
+                          type: number
+                          description: total count of posts 
+                          example: 23
                     
       security:
         - bearerAuth: []
