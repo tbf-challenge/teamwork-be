@@ -38,7 +38,7 @@ const fetchPosts = catchAsync( async(req, res) => {
 			})})
 		),
 		metadata: {
-			totalCount: Number(count.count)
+			totalCount: count
 		   }
 	})
 	
