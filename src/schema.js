@@ -268,7 +268,9 @@ const updateUserSchema = Joi.object({
 
 const fetchPostsSchema = Joi.object({
 	query: {
-		isFlagged :Joi.boolean()
+		isFlagged :Joi.boolean(),
+		cursor : Joi.number(),
+		limit : Joi.number()
 			
 	}
 })

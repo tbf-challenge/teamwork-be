@@ -23,9 +23,9 @@ const router = express.Router()
 // GET ALL ARTICLES
 
 const fetchPosts = catchAsync( async(req, res) => {
-	const {isFlagged} = req.query
-	const feed = await postService.fetchPosts(isFlagged)
-
+	
+	const {feed, count} = await postService.fetchPosts(req.query)
+	
 	res.status(200).json({
 		status: 'success',
 		data: feed.map(({userId, ...post}) => ({
@@ -36,7 +36,10 @@ const fetchPosts = catchAsync( async(req, res) => {
 				profilePictureUrl : post.profilePictureUrl,
 				email : post.email
 			})})
-		)
+		),
+		metadata: {
+			totalCount: count
+		   }
 	})
 	
 })
