@@ -87,8 +87,13 @@ ex. [@DomPizzie](https://twitter.com/dompizzie)
 
 This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
 
--   [![Next][next.js]][next-url]
-
+-   [pg](https://salsita.github.io/node-pg-migrate/#/)
+-   [express](http://expressjs.com/en/5x/api.html)
+-   [Swagger](https://swagger.io/docs/open-source-tools/swagger-editor/) 
+-   [Passport](https://www.passportjs.org/)
+-   [Mocha](https://mochajs.org/)
+-   [Chai](https://www.chaijs.com/)
+-   [NodeMailer]()
 <p align="right">(<a href="#top">back to top</a>)</p>
 ## License
 
@@ -98,8 +103,21 @@ This project is licensed under the [NAME HERE] License - see the LICENSE.md file
 
 Inspiration, code snippets, etc.
 
--   [awesome-readme](https://github.com/matiassingers/awesome-readme)
--   [PurpleBooth](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
--   [dbader](https://github.com/dbader/readme-template)
--   [zenorocha](https://gist.github.com/zenorocha/4526327)
--   [fvcproductions](https://gist.github.com/fvcproductions/1bfc2d4aecb01a834b46)
+-  Sinon
+-  ESlint
+-  YAML
+-  BCrypt
+-  Chalk
+-  CORS
+-  dotenv
+-  Joi
+-  JSONWebtoken
+-  Lodash
+-  Morgan
+-  Husky
+-  Minimist
+-  Nodemon
+-  Supertest
+-  Faker
+-  cross env
+
